@@ -1,8 +1,8 @@
 module.exports = {
-  title: `zoomkoding.com`,
+  title: `zoomkod.ing`,
   description: `줌코딩의 개발일기`,
   language: `ko`, // `ko`, `en` => currently support versions for Korean and English
-  siteUrl: `https://www.zoomkoding.com`,
+  siteUrl: `https://www.zoomkod.ing`,
   ogImage: `/og-image.png`, // Path to your in the 'static' folder
   comments: {
     utterances: {
