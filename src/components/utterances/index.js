@@ -29,9 +29,10 @@ function Utterances({ repo, path }) {
       theme: getTheme(),
       label: 'comment',
       async: true,
-      'issue-term': 'pathname',
       crossorigin: 'anonymous',
     };
+    if (path === '/gatsby-github-blog/') utterancesConfig['issue-number'] = 14;
+    else utterancesConfig['issue-term'] = 'pathname';
 
     Object.keys(utterancesConfig).forEach((configKey) => {
       utterances.setAttribute(configKey, utterancesConfig[configKey]);
