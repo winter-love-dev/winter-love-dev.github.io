@@ -1,28 +1,29 @@
 module.exports = {
-  title: `zoomkod.ing`,
-  description: `줌코딩의 개발일기`,
+  title: `winter-love.dev`,
+  description: `윈터의 블로그`,
   language: `ko`, // `ko`, `en` => currently support versions for Korean and English
-  siteUrl: `https://www.zoomkod.ing`,
+  siteUrl: `https://www.winter-love.dev`,
   ogImage: `/og-image.png`, // Path to your in the 'static' folder
   comments: {
     utterances: {
-      repo: `zoomkoding/zoomkoding-gatsby-blog`, // `zoomkoding/zoomkoding-gatsby-blog`,
+      repo: `winter-love-dev/winter-love-dev.github.io`,
     },
   },
-  ga: 'UA-134826755-2', // Google Analytics Tracking ID
+  ga: 'UA-134826755-2', //  Google Analytics Tracking ID
   author: {
-    name: `정진혁`,
+    name: `김성훈`,
     bio: {
-      role: `개발자`,
-      description: ['주변의 필요에 관심이 있는', '성장과 경험을 추구하는'],
-      thumbnail: 'zoomkoding.gif', // Path to the image in the 'asset' folder
+      role: `안드로이드 개발자`,
+      description: ['겨울과 코딩을 사랑하는', '행복과 성장을 추구하는', '당신과 함께 위스키 한 잔 즐기고 싶은'],
+      thumbnail: 'winter.gif', // Path to the image in the 'asset' folder
     },
     social: {
-      github: `https://github.com/zoomkoding`,
-      linkedIn: `https://www.linkedin.com/in/jinhyeok-jeong-800871192`,
-      email: `zoomkoding@gmail.com`,
+      github: `https://github.com/winter-love-dev`,
+      linkedIn: `https://www.linkedin.com/in/sam-winter-h`,
+      email: `hun230402@gmail.com`,
     },
   },
+
 
   // metadata for About Page
   about: {
@@ -43,86 +44,15 @@ module.exports = {
       // ========================================================
       // ========================================================
       {
-        date: '2018.04',
-        activity: '개발 시작 & 블로그 시작',
-      },
-      {
-        date: '2019.06 ~ 2019.12',
-        activity: '알고리즘 휴학 & 코드포스 블루 달성',
+        date: '2019.11 ~ 2020.07',
+        activity: 'AI 해커톤 WeKnowNothing 팀으로 활동. 7위 달성 (57팀 중) & 개발 공부',
         links: {
-          post: '/how-to-algo',
+          demo: 'https://dacon.io/competitions/official/235492/leaderboard',
         },
       },
       {
-        date: '2019.12 ~ 2020.06',
-        activity: '스타트업 인턴십 진행 & Picky 개발',
-        links: {
-          post: '/start-up-app-development',
-          googlePlay: 'https://play.google.com/store/apps/details?id=care.jivaka.picky',
-          appStore: 'https://apps.apple.com/app/picky-skincare-made-smarter/id1504197356',
-        },
-      },
-      {
-        date: '2020.07 ~ 2020.08',
-        activity: '우아한테크캠프 3기 참여',
-        links: {
-          post: '/woowa-tech-camp-final',
-          github: 'https://github.com/woowa-techcamp-2020/bmart-6',
-        },
-      },
-
-      {
-        date: '2021.01 ~ 2021. 04',
-        activity: '대학시간(대학교 수강신청 보조 웹 앱) 개발 및 운영',
-        links: {
-          post: '/college-timetable-development',
-          github: 'https://github.com/zoomkoding/college-timetable',
-          demo: 'https://www.timetable.college',
-        },
-      },
-      {
-        date: '2021.02',
-        activity: '개발 블로그 스타터 개발',
-        links: {
-          post: '/gatsby-starter-zoomkoding-introduction',
-          github: 'https://github.com/zoomkoding/zoomkoding-gatsby-blog',
-          demo: 'https://www.zoomkoding.com',
-        },
-      },
-      {
-        date: '2022.03',
-        activity: '우아한형제들 입사',
-      },
-      {
-        date: '2021.03 ~ 2023.03',
-        activity: '만다오(프로모션 웹앱 빌더) 개발',
-        links: {
-          post: 'https://techblog.woowahan.com/2719',
-        },
-      },
-      {
-        date: '2021.08 ~ 2021.12',
-        activity: '공모주닷컴(공모주 청약 정보 사이트) 개발',
-        links: {
-          github: 'https://github.com/zoomkoding/gongmojoo.com',
-        },
-      },
-      {
-        date: '2022.04 ~ ',
-        activity: '에포드(전락 카드 게임 앱) 개발',
-        links: {
-          post: 'https://namu.wiki/w/%EC%97%90%ED%8F%AC%EB%93%9C',
-          googlePlay: 'https://play.google.com/store/apps/details?id=com.zoomkoding.ephod',
-          appStore: 'https://apps.apple.com/kr/app/the-ephod/id1633480108',
-        },
-      },
-      {
-        date: '2023.04 ~ ',
-        activity: '만화경(웹툰 플랫폼) 개발',
-        links: {
-          googlePlay: 'https://play.google.com/store/apps/details?id=com.manhwakyung',
-          appStore: 'https://apps.apple.com/kr/app/id1471091493',
-        },
+        date: '2021.02 ~ ',
+        activity: '산업기능 요원으로 개발자 커리어 시작',
       },
     ],
 
@@ -146,10 +76,10 @@ module.exports = {
       // ========================================================
 
       {
-        title: '만다오(프로모션 웹앱 빌더) 개발',
+        title: 'Catch Bottle 개인 프로젝트 앱 개발',
         description:
-          '만다오는 프로모션 페이지를 제작을 위해 개발된 WYSIWYG 방식의 웹 에디터입니다. 23년 4월 기준, 만다오는 배민에서 진행되는 프로모션의 80% 이상의 제작을 담당하고 있습니다. 만다오 초창기에 합류하여 멀티 페이지, 모달, 변수, 조건 분기, API 호출과 같은 고급 기능 개발을 진행했습니다. 22년에는 우아한형제들의 모회사인 DH에 역수출하기 위해 독일 본사로 출장을 떠나 만다오 소개하고 상용화 및 환경 구축에 필요한 모든 논의와 개발 과정을 맡아 진행하기도 했습니다.',
-        techStack: ['typescript', 'react', 'nestjs'],
+          'Catch Bottle 은 위스키 입문자부터 마니아들까지 이 주제에 대해 소통하는 커뮤니티 입니다. 또한 주변 리쿼샵, 원하는 술의 재고를 탐색하여 원하는 바틀의 Catch (구매)를 돕는 주변 위스키 탐색 기능까지 개발 목표로 관리중인 프로젝트입니다.',
+        techStack: ['Android', 'Kotlin', 'AAC', 'MVVM', 'Modularization Architecture'],
         thumbnailUrl: 'mandao.png',
       },
       {

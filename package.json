@@ -1,9 +1,9 @@
 {
-  "name": "zoomkoding.com",
+  "name": "winter-love.dev",
   "private": false,
   "description": "A neat blog theme for developers",
   "version": "3.0.0",
-  "author": "zoomkoding <zoomkoding@gmail.com>",
+  "author": "winter-love-dev <hun230402@gmail.com>",
   "dependencies": {
     "@mui/icons-material": "^5.1.0",
     "@mui/material": "^5.1.0",
@@ -36,7 +36,7 @@
     "typeface-montserrat": "^1.1.13"
   },
   "devDependencies": {
-    "gh-pages": "^3.2.3",
+    "gh-pages": "^5.0.0",
     "prettier": "2.2.1"
   },
   "keywords": [
@@ -57,9 +57,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/zoomkoding/zoomkoding-gatsby-blog"
+    "url": "https://github.com/winter-love-dev/winter-love-dev.github.io"
   },
   "bugs": {
-    "url": "https://github.com/zoomkoding/zoomkoding-gatsby-blog/issues"
+    "url": "https://github.com/winter-love-dev/winter-love-dev.github.io/issues"
   }
 }
