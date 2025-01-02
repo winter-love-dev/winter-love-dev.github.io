@@ -1,6 +1,7 @@
 import { useStaticQuery, graphql } from 'gatsby';
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import favicon from '@/static/favicon.png';
 
 function Seo({ description, title }) {
   const { site } = useStaticQuery(
@@ -56,6 +57,9 @@ function Seo({ description, title }) {
           property: `og:type`,
           content: `website`,
         },
+      ]}
+      link={[
+        { rel: 'shortcut icon', type: 'image/png', href: `${favicon}` }
       ]}
     />
   );
