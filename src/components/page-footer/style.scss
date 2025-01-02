@@ -5,8 +5,10 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 62px;
-  margin-top: auto;
+  height: 40px;
+  margin-top: 60px;
+  bottom: 0;
+  background-color: var(--chip-background-color);
 
   .page-footer {
     @include content-max-width;
