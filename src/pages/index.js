@@ -57,6 +57,7 @@ export const pageQuery = graphql`
         language
         author {
           name
+          nickname
           bio {
             role
             description

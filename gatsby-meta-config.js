@@ -170,10 +170,10 @@ module.exports = {
    */
   remittances: {
     toss: {
-      qrCode: './asset/toss_qr.svg', // Path to your in the 'assets' folder
+      qrCode: 'toss_qr.svg', // Path to your in the 'assets' folder
     },
     kakaopay: {
-      qrCode: './asset/kakao_qr.svg', // Path to your in the 'assets' folder
+      qrCode: 'kakao_qr.svg', // Path to your in the 'assets' folder
     },
   },
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactRotatingText from 'react-rotating-text';
 import IconButtonBar from '../icon-button-bar';
+import BuyMeACoffee from '../buy-me-a-coffee';
 import Image from '../image';
 import './style.scss';
 
@@ -11,23 +12,29 @@ function Bio({ author, language = 'ko' }) {
     <div className="bio">
       {language === 'ko' ? (
         <div className="introduction korean">
-          <p className="title">
+          <div className="title">
             안녕하세요.
             <br />
             <strong>
-              <ReactRotatingText items={bio.description} />
+              <ReactRotatingText
+                typingInterval={100}
+                deletingInterval={20}
+                pause={1800}
+                items={bio.description}
+              />
             </strong>
             <br />
             {bio.role}
             <br />
             <strong>
-              <ReactRotatingText items={["Winter", name]} /> 입니다.
+              <ReactRotatingText items={[nickname, name]} /> 입니다.
             </strong>
-            <br />
-          </p>
+          </div>
           <div className="social-links">
             <IconButtonBar links={social} />
           </div>
+          <br />
+          <BuyMeACoffee />
         </div>
       ) : (
         <div className="introduction english">

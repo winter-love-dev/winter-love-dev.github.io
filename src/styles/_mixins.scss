@@ -37,3 +37,9 @@
   padding-left: $content-horizontal-padding;
   padding-right: $content-horizontal-padding;
 }
+
+@mixin mobile {
+  @media screen and (max-width: 768px) {
+    @content;
+  }
+}
