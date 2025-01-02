@@ -9,7 +9,7 @@ module.exports = {
       repo: `winter-love-dev/winter-love-dev.github.io`,
     },
   },
-  ga: 'UA-134826755-2', //  Google Analytics Tracking ID
+  ga: 'G-LMTR2L9LZS', //  Google Analytics tracking ID
   author: {
     name: `김성훈`,
     bio: {
