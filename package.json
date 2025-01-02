@@ -2,7 +2,7 @@
   "name": "winter-love.dev",
   "private": false,
   "description": "A neat blog theme for developers",
-  "version": "3.0.0",
+  "version": "0.0.1",
   "author": "winter-love-dev <hun230402@gmail.com>",
   "dependencies": {
     "@mui/icons-material": "^5.1.0",
