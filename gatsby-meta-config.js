@@ -14,7 +14,7 @@ module.exports = {
     name: `김성훈`,
     bio: {
       role: `안드로이드 개발자`,
-      description: ['겨울과 코딩을 사랑하는', '행복과 성장을 추구하는', '코딩과 위스키를 좋아하는'],
+      description: ['겨울과 코딩을 사랑하는', '행복과 성장을 추구하는', '코딩과 위스키를 즐기는'],
       thumbnail: 'winter.gif', // Path to the image in the 'asset' folder
     },
     social: {
