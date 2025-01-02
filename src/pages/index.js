@@ -18,7 +18,7 @@ function HomePage({ data }) {
 
   return (
     <Layout>
-      <Seo title="Winter's Blog" />
+      <Seo title="개발자 윈터" />
       <Bio author={author} language={language} />
       <PostTabs
         posts={posts}
