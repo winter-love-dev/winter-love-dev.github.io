@@ -23,35 +23,22 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-robots-txt',
       options: {
-        resolveEnv: () => NETLIFY_ENV,
-        env: {
-          production: {
-            policy: [{ userAgent: '*' }],
-          },
-          'branch-deploy': {
-            policy: [{ userAgent: '*', disallow: ['/'] }],
-            sitemap: null,
-            host: null,
-          },
-          'deploy-preview': {
-            policy: [{ userAgent: '*', disallow: ['/'] }],
-            sitemap: null,
-            host: null,
-          },
-        },
+        host: 'https://winter-love.dev',
+        sitemap: 'https://winter-love.dev/sitemap.xml',
+        policy: [{ userAgent: '*', allow: '/' }]
       },
     },
     {
-      resolve: `gatsby-plugin-google-gtag`,
+      resolve: `gatsby-plugin-google-adsense`,
       options: {
-        trackingIds: [metaConfig.ga],
-        pluginConfig: {
-          head: true,
-        },
-        gtagConfig: {
-          anonymize_ip: true,
-          send_page_view: true,
-        }
+        publisherId: `ca-pub-5925353368498146`,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-gtag`,
+      options: {
+        trackingId: 'G-LMTR2L9LZS',
+        head: true,
       },
     },
     {
@@ -63,7 +50,7 @@ module.exports = {
         lang: `en`,
         display: `standalone`,
         start_url: `/`,
-        icon: `static/favicon.svg`,
+        icon: `static/favicon.png`,
       },
     },
     {

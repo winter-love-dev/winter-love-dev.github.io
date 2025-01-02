@@ -30,7 +30,14 @@ function ProjectSection({ title, projects }) {
                   ))}
                 </div>
               )}
-              <div className="description">{project.description}</div>
+              <div className="description">
+                {project.description.split('\n').map((line, i) => (
+                  <React.Fragment key={i}>
+                    {line}
+                    <br />
+                  </React.Fragment>
+                ))}
+              </div>
             </div>
           </div>
         ),

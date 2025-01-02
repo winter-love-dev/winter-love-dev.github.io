@@ -1,29 +1,40 @@
 import React from 'react';
 import ReactRotatingText from 'react-rotating-text';
 import IconButtonBar from '../icon-button-bar';
+import BuyMeACoffee from '../buy-me-a-coffee';
 import Image from '../image';
 import './style.scss';
 
 function Bio({ author, language = 'ko' }) {
   if (!author) return null;
-  const { bio, social, name } = author;
+  const { bio, social, name, nickname } = author;
   return (
     <div className="bio">
       {language === 'ko' ? (
         <div className="introduction korean">
-          <p className="title">
+          <div className="title">
             안녕하세요.
             <br />
-            <ReactRotatingText items={bio.description} />
+            <strong>
+              <ReactRotatingText
+                typingInterval={100}
+                deletingInterval={20}
+                pause={1800}
+                items={bio.description}
+              />
+            </strong>
             <br />
             {bio.role}
             <br />
-            <strong>{name}</strong>입니다.
-            <br />
-          </p>
+            <strong>
+              <ReactRotatingText items={[nickname, name]} /> 입니다.
+            </strong>
+          </div>
           <div className="social-links">
             <IconButtonBar links={social} />
           </div>
+          <br />
+          <BuyMeACoffee />
         </div>
       ) : (
         <div className="introduction english">
