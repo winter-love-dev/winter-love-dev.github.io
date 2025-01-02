@@ -12,6 +12,7 @@ module.exports = {
   ga: 'G-LMTR2L9LZS', //  Google Analytics tracking ID
   author: {
     name: `김성훈`,
+    nickname: `Winter`,
     bio: {
       role: `안드로이드 개발자`,
       description: ['겨울과 코딩을 사랑하는', '행복과 성장을 추구하는', '코딩과 위스키를 즐기는'],
@@ -162,5 +163,17 @@ module.exports = {
         },
       },
     ],
+  },
+
+  /**
+   * metadata for Buy Me A Coffee
+   */
+  remittances: {
+    toss: {
+      qrCode: './asset/toss_qr.svg', // Path to your in the 'assets' folder
+    },
+    kakaopay: {
+      qrCode: './asset/kakao_qr.svg', // Path to your in the 'assets' folder
+    },
   },
 };

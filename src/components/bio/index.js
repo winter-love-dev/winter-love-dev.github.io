@@ -6,7 +6,7 @@ import './style.scss';
 
 function Bio({ author, language = 'ko' }) {
   if (!author) return null;
-  const { bio, social, name } = author;
+  const { bio, social, name, nickname } = author;
   return (
     <div className="bio">
       {language === 'ko' ? (
@@ -14,11 +14,15 @@ function Bio({ author, language = 'ko' }) {
           <p className="title">
             안녕하세요.
             <br />
-            <ReactRotatingText items={bio.description} />
+            <strong>
+              <ReactRotatingText items={bio.description} />
+            </strong>
             <br />
             {bio.role}
             <br />
-            <strong>{name}</strong>입니다.
+            <strong>
+              <ReactRotatingText items={["Winter", name]} /> 입니다.
+            </strong>
             <br />
           </p>
           <div className="social-links">
