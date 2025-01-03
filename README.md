@@ -6,6 +6,11 @@
 
 개발자 윈터의 개발 블로그 입니다.
 
+<img src="/assets/blog_pc.png" width="600">
+
+<img src="assets/blog_mobile.png" width="300">
+
+
 # License
 ```
 The BSD Zero Clause License (0BSD)
