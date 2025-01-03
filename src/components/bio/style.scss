@@ -20,13 +20,19 @@
   justify-content: space-between;
   width: 100%;
   margin-top: 120px;
-  margin-bottom: 120px;
+  margin-bottom: 80px;
 
   color: var(--primary-text-color);
 
   @include md {
     flex-direction: row;
     align-items: center;
+  }
+
+  @include mobile {
+    margin-top: 55px;
+    margin-bottom: 0;
+    flex-direction: column-reverse;
   }
 
   .introduction {
@@ -101,10 +107,23 @@
   }
 
   .thumbnail-wrapper {
-    display: none;
+    display: block;
 
     @include md {
       display: block;
+      margin-bottom: 0;
+    }
+
+    @include mobile {
+      margin-top: 0;
+      align-self: end;
+      margin-bottom: 0;
+    }
+
+    img {
+      width: 100%;
+      max-width: 250px;
+      height: auto;
     }
   }
 }

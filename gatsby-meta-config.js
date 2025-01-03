@@ -1,6 +1,6 @@
 module.exports = {
   title: `winter-love.dev`,
-  description: `윈터의 개발 블로그`,
+  description: `개발자 윈터`,
   language: `ko`, // `ko`, `en` => currently support versions for Korean and English
   siteUrl: `https://www.winter-love.dev`,
   ogImage: `/og-image.png`, // Path to your in the 'static' folder
@@ -34,8 +34,11 @@ module.exports = {
       // =====       [Timestamp Sample and Structure]      =====
       // ===== 🚫 Don't erase this sample (여기 지우지 마세요!) =====
       {
+        category: '',
         date: '',
-        activity: '',
+        title: '',
+        subTitle: '',
+        content: '',
         links: {
           github: '',
           post: '',
@@ -47,27 +50,42 @@ module.exports = {
       // ========================================================
       // ========================================================
       {
+        category: 'Carrier',
+        date: '2023.12 ~ Now',
+        title: 'MVL (엠블), easi6',
+        subTitle: '',
+        content: '글로벌 차량 모빌리티 서비스 TADA 팀 앱 개발자',
+      },
+      {
+        category: 'Carrier',
+        date: '2021.03 ~ 2023.11',
+        title: '주식회사 테크트리 컴퍼니',
+        subTitle: '',
+        content: 'LG ThinQ Kiosk 앱 개발자',
+      },
+      {
+        category: 'Carrier',
+        date: '2021.02 ~ 2023.02',
+        title: '블록체인 연구소 헥슬란트',
+        subTitle: '산업기능요원 만기전역',
+        content: '가상자산 지갑 서비스 앱 개발자',
+      },
+      {
+        category: 'Carrier',
+        date: '2020.08 ~ 2021.01',
+        title: '주식회사 오퍼튜니티',
+        subTitle: '현 폐업',
+        content: '종합 웨딩 플래닝 플랫폼 "행부케" 개발자',
+      },
+      {
+        category: 'Activity',
         date: '2019.11 ~ 2020.03',
-        activity: 'AI 해커톤 7위 달성 (57팀 참여). WeKnowNothing 팀으로 활동',
+        title: 'AI 해커톤 7위 달성',
+        subTitle: 'Dacon AI Hackathon (57팀 참여)',
+        content: 'WeKnowNothing 팀으로 활동',
         links: {
           demo: 'https://dacon.io/competitions/official/235492/leaderboard',
         },
-      },
-      {
-        date: '2020.08 ~ 2021.01',
-        activity: '주식회사 오퍼튜니티 근무. 종합 웨딩 플래닝 플랫폼 "행부케" 개발 (현 폐업)',
-      },
-      {
-        date: '2021.02 ~ 2023.02',
-        activity: '블록체인 연구소 헥슬란트 앱 개발자 (산업기능요원)',
-      },
-      {
-        date: '2021.03 ~ 2023.11',
-        activity: 'LG ThinQ Kiosk 개발 (프리랜서)',
-      },
-      {
-        date: '2023.12 ~ ',
-        activity: '글로벌 차량 모빌리티 서비스 TADA(MVL) 팀에서 근무중',
       }
     ],
 
