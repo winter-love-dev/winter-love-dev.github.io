@@ -1,8 +1,8 @@
 import { graphql, useStaticQuery } from 'gatsby';
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import kakaoIcon from '@/assets/kakao_icon.svg';
-import tossIcon from '@/assets/toss_icon.svg';
+import kakaoIcon from '@/assets/icon_kakao.svg';
+import tossIcon from '@/assets/icon_toss.svg';
 import Image from '../Image';
 import './style.scss';
 
