@@ -7,12 +7,19 @@
   width: 100%;
   height: 40px;
   margin-top: 60px;
+  position: relative;
   bottom: 0;
+  color: var(--primary-text-color);
   background-color: var(--chip-background-color);
+  left: 0;
+  right: 0;
+  padding-left: 0;
+  padding-right: 0;
 
   .page-footer {
     @include content-max-width;
     text-align: center;
+    width: 100%;
 
     .link {
       font-weight: 700;

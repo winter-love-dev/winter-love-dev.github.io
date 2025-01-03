@@ -1,22 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { graphql } from 'gatsby';
+
 import Layout from '../layout';
 import Seo from '../components/seo';
-import Bio from '../components/bio';
-import TimeStampSection from '../components/timestamp-section';
 import ProjectSection from '../components/project-section';
+import TimeStampSection from '../components/timestamp-section';
 
-function AboutPage({ data }) {
-  useEffect(() => {
-    runActionOnce();
-  }, []);
+function ProjectsTemplate({ data }) {
   const metaData = data.site.siteMetadata;
   const { author, about, language } = metaData;
   const { timestamps, projects, career } = about;
   return (
     <Layout>
-      <Seo title='개발자 윈터 | About' />
-      <Bio author={author} language={language} />
+      <Seo title="개발자 윈터 | Projects" />
       <TimeStampSection timestamps={timestamps} />
       <ProjectSection title="회사 프로젝트" projects={career} />
       <ProjectSection title="개인 프로젝트" projects={projects} />
@@ -24,16 +20,7 @@ function AboutPage({ data }) {
   );
 }
 
-export default AboutPage;
-
-// 페이지 렌더링 후 약간 아래로 스크롤. 최초 {initialCount} 만큼만 실행됨.
-const runActionOnce = ( initialCount = 3 ) => {
-  const actionRunCount = parseInt(localStorage.getItem('action_run_count') || 0);
-  if (actionRunCount < initialCount) {
-    localStorage.setItem('action_run_count', actionRunCount + 1);  // 카운트 증가
-    window.scrollTo({ top: 200, behavior: 'smooth' });  // 페이지 스크롤
-  }
-};
+export default ProjectsTemplate;
 
 export const pageQuery = graphql`
   query {

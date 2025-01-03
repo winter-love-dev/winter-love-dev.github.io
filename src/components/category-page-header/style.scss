@@ -8,6 +8,10 @@
   margin-top: 30px;
   margin-bottom: 30px;
 
+  @include mobile {
+    margin-top: 80px;
+  }
+
   .category-page-title {
     width: fit-content;
     padding-bottom: 7px;

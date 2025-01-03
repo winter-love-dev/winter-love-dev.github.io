@@ -20,7 +20,7 @@ exports.onCreateWebpackConfig = ({ actions }) => {
 };
 
 const createBlogPages = ({ createPage, results }) => {
-  const blogPostTemplate = require.resolve(`./src/templates/blog-template.js`);
+  const blogPostTemplate = require.resolve(`./src/templates/post-template/index.js`);
   results.data.allMarkdownRemark.edges.forEach(({ node, next, previous }) => {
     createPage({
       path: node.fields.slug,
@@ -66,6 +66,15 @@ const createPostsPages = ({ createPage, results }) => {
   });
 };
 
+const createProjectsPages = ({ createPage }) => {
+  const projectsTemplate = path.resolve(`./src/templates/projects-template.js`);
+
+  createPage({
+    path: `/projects`,
+    component: projectsTemplate,
+  });
+};
+
 exports.createPages = async ({ actions, graphql, reporter }) => {
   const { createPage } = actions;
 
@@ -108,4 +117,5 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
 
   createBlogPages({ createPage, results });
   createPostsPages({ createPage, results });
+  createProjectsPages({ createPage });
 };

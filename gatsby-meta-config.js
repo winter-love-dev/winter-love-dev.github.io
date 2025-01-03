@@ -1,6 +1,6 @@
 module.exports = {
   title: `winter-love.dev`,
-  description: `윈터의 개발 블로그`,
+  description: `개발자 윈터`,
   language: `ko`, // `ko`, `en` => currently support versions for Korean and English
   siteUrl: `https://www.winter-love.dev`,
   ogImage: `/og-image.png`, // Path to your in the 'static' folder
@@ -16,13 +16,13 @@ module.exports = {
     bio: {
       role: `안드로이드 개발자`,
       description: ['겨울과 코딩을 사랑하는', '행복과 성장을 추구하는', '코딩과 위스키를 즐기는'],
-      thumbnail: 'winter.gif', // Path to the image in the 'asset' folder
+      thumbnail: 'memoji_winter.gif', // Path to the image in the 'asset' folder
       residence: 'Bundang-gu, Seongnam, South Korea',
     },
     social: {
       github: `https://github.com/winter-love-dev`,
       linkedIn: `https://www.linkedin.com/in/sam-winter-h`,
-      email: `hun230402@gmail.com`,
+      email: ``,
     },
   },
 
@@ -34,8 +34,11 @@ module.exports = {
       // =====       [Timestamp Sample and Structure]      =====
       // ===== 🚫 Don't erase this sample (여기 지우지 마세요!) =====
       {
+        category: '',
         date: '',
-        activity: '',
+        title: '',
+        subTitle: '',
+        content: '',
         links: {
           github: '',
           post: '',
@@ -47,27 +50,42 @@ module.exports = {
       // ========================================================
       // ========================================================
       {
+        category: 'Carrier',
+        date: '2023.12 ~ Now',
+        title: 'MVL (엠블), easi6',
+        subTitle: '',
+        content: '글로벌 차량 모빌리티 서비스 TADA 팀 앱 개발자',
+      },
+      {
+        category: 'Carrier',
+        date: '2021.03 ~ 2023.11',
+        title: '주식회사 테크트리 컴퍼니',
+        subTitle: '',
+        content: 'LG ThinQ Kiosk 앱 개발자',
+      },
+      {
+        category: 'Carrier',
+        date: '2021.02 ~ 2023.02',
+        title: '블록체인 연구소 헥슬란트',
+        subTitle: '산업기능요원 만기전역',
+        content: '가상자산 지갑 서비스 토큰뱅크 앱 개발자',
+      },
+      {
+        category: 'Carrier',
+        date: '2020.08 ~ 2021.01',
+        title: '주식회사 오퍼튜니티',
+        subTitle: '현 폐업',
+        content: '종합 웨딩 플래닝 플랫폼 "행부케" 개발자',
+      },
+      {
+        category: 'Activity',
         date: '2019.11 ~ 2020.03',
-        activity: 'AI 해커톤 7위 달성 (57팀 참여). WeKnowNothing 팀으로 활동',
+        title: 'AI 해커톤 7위 달성',
+        subTitle: 'Dacon AI Hackathon (57팀 참여)',
+        content: 'WeKnowNothing 팀으로 활동',
         links: {
           demo: 'https://dacon.io/competitions/official/235492/leaderboard',
         },
-      },
-      {
-        date: '2020.08 ~ 2021.01',
-        activity: '주식회사 오퍼튜니티 근무. 종합 웨딩 플래닝 플랫폼 "행부케" 개발',
-      },
-      {
-        date: '2021.02 ~ 2023.02',
-        activity: '블록체인 연구소 헥슬란트 앱 개발자 (산업기능요원)',
-      },
-      {
-        date: '2021.03 ~ 2023.11',
-        activity: 'LG ThinQ Kiosk 개발 (프리랜서)',
-      },
-      {
-        date: '2023.12 ~ ',
-        activity: '글로벌 차량 모빌리티 서비스 TADA(MVL) 팀에서 근무중',
       }
     ],
 
@@ -94,13 +112,24 @@ module.exports = {
       // ========================================================
 
       {
+        title: '행부케 - 종합 웨딩 플래닝 플랫폼',
+        description:
+          '웨딩 관련 사업체들을 어그리게이팅 한 쇼핑 플랫폼입니다. \n ' +
+          '혼수, 스드메, 예식장, 상견례 식당 예약. 각종 사업체를 예약해서 혼인을 준비할 수 있습니다.',
+        techStack: ['Android', 'Java', 'NodeJs', 'React'],
+        thumbnailUrl: 'project_heng_bouquet_0.png',
+        links: {
+          demo: 'https://ohiwallet.com/',
+        }
+      },
+      {
         title: '토큰뱅크 (현 오하이월렛)',
         description:
           '블록체인 지갑 서비스의 앱 개발을 담당했습니다. (안드로이드, iOS)\n ' +
           '합법적 국내 운영을 위해 가상자산 사업자 VASP(바스프) 자격 취득 대응 업무\n ' +
           'ISMS 취득을 위한 보안 대응, KYC, AML, STR 시스템 개발에 참여했습니다.',
-        techStack: ['Web3', 'Android', 'iOS', 'SnapKit', 'RX', 'MVVM'],
-        thumbnailUrl: 'o_hi_wallet.png',
+        techStack: ['Web3', 'Android', 'Kotlin', 'iOS', 'SnapKit', 'RX', 'MVVM'],
+        thumbnailUrl: 'project_o_hi_wallet_0.png',
         links: {
           googlePlay: 'https://play.google.com/store/apps/details?id=com.hexlant.ohi',
           appStore: 'https://apps.apple.com/app/id6466569377',
@@ -112,7 +141,7 @@ module.exports = {
         description:
           'LG Bestshop 매장에 전시된 가전을 고객님이 직접 조작, 체험해볼 수 있는 앱입니다. 전국 주요 매장에서 체험해볼 수 있습니다.',
         techStack: ['Android', 'AAC', 'MVVM', 'Coroutines', 'Modularization Architecture'],
-        thumbnailUrl: 'lg_thinq_kiosk.png',
+        thumbnailUrl: 'project_lg_thinq_kiosk_0.png',
       },
       {
         title: 'TADA - Taxi, Cab, Ride Hailing',
@@ -124,7 +153,7 @@ module.exports = {
           '9년간 관리 되어온 모놀리틱 프로젝트를 멀티모듈 아키텍처(레이어드)로 리팩토링 했습니다.'
         ,
         techStack: ['Android', 'AAC', 'MVVM', 'Coroutines', 'Modularization Architecture'],
-        thumbnailUrl: 'tada2.png',
+        thumbnailUrl: 'project_tada_0.png',
         links: {
           googlePlay: 'https://play.google.com/store/apps/details?id=io.mvlchain.tada',
           appStore: 'https://apps.apple.com/app/tada-ride-hailing/id1412329684',
@@ -160,7 +189,7 @@ module.exports = {
           'Catch Bottle은 위스키 애호가들을 위한 커뮤니티 앱입니다. \n' +
           '위스키 리뷰/평가 기능과 함께, 주변 리쿼샵의 재고 현황을 실시간으로 확인할 수 있는 서비스를 개발 중입니다.',
         techStack: ['Android', 'AAC', 'MVVM', 'Modularization Architecture'],
-        thumbnailUrl: 'catch_bottle_introduce.png',
+        thumbnailUrl: 'project_catch_bottle_0.png',
         links: {
           github: 'https://github.com/winter-love-dev/CatchBottle',
         },
@@ -173,10 +202,10 @@ module.exports = {
    */
   remittances: {
     toss: {
-      qrCode: 'toss_qr.svg', // Path to your in the 'assets' folder
+      qrCode: 'qr_toss.svg', // Path to your in the 'assets' folder
     },
     kakaopay: {
-      qrCode: 'kakao_qr.svg', // Path to your in the 'assets' folder
+      qrCode: 'qr_kakao.svg', // Path to your in the 'assets' folder
     },
   },
 };
