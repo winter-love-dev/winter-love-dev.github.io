@@ -33,21 +33,20 @@ const BuyMeACoffee = () => {
 
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [html, setHtml] = useState(null);
-  const [isMobile, setIsMobile] = useState(false); // 모바일 여부를 추적하는 상태 추가
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setHtml(document.querySelector('html'));
 
-    // 화면 크기 체크하여 모바일 여부 설정
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768); // 768px 이하를 모바일로 간주
+      setIsMobile(window.innerWidth <= 768);
     };
 
-    handleResize(); // 컴포넌트 마운트 시 한번 실행
-    window.addEventListener('resize', handleResize); // 화면 크기 변화에 따른 이벤트 리스너 추가
+    handleResize();
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize); // 컴포넌트 언마운트 시 이벤트 리스너 제거
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
