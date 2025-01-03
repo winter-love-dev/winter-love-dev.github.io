@@ -15,9 +15,11 @@ const BuyMeACoffee = () => {
             remittances {
               toss {
                 qrCode
+                qrText
               }
               kakaopay {
                 qrCode
+                qrText
               }
             }
           }
@@ -31,9 +33,22 @@ const BuyMeACoffee = () => {
 
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [html, setHtml] = useState(null);
+  const [isMobile, setIsMobile] = useState(false); // 모바일 여부를 추적하는 상태 추가
 
   useEffect(() => {
     setHtml(document.querySelector('html'));
+
+    // 화면 크기 체크하여 모바일 여부 설정
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768); // 768px 이하를 모바일로 간주
+    };
+
+    handleResize(); // 컴포넌트 마운트 시 한번 실행
+    window.addEventListener('resize', handleResize); // 화면 크기 변화에 따른 이벤트 리스너 추가
+
+    return () => {
+      window.removeEventListener('resize', handleResize); // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    };
   }, []);
 
   const openModal = () => {
@@ -78,6 +93,20 @@ const BuyMeACoffee = () => {
                       </div>
                     )}
                   </div>
+                  {isMobile && (
+                    <div className="mobile-links">
+                      <div className="deep-link-button">
+                        <a href={kakaopay.qrText} className="a" target="_blank" rel="noopener noreferrer">
+                          <p className="p">카카오로 송금하기</p>
+                        </a>
+                      </div>
+                      <div className="deep-link-button">
+                        <a href={toss.qrText} className="a" target="_blank" rel="noopener noreferrer">
+                          <p className="p">토스로 송금하기</p>
+                        </a>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

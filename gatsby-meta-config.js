@@ -203,9 +203,11 @@ module.exports = {
   remittances: {
     toss: {
       qrCode: 'qr_toss.svg', // Path to your in the 'assets' folder
+      qrText: 'https://qr.kakaopay.com/281006011000067522937549'
     },
     kakaopay: {
       qrCode: 'qr_kakao.svg', // Path to your in the 'assets' folder
+      qrText: 'supertoss://send?amount=0&bank=%ED%86%A0%EC%8A%A4%EB%B1%85%ED%81%AC&accountNo=100036866240&origin=qr'
     },
   },
 };
