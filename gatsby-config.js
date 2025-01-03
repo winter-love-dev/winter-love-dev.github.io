@@ -35,6 +35,14 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: "G-LMTR2L9LZS",
+        head: true,
+        enableWebVitalsTracking: true,
+      }
+    },
+    {
       resolve: `gatsby-plugin-gtag`,
       options: {
         trackingId: 'G-LMTR2L9LZS',
