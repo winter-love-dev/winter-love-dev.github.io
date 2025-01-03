@@ -50,28 +50,28 @@ module.exports = {
       // ========================================================
       // ========================================================
       {
-        category: 'Carrier',
+        category: 'Career',
         date: '2023.12 ~ Now',
         title: 'MVL (엠블), easi6',
         subTitle: '',
         content: '글로벌 차량 모빌리티 서비스 TADA 팀 앱 개발자',
       },
       {
-        category: 'Carrier',
+        category: 'Career',
         date: '2021.03 ~ 2023.11',
         title: '주식회사 테크트리 컴퍼니',
         subTitle: '',
         content: 'LG ThinQ Kiosk 앱 개발자',
       },
       {
-        category: 'Carrier',
+        category: 'Career',
         date: '2021.02 ~ 2023.02',
         title: '블록체인 연구소 헥슬란트',
         subTitle: '산업기능요원 만기전역',
         content: '가상자산 지갑 서비스 토큰뱅크 앱 개발자',
       },
       {
-        category: 'Carrier',
+        category: 'Career',
         date: '2020.08 ~ 2021.01',
         title: '주식회사 오퍼튜니티',
         subTitle: '현 폐업',
