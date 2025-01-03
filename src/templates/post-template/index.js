@@ -1,14 +1,16 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import Layout from '../layout';
-import Seo from '../components/seo';
-import PostHeader from '../components/post-header';
-import PostNavigator from '../components/post-navigator';
-import Post from '../models/post';
-import PostContent from '../components/post-content';
-import Utterances from '../components/utterances';
+import Layout from '../../layout';
+import Seo from '../../components/seo';
+import PostHeader from '../../components/post-header';
+import PostNavigator from '../../components/post-navigator';
+import Post from '../../models/post';
+import PostContent from '../../components/post-content';
+import Utterances from '../../components/utterances';
+import BuyMeACoffee from '../../components/buy-me-a-coffee';
+import './style.scss';
 
-function BlogTemplate({ data }) {
+function Index({ data }) {
   const curPost = new Post(data.cur);
   const prevPost = data.prev && new Post(data.prev);
   const nextPost = data.next && new Post(data.next);
@@ -20,13 +22,17 @@ function BlogTemplate({ data }) {
       <Seo title={curPost?.title} description={curPost?.excerpt} />
       <PostHeader post={curPost} />
       <PostContent html={curPost.html} />
+      <div className="donation-section-wrapper">
+        <span className="text">👇 도움이 되셨나요? 👇</span>
+        <BuyMeACoffee />
+      </div>
       <PostNavigator prevPost={prevPost} nextPost={nextPost} />
       {utterancesRepo && <Utterances repo={utterancesRepo} path={curPost.slug} />}
     </Layout>
   );
 }
 
-export default BlogTemplate;
+export default Index;
 
 export const pageQuery = graphql`
   query($slug: String, $nextSlug: String, $prevSlug: String) {

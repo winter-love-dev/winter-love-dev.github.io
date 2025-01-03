@@ -20,7 +20,7 @@ exports.onCreateWebpackConfig = ({ actions }) => {
 };
 
 const createBlogPages = ({ createPage, results }) => {
-  const blogPostTemplate = require.resolve(`./src/templates/blog-template.js`);
+  const blogPostTemplate = require.resolve(`./src/templates/post-template/index.js`);
   results.data.allMarkdownRemark.edges.forEach(({ node, next, previous }) => {
     createPage({
       path: node.fields.slug,
