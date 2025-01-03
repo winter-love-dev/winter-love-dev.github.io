@@ -58,7 +58,7 @@ module.exports = {
       },
       {
         category: 'Career',
-        date: '2021.03 ~ 2023.11',
+        date: '2023.03 ~ 2023.11',
         title: '주식회사 테크트리 컴퍼니',
         subTitle: '',
         content: 'LG ThinQ Kiosk 앱 개발자',
