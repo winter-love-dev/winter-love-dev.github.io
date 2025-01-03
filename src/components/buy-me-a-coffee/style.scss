@@ -33,6 +33,10 @@
   height: 50px;
   border-radius: 10px;
 
+  @include mobile {
+    margin-bottom: 20px;
+  }
+
   &:hover {
     opacity: 0.9;
     @include mobile {
@@ -114,12 +118,14 @@
   font-size: 18px;
   font-weight: bold;
   padding: 30px;
+  color: var(--primary-text-color);
 }
 
 .content {
   padding: 30px 40px;
   padding-top: 0;
   display: flex;
+  color: var(--primary-text-color);
   flex-direction: column;
   gap: 20px;
 }

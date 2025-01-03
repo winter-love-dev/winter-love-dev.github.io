@@ -12,7 +12,7 @@
     padding: 15px;
     display: flex;
     flex-direction: column;
-    margin-bottom: 30px;
+    margin-bottom: 100px;
     width: 100%;
 
     .head {
@@ -34,6 +34,7 @@
 
       .tech-stack {
         display: flex;
+        flex-wrap: wrap;
         margin-bottom: 10px;
 
         .tech {
@@ -41,8 +42,9 @@
           border-radius: 10px;
           font-size: 15px;
           font-weight: 500;
-          margin-right: 5px;
+          margin: 5px 5px 0 0;
           padding: 5px 7px 5px 7px;
+          white-space: nowrap;
         }
       }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { graphql } from 'gatsby';
 import Layout from '../layout';
 import Seo from '../components/seo';
@@ -7,12 +7,15 @@ import TimeStampSection from '../components/timestamp-section';
 import ProjectSection from '../components/project-section';
 
 function AboutPage({ data }) {
+  useEffect(() => {
+    runActionOnce();
+  }, []);
   const metaData = data.site.siteMetadata;
   const { author, about, language } = metaData;
   const { timestamps, projects, career } = about;
   return (
     <Layout>
-      <Seo title="About" />
+      <Seo title='개발자 윈터 | About' />
       <Bio author={author} language={language} />
       <TimeStampSection timestamps={timestamps} />
       <ProjectSection title="회사 프로젝트" projects={career} />
@@ -22,6 +25,15 @@ function AboutPage({ data }) {
 }
 
 export default AboutPage;
+
+// 페이지 렌더링 후 약간 아래로 스크롤. 최초 {initialCount} 만큼만 실행됨.
+const runActionOnce = ( initialCount = 3 ) => {
+  const actionRunCount = parseInt(localStorage.getItem('action_run_count') || 0);
+  if (actionRunCount < initialCount) {
+    localStorage.setItem('action_run_count', actionRunCount + 1);  // 카운트 증가
+    window.scrollTo({ top: 200, behavior: 'smooth' });  // 페이지 스크롤
+  }
+};
 
 export const pageQuery = graphql`
   query {
@@ -47,8 +59,11 @@ export const pageQuery = graphql`
 
         about {
           timestamps {
+            category
             date
-            activity
+            title
+            subTitle
+            content
             links {
               post
               github

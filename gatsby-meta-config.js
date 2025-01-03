@@ -22,7 +22,7 @@ module.exports = {
     social: {
       github: `https://github.com/winter-love-dev`,
       linkedIn: `https://www.linkedin.com/in/sam-winter-h`,
-      email: `hun230402@gmail.com`,
+      email: ``,
     },
   },
 
@@ -68,7 +68,7 @@ module.exports = {
         date: '2021.02 ~ 2023.02',
         title: '블록체인 연구소 헥슬란트',
         subTitle: '산업기능요원 만기전역',
-        content: '가상자산 지갑 서비스 앱 개발자',
+        content: '가상자산 지갑 서비스 토큰뱅크 앱 개발자',
       },
       {
         category: 'Carrier',
