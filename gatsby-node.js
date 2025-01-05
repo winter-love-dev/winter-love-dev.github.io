@@ -19,14 +19,13 @@ exports.onCreateWebpackConfig = ({ actions }) => {
   });
 };
 
-const createBlogPages = ({ createPage, results }) => {
+const createBlogPages = ({ createPage, publicEdges }) => {
   const blogPostTemplate = require.resolve(`./src/templates/post-template/index.js`);
-  results.data.allMarkdownRemark.edges.forEach(({ node, next, previous }) => {
+  publicEdges.forEach(({ node, next, previous }) => {
     createPage({
       path: node.fields.slug,
       component: blogPostTemplate,
       context: {
-        // additional data can be passed via context
         slug: node.fields.slug,
         nextSlug: next?.fields.slug ?? '',
         prevSlug: previous?.fields.slug ?? '',
@@ -35,12 +34,9 @@ const createBlogPages = ({ createPage, results }) => {
   });
 };
 
-const createPostsPages = ({ createPage, results }) => {
+const createPostsPages = ({ createPage, publicEdges }) => {
   const categoryTemplate = require.resolve(`./src/templates/category-template.js`);
   const categorySet = new Set(['All']);
-  const { edges } = results.data.allMarkdownRemark;
-
-  const publicEdges = edges.filter(({ node }) => !node.frontmatter.private);
 
   publicEdges.forEach(({ node }) => {
     const postCategories = node.frontmatter.categories.split(' ');
@@ -98,6 +94,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
               categories
               title
               date(formatString: "MMMM DD, YYYY")
+              private
             }
           }
           next {
@@ -121,7 +118,9 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     return;
   }
 
-  createBlogPages({ createPage, results });
-  createPostsPages({ createPage, results });
+  const edges = results.data.allMarkdownRemark.edges;
+  const publicEdges = edges.filter(({ node }) => !node.frontmatter.private);
+  createBlogPages({ createPage, publicEdges });
+  createPostsPages({ createPage, publicEdges });
   createProjectsPages({ createPage });
 };
