@@ -94,15 +94,13 @@ const BuyMeACoffee = () => {
                   </div>
                   {isMobile && (
                     <div className="mobile-links">
-                      <div className="deep-link-button">
-                        <a href={kakaopay.qrText} className="a" target="_blank" rel="noopener noreferrer">
-                          <p className="p">카카오로 송금하기</p>
-                        </a>
+                      <div className="deep-link-button"
+                        onClick={() => window.open(kakaopay.qrText, '_blank', 'noopener noreferrer')}>
+                        <p className="p">카카오로 송금하기</p>
                       </div>
-                      <div className="deep-link-button">
-                        <a href={toss.qrText} className="a" target="_blank" rel="noopener noreferrer">
-                          <p className="p">토스로 송금하기</p>
-                        </a>
+                      <div className="deep-link-button"
+                        onClick={() => window.open(toss.qrText, '_blank', 'noopener noreferrer')}>
+                        <p className="p">토스로  송금하기</p>
                       </div>
                     </div>
                   )}

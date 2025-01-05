@@ -181,6 +181,7 @@
   text-align: center;
   text-decoration: none;
   transition: background-color 0.3s;
+  box-shadow: 0 2px 4px var(--tab-hover-text-color);
   flex: 1;
 
   .p {
@@ -209,7 +210,8 @@
 
 .deep-link-button:hover {
   color: var(--link-text-color);
-  background-color: var(--button-background-color);
+  background-color: var(--tab-hover-text-color);
+  box-shadow: 0 4px 8px var(--tab-hover-text-color);
 }
 
 .deep-link-button:active {
