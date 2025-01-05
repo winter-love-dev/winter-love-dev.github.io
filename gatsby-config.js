@@ -1,9 +1,13 @@
 const { NODE_ENV, CONTEXT: NETLIFY_ENV = NODE_ENV } = process.env;
 
 const metaConfig = require('./gatsby-meta-config');
+const siteUrl = metaConfig.siteUrl;
 
 module.exports = {
-  siteMetadata: metaConfig,
+  siteMetadata: {
+    ...metaConfig,
+    siteUrl,
+  },
 
   plugins: [
     {
@@ -23,9 +27,21 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-robots-txt',
       options: {
-        host: 'https://winter-love.dev',
-        sitemap: 'https://winter-love.dev/sitemap.xml',
+        host: siteUrl,
+        sitemap: `${siteUrl}/sitemap.xml`,
         policy: [{ userAgent: '*', allow: '/' }]
+      },
+    },
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        output: `/sitemap`,
+      }
+    },
+    {
+      resolve: `gatsby-plugin-canonical-urls`,
+      options: {
+        siteUrl,
       },
     },
     {
@@ -120,9 +136,7 @@ module.exports = {
         ],
       },
     },
-    `gatsby-theme-material-ui`,
     `gatsby-transformer-sharp`,
-    `gatsby-plugin-advanced-sitemap`,
     `gatsby-plugin-sharp`,
     `gatsby-plugin-image`,
     `gatsby-plugin-offline`,
