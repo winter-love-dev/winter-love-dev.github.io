@@ -29,14 +29,8 @@ module.exports = {
       options: {
         host: siteUrl,
         sitemap: `${siteUrl}/sitemap.xml`,
-        policy: [{ userAgent: '*', allow: '/' }]
+        policy: [{ userAgent: '*', allow: '/' }],
       },
-    },
-    {
-      resolve: `gatsby-plugin-sitemap`,
-      options: {
-        output: `/sitemap`,
-      }
     },
     {
       resolve: `gatsby-plugin-canonical-urls`,
@@ -141,6 +135,7 @@ module.exports = {
     `gatsby-plugin-image`,
     `gatsby-plugin-offline`,
     `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-sitemap`,
     `gatsby-plugin-sass`,
   ],
 };
