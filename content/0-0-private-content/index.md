@@ -1,11 +1,19 @@
 ---
-emoji: ❄️
-title: 게으른 나의 이야기
+emoji: 🧢
+title: 테스트용 포스팅. 근데 게으른 나의 이야기를 좀 곁들인
 date: '2025-01-02 23:00:00'
 author: Winter
-tags: 개발자 윈터
-categories: 블로그 잡담
+tags: blog gatsby theme 개발블로그
+categories: 블로그 featured
+draft: true 
 ---
+
+[//]: # (
+draft: 
+    true -> 글 비공개
+    false -> 글 공개
+배포 환경에서만 적용됨.
+)
 
 ![](test-0.png)
 
@@ -35,14 +43,14 @@ SeongHunKim(
 
 추운 겨울 날씨를 좋아해서 예명도 Winter 를 선호합니다.
 
-![test-8.gif](../test-1/test-8.gif)
+![test-8.gif](/test-8.gif)
 
 테스트용으로 작성해보는 포스트라 아무 말이나 막 할 겁니다.
 그리고 안 그랬던 사람처럼 이 글을 지울거고.
 
 사뭇 진지해진 컨셉으로 정규 첫 포스팅을 올려보겠씁니다. 
 
-이미 좀 진지해진 것 같은데 암튼 걍 쓰겠습니다.
+이미 좀 진지해진 것 같은데 암튼 걍 쓰겠습니다. 원래 좀 진지한 인간입니다.
 
 정규 포스팅을 시작하기 전에
 이 포스팅의 내용을 복붙해서 
@@ -172,7 +180,7 @@ README.MD 파일에 이렇게 글을 작성하는 지금도 개발 업무를 하
 <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
   <div style="flex: 1 1 300px; text-align: center; min-width: 300px;">
     <img src="test-6-sweet-potato-1.png" width="50%" />
-    <p>현실은 더 잔혹했습니다. 코드 하나를 분리하기 위해 수십, 수백 코드의 의존 관계 컨플릭을 해결해야 했습니다.</p>
+    <p>현실은 마니 잔혹했습니다. 코드 하나를 분리하기 위해 수십, 수백 코드의 의존 관계 컨플릭을 해결해야 했습니다.</p>
   </div>
   <div style="flex: 1 1 300px; text-align: center; min-width: 300px;">
     <img src="test-7-sweet-potato-2.png" width="50%" />
