@@ -40,7 +40,9 @@ const createPostsPages = ({ createPage, results }) => {
   const categorySet = new Set(['All']);
   const { edges } = results.data.allMarkdownRemark;
 
-  edges.forEach(({ node }) => {
+  const publicEdges = edges.filter(({ node }) => !node.frontmatter.private);
+
+  publicEdges.forEach(({ node }) => {
     const postCategories = node.frontmatter.categories.split(' ');
     postCategories.forEach((category) => categorySet.add(category));
   });
@@ -50,7 +52,7 @@ const createPostsPages = ({ createPage, results }) => {
   createPage({
     path: `/posts`,
     component: categoryTemplate,
-    context: { currentCategory: 'All', edges, categories },
+    context: { currentCategory: 'All', publicEdges, categories },
   });
 
   categories.forEach((currentCategory) => {
@@ -60,7 +62,7 @@ const createPostsPages = ({ createPage, results }) => {
       context: {
         currentCategory,
         categories,
-        edges: edges.filter(({ node }) => node.frontmatter.categories.includes(currentCategory)),
+        edges: publicEdges.filter(({ node }) => node.frontmatter.categories.includes(currentCategory)),
       },
     });
   });
