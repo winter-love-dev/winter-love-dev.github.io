@@ -1,16 +1,16 @@
 ---
 emoji: 🧢
-title: 템플릿 컨텐츠. 개발 환경에서만 보이는 글입니다.
+title: 템플릿 컨텐츠. 공개하지 않는 글입니다.
 date: '2000-01-01 00:00:00'
 author: Winter
 tags: blog gatsby theme 개발블로그
 categories: 블로그 featured
-draft: true
+private: true
 ---
 
 
 [//]: # (
-draft: 
+private: 
     true -> 글 비공개
     false -> 글 공개
 배포 환경에서만 적용됨.

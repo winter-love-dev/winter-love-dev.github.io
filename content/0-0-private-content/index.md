@@ -5,11 +5,11 @@ date: '2025-01-02 23:00:00'
 author: Winter
 tags: blog gatsby theme 개발블로그
 categories: 블로그 featured
-draft: true 
+private: true 
 ---
 
 [//]: # (
-draft: 
+private: 
     true -> 글 비공개
     false -> 글 공개
 배포 환경에서만 적용됨.
