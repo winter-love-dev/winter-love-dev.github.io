@@ -62,7 +62,7 @@ const createPostsPages = ({ createPage, results }) => {
       context: {
         currentCategory,
         categories,
-        edges: publicEdges.filter(({ node }) => node.frontmatter.categories.includes(currentCategory)),
+        publicEdges: publicEdges.filter(({ node }) => node.frontmatter.categories.includes(currentCategory)),
       },
     });
   });
