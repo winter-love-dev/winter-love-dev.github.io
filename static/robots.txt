@@ -1,16 +1,3 @@
 User-agent: *
 Allow: /
-
-User-agent: Googlebot
-Allow: /
-Allow: /pagead/
-Allow: /pagead2/
-Allow: /googleads/
-
-User-agent: Googlebot-Image
-Allow: /
-Allow: /pagead/
-Allow: /pagead2/
-Allow: /googleads/
-
 Sitemap: https://winter-love.dev/sitemap-index.xml
