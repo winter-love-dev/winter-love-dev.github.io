@@ -1076,3 +1076,19 @@
   font-size: 15px;
   color: #6a737d;
 }
+
+.markdown figure {
+  text-align: center;
+  margin: 20px auto;
+
+  img {
+    margin: 0 auto;
+  }
+
+  figcaption {
+    margin-top: 8px;
+    font-style: italic;
+    font-size: 15px;
+    color: #6a737d;
+  }
+}
