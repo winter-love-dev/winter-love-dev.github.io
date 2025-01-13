@@ -20,7 +20,7 @@ exports.onCreateWebpackConfig = ({ actions }) => {
 };
 
 const createBlogPages = ({ createPage, publicEdges }) => {
-  const blogPostTemplate = require.resolve(`./src/templates/post-template/index.js`);
+  const blogPostTemplate = require.resolve(`./src/templates/content-template/index.js`);
   publicEdges.forEach(({ node, next, previous }) => {
     createPage({
       path: node.fields.slug,
