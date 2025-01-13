@@ -19,7 +19,7 @@ function Index({ data }) {
 
   return (
     <Layout>
-      <Seo title={curPost?.title} description={curPost?.excerpt} />
+      <Seo title={"개발자 윈터 | " + curPost?.title} description={curPost?.excerpt} />
       <PostHeader post={curPost} />
       <PostContent html={curPost.html} />
       <div className="donation-section-wrapper">
