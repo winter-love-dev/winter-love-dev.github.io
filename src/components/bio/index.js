@@ -18,7 +18,7 @@ function Bio({ author }) {
             <ReactRotatingText
               typingInterval={100}
               deletingInterval={20}
-              pause={1800}
+              pause={3000}
               items={bio.description}
             />
           </strong>
@@ -26,7 +26,9 @@ function Bio({ author }) {
           {bio.role}
           <br />
           <strong>
-            <ReactRotatingText items={[nickname, name]} /> 입니다.
+            <ReactRotatingText
+              pause={2500}
+              items={[nickname, name]} /> 입니다.
           </strong>
         </div>
         <div className="social-links">

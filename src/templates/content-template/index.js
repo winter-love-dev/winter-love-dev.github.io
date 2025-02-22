@@ -2,14 +2,14 @@ import React from 'react';
 import { graphql } from 'gatsby';
 import Layout from '../../layout';
 import Seo from '../../components/seo';
-import PostHeader from '../../components/post-header';
-import PostNavigator from '../../components/post-navigator';
+import ArticleNavigator from '../../components/post-navigator';
 import Post from '../../models/post';
-import PostContent from '../../components/post-content';
 import Utterances from '../../components/utterances';
 import './style.scss';
 import Profile from '../../components/profile';
 import BuyMeACoffeeWrapper from '../../components/buy-me-a-coffe-wrapper';
+import ArticleHeader from '../../components/post-header';
+import ArticleContent from '../../components/post-content';
 
 function Index({ data }) {
   const curPost = new Post(data.cur);
@@ -21,12 +21,13 @@ function Index({ data }) {
   return (
     <Layout>
       <Seo title={curPost?.title + ' | 개발자 윈터'} description={curPost?.excerpt} />
-      <PostHeader post={curPost} />
-      <PostContent html={curPost.html} />
-      <BuyMeACoffeeWrapper/>
+      <ArticleHeader post={curPost} />
+      <ArticleContent html={curPost.html} />
+      <BuyMeACoffeeWrapper />
       <hr className="divider" />
       <Profile />
-      <PostNavigator prevPost={prevPost} nextPost={nextPost} />
+      <hr className="divider" />
+      <ArticleNavigator prevPost={prevPost} nextPost={nextPost} />
       {utterancesRepo && <Utterances repo={utterancesRepo} path={curPost.slug} />}
     </Layout>
   );
@@ -35,13 +36,13 @@ function Index({ data }) {
 export default Index;
 
 export const pageQuery = graphql`
-  query($slug: String, $nextSlug: String, $prevSlug: String) {
+  query ($slug: String, $nextSlug: String, $prevSlug: String) {
     cur: markdownRemark(fields: { slug: { eq: $slug } }) {
       id
       html
       excerpt(pruneLength: 500, truncate: true)
       frontmatter {
-        date(formatString: "MMMM DD, YYYY")
+        date(formatString: "YYYY. MM. DD")
         title
         categories
         author
@@ -56,7 +57,7 @@ export const pageQuery = graphql`
       id
       html
       frontmatter {
-        date(formatString: "MMMM DD, YYYY")
+        date(formatString: "YYYY. MM. DD")
         title
         categories
         author
@@ -71,7 +72,7 @@ export const pageQuery = graphql`
       id
       html
       frontmatter {
-        date(formatString: "MMMM DD, YYYY")
+        date(formatString: "YYYY. MM. DD")
         title
         categories
         author

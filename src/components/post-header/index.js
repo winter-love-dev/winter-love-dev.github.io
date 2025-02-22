@@ -2,7 +2,7 @@ import { Link } from 'gatsby';
 import React from 'react';
 import './style.scss';
 
-function PostHeader({ post }) {
+function ArticleHeader({ post }) {
   return (
     <header className="post-header">
       {post.emoji && <div className="emoji">{post.emoji}</div>}
@@ -19,11 +19,11 @@ function PostHeader({ post }) {
       <h1 className="title">{post.title}</h1>
       <div className="info">
         <div className="author">
-          posted by <strong>{post.author}</strong>,
+          Written by <strong>{post.author}</strong>,
         </div>{' '}
         {post.date}
       </div>
     </header>
   );
 }
-export default PostHeader;
+export default ArticleHeader;
