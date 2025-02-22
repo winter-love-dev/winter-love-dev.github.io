@@ -5,7 +5,7 @@ date: '2025-01-02 23:00:00'
 author: Winter
 tags: blog gatsby theme 개발블로그
 categories: 블로그 featured
-private: false
+private: true
 thumbnail: 'test-0.png'
 ---
 
