@@ -1,7 +1,6 @@
 module.exports = {
   title: `winter-love.dev`,
   description: `개발자 윈터`,
-  language: `ko`, // `ko`, `en` => currently support versions for Korean and English
   siteUrl: `https://www.winter-love.dev`,
   ogImage: `/og-image.png`, // Path to your in the 'static' folder
   comments: {

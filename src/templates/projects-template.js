@@ -28,7 +28,6 @@ export const pageQuery = graphql`
       siteMetadata {
         title
         description
-        language
         author {
           name
           nickname

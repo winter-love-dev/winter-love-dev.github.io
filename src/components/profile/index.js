@@ -43,7 +43,7 @@ const Profile = () => {
           <GatsbyImage image={profileImage} alt="Index" className="profile-img" />
         )}
       </div>
-      <div className="profile-name">About. {nameEn} ({nickname})</div>
+      <div className="profile-name">About {nickname}, {nameEn}</div>
       <div className="profile-role">{bio.role}</div>
       <div className="profile-description">
         {bio.description.map((desc, index) => (
