@@ -23,6 +23,7 @@
     "gatsby-plugin-sass": "^6.13.0",
     "gatsby-plugin-sharp": "^5.13.0",
     "gatsby-plugin-sitemap": "^6.13.0",
+    "gatsby-plugin-web-font-loader": "^1.0.4",
     "gatsby-remark-autolink-headers": "^6.13.0",
     "gatsby-remark-copy-linked-files": "^6.13.0",
     "gatsby-remark-images": "^7.13.0",
