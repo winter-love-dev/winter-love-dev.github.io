@@ -1,10 +1,66 @@
 @use '../../styles/markdown-style'as *;
 @use 'prismjs/themes/prism-tomorrow'as *;
 
+.gatsby-highlight {
+  background: #2b2b2b;
+  border-radius: 8px;
+  margin: 1.5em 0;
+  overflow: auto;
+}
+
+pre[class*="language-"] {
+  background: transparent;
+  padding: 1.5em;
+  margin: 0;
+}
+
+code[class*="language-"] {
+  font-size: 14px;
+  line-height: 1.5;
+  font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
+}
+
+.token.keyword {
+  color: #cc7832; // 키워드 (fun, class, val 등)
+}
+
+.token.function {
+  color: #ffc66d; // 함수
+}
+
+.token.string {
+  color: #6a8759; // 문자열
+}
+
+.token.comment {
+  color: #808080; // 주석
+}
+
+.token.number {
+  color: #6897bb; // 숫자
+}
+
+.token.operator {
+  color: #a9b7c6; // 연산자
+}
+
+.token.class-name, .token.namespace {
+  color: #a9b7c6; // 클래스, 네임스페이스
+}
+
+.token.annotation {
+  color: #bbb529; // 애노테이션
+}
+
+code[class*="language-"],
+pre[class*="language-"] {
+  font-size: 16px;
+}
+
 .post-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 100%;
+  width: 90%;
   margin-bottom: 20px;
 }
