@@ -5,10 +5,7 @@ function PageFooter({ author, githubUrl }) {
   return (
     <footer className="page-footer-wrapper">
       <p className="page-footer">
-        © powered by
-        <a href="https://github.com/winter-love-dev/winter-love-dev-gatsby-blog">
-          &nbsp;winter-love-dev
-        </a>
+        © 2025. Seonghun Kim all rights reserved.
       </p>
     </footer>
   );

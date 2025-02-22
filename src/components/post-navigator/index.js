@@ -2,7 +2,7 @@ import { Link } from 'gatsby';
 import React from 'react';
 import './style.scss';
 
-function PostNavigator({ prevPost, nextPost }) {
+function ArticleNavigator({ prevPost, nextPost }) {
   return (
     <div className="post-navigator">
       <div className="post-navigator-card-wrapper">
@@ -25,4 +25,4 @@ function PostNavigator({ prevPost, nextPost }) {
   );
 }
 
-export default PostNavigator;
+export default ArticleNavigator;

@@ -1,8 +1,8 @@
 export default class Post {
   constructor(node) {
-    const { id, html, excerpt, frontmatter, fields } = node;
+    const { id, html, excerpt, frontmatter = {}, fields = {} } = node;
     const { slug } = fields;
-    const { emoji, categories, title, author, date } = frontmatter;
+    const { emoji, categories, title, author, date, thumbnail, tags } = frontmatter;
 
     this.id = id;
     this.excerpt = excerpt;
@@ -12,6 +12,8 @@ export default class Post {
     this.title = title;
     this.author = author;
     this.date = date;
-    this.categories = categories.split(' ');
+    this.categories = categories ? categories.split(' ') : [];
+    this.thumbnail = thumbnail;
+    this.tags = Array.isArray(tags) ? tags : [];
   }
 }

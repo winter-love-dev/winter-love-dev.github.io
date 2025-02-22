@@ -3,7 +3,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import favicon from '@/static/favicon.png';
 
-function Seo({ description, title }) {
+  function Seo({ description, title, thumbnail, slug, tags }) {
   const { site } = useStaticQuery(
     graphql`
       query {
@@ -15,6 +15,7 @@ function Seo({ description, title }) {
               name
             }
             ogImage
+            siteUrl
           }
         }
       }
@@ -22,6 +23,11 @@ function Seo({ description, title }) {
   );
 
   const metaDescription = description || site.siteMetadata.description;
+  const metaImage = thumbnail
+    ? `${site.siteMetadata.siteUrl}/${thumbnail}` // 개별 썸네일 사용
+    : `${site.siteMetadata.siteUrl}${site.siteMetadata.ogImage}`; // 기본 OG 이미지
+  const metaUrl = slug ? `${site.siteMetadata.siteUrl}${slug}` : site.siteMetadata.siteUrl;
+
   return (
     <Helmet
       htmlAttributes={{ lang: 'en' }}
@@ -49,17 +55,28 @@ function Seo({ description, title }) {
           content: site.siteMetadata.author.name,
         },
         {
-          property: 'og:image',
-          content: site.siteMetadata.ogImage,
+          property: 'og:images',
+          content: metaImage,
         },
-
+        {
+          property: `og:title`,
+          content: title,
+        },
+        {
+          property: "og:url",
+          content: metaUrl,
+        },
         {
           property: `og:type`,
-          content: `website`,
+          content: `article`,
+        },
+        {
+          name: "keywords",
+          content: tags ? tags.join(", ") : "",
         },
       ]}
       link={[
-        { rel: 'shortcut icon', type: 'image/png', href: `${favicon}` }
+        { rel: 'shortcut icon', type: 'images/png', href: `${favicon}` }
       ]}
     />
   );

@@ -2,13 +2,14 @@ import React from 'react';
 import { graphql } from 'gatsby';
 import Layout from '../../layout';
 import Seo from '../../components/seo';
-import PostHeader from '../../components/post-header';
-import PostNavigator from '../../components/post-navigator';
+import ArticleNavigator from '../../components/post-navigator';
 import Post from '../../models/post';
-import PostContent from '../../components/post-content';
 import Utterances from '../../components/utterances';
-import BuyMeACoffee from '../../components/buy-me-a-coffee';
 import './style.scss';
+import Profile from '../../components/profile';
+import BuyMeACoffeeWrapper from '../../components/buy-me-a-coffe-wrapper';
+import ArticleHeader from '../../components/post-header';
+import ArticleContent from '../../components/post-content';
 
 function Index({ data }) {
   const curPost = new Post(data.cur);
@@ -17,16 +18,24 @@ function Index({ data }) {
   const { comments } = data.site?.siteMetadata;
   const utterancesRepo = comments?.utterances?.repo;
 
+  const thumbnailUrl = curPost.thumbnail?.publicURL || null;
+
   return (
     <Layout>
-      <Seo title={"개발자 윈터 | " + curPost?.title} description={curPost?.excerpt} />
-      <PostHeader post={curPost} />
-      <PostContent html={curPost.html} />
-      <div className="donation-section-wrapper">
-        <span className="text">👇 도움이 되셨나요? 👇</span>
-        <BuyMeACoffee />
-      </div>
-      <PostNavigator prevPost={prevPost} nextPost={nextPost} />
+      <Seo
+        title={curPost?.title + ' | 개발자 윈터'}
+        description={curPost?.excerpt}
+        thumbnail={thumbnailUrl}
+        slug={curPost.slug}
+        tags={curPost.tags}
+      />
+      <ArticleHeader post={curPost} />
+      <ArticleContent html={curPost.html} />
+      <BuyMeACoffeeWrapper />
+      <hr className="divider" />
+      <Profile />
+      <hr className="divider" />
+      <ArticleNavigator prevPost={prevPost} nextPost={nextPost} />
       {utterancesRepo && <Utterances repo={utterancesRepo} path={curPost.slug} />}
     </Layout>
   );
@@ -35,17 +44,20 @@ function Index({ data }) {
 export default Index;
 
 export const pageQuery = graphql`
-  query($slug: String, $nextSlug: String, $prevSlug: String) {
+  query ($slug: String, $nextSlug: String, $prevSlug: String) {
     cur: markdownRemark(fields: { slug: { eq: $slug } }) {
       id
       html
       excerpt(pruneLength: 500, truncate: true)
       frontmatter {
-        date(formatString: "MMMM DD, YYYY")
+        date(formatString: "YYYY. MM. DD")
         title
         categories
         author
         emoji
+        thumbnail { # File 타입으로 직접 접근
+          publicURL # File 노드에서 제공
+        }
       }
       fields {
         slug
@@ -56,7 +68,7 @@ export const pageQuery = graphql`
       id
       html
       frontmatter {
-        date(formatString: "MMMM DD, YYYY")
+        date(formatString: "YYYY. MM. DD")
         title
         categories
         author
@@ -71,7 +83,7 @@ export const pageQuery = graphql`
       id
       html
       frontmatter {
-        date(formatString: "MMMM DD, YYYY")
+        date(formatString: "YYYY. MM. DD")
         title
         categories
         author

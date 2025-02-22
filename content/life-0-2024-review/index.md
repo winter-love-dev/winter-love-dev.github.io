@@ -13,6 +13,7 @@ tags:
   - 회고
 categories: Life
 private: false
+thumbnail: 'life-0-2024-review-5.png'
 ---
 
 # 자기소개

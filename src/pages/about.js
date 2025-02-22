@@ -11,12 +11,12 @@ function AboutPage({ data }) {
     runActionOnce();
   }, []);
   const metaData = data.site.siteMetadata;
-  const { author, about, language } = metaData;
+  const { author, about } = metaData;
   const { timestamps, projects, career } = about;
   return (
     <Layout>
-      <Seo title='개발자 윈터 | About' />
-      <Bio author={author} language={language} />
+      <Seo title='About | 개발자 윈터' />
+      <Bio author={author} />
       <TimeStampSection timestamps={timestamps} />
       <ProjectSection title="회사 프로젝트" projects={career} />
       <ProjectSection title="개인 프로젝트" projects={projects} />
@@ -41,7 +41,6 @@ export const pageQuery = graphql`
       siteMetadata {
         title
         description
-        language
         author {
           name
           nickname

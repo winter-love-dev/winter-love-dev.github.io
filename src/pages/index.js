@@ -57,7 +57,6 @@ export const pageQuery = graphql`
 
     site {
       siteMetadata {
-        language
         author {
           name
           nickname
