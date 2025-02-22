@@ -124,3 +124,12 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   createPostsPages({ createPage, publicEdges });
   createProjectsPages({ createPage });
 };
+
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions
+  createTypes(`
+    type Frontmatter {
+      thumbnail: File @fileByRelativePath
+    }
+  `)
+}

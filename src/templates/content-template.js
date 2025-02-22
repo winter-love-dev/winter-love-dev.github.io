@@ -11,14 +11,14 @@ import ArticleHeader from '../components/post-header';
 import ArticleContent from '../components/post-content';
 import Divider from '../components/divider-horizon';
 
-function Index({ data }) {
+function ContentTemplate({ data }) {
   const curPost = new Post(data.cur);
   const prevPost = data.prev && new Post(data.prev);
   const nextPost = data.next && new Post(data.next);
   const { comments } = data.site?.siteMetadata;
   const utterancesRepo = comments?.utterances?.repo;
 
-  const thumbnailUrl = curPost.thumbnail?.publicURL || null;
+  const thumbnailUrl = curPost.thumbnail ? curPost.thumbnail.publicURL : null;
 
   return (
     <Layout>
@@ -41,7 +41,7 @@ function Index({ data }) {
   );
 }
 
-export default Index;
+export default ContentTemplate;
 
 export const pageQuery = graphql`
   query ($slug: String, $nextSlug: String, $prevSlug: String) {
