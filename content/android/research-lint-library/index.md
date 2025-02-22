@@ -1,7 +1,7 @@
 ---
 emoji: 🔏
 title: 안드로이드 Lint. Compose + Detekt vs KtLint vs Spotless 비교
-date: '2025-02-02 00:01:00'
+date: '2025-02-22 00:00:00'
 author: Winter
 tags: Detekt KtLint 안드로이드린트 개발자_윈터 안드로이드_개발자 Android Android_Lint 
 categories: Android
