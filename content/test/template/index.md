@@ -72,6 +72,17 @@ SeongHunKim(
   <figcaption>여기에 캡션 텍스트를 작성합니다</figcaption>
 </figure>
 
+![](test-8.gif)
+*여기에 캡션 텍스트를 작성합니다*
+
+<details open> 
+<summary>토글 접었다 펴기</summary>
+
+여기에 내용을 적습니다.
+기본적으로 "접힘" 상태이며 `<details open>` 을 입력하면 "펼쳐짐" 상태가 기본이 됩니다. 
+
+</details>
+
 ### 두 이미지 나란히 선언하기 & 이미지에 캡션글 작성하기
 <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
   <div style="flex: 1 1 300px; text-align: center; min-width: 300px;">
