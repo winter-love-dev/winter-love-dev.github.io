@@ -3,7 +3,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import favicon from '@/static/favicon.png';
 
-  function Seo({ description, title, thumbnail, slug, tags }) {
+function Seo({ description, title, thumbnail, slug, tags }) {
   const { site } = useStaticQuery(
     graphql`
       query {
@@ -24,7 +24,7 @@ import favicon from '@/static/favicon.png';
 
   const metaDescription = description || site.siteMetadata.description;
   const metaImage = thumbnail
-    ? `${site.siteMetadata.siteUrl}/${thumbnail}` // 개별 썸네일 사용
+    ? `${site.siteMetadata.siteUrl}${thumbnail}` // 개별 썸네일 사용
     : `${site.siteMetadata.siteUrl}${site.siteMetadata.ogImage}`; // 기본 OG 이미지
   const metaUrl = slug ? `${site.siteMetadata.siteUrl}${slug}` : site.siteMetadata.siteUrl;
 
@@ -55,7 +55,7 @@ import favicon from '@/static/favicon.png';
           content: site.siteMetadata.author.name,
         },
         {
-          property: 'og:images',
+          property: 'og:image',
           content: metaImage,
         },
         {
@@ -73,6 +73,22 @@ import favicon from '@/static/favicon.png';
         {
           name: "keywords",
           content: tags ? tags.join(", ") : "",
+        },
+        {
+          name: 'twitter:card',
+          content: 'summary_large_image',
+        },
+        {
+          name: 'twitter:image',
+          content: metaImage,
+        },
+        {
+          name: `twitter:title`,
+          content: title,
+        },
+        {
+          name: `twitter:description`,
+          content: metaDescription,
         },
       ]}
       link={[

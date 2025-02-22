@@ -20,7 +20,7 @@ exports.onCreateWebpackConfig = ({ actions }) => {
 };
 
 const createBlogPages = ({ createPage, publicEdges }) => {
-  const blogPostTemplate = require.resolve(`./src/templates/content-template/index.js`);
+  const blogPostTemplate = require.resolve(`./src/templates/content-template.js`);
   publicEdges.forEach(({ node, next, previous }) => {
     createPage({
       path: node.fields.slug,
@@ -124,3 +124,12 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   createPostsPages({ createPage, publicEdges });
   createProjectsPages({ createPage });
 };
+
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions
+  createTypes(`
+    type Frontmatter {
+      thumbnail: File @fileByRelativePath
+    }
+  `)
+}
