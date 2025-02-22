@@ -6,6 +6,7 @@ author: Winter
 tags: blog gatsby theme 개발블로그
 categories: 블로그 featured Android Test
 private: true
+thumbnail: 'test-0.png'
 ---
 
 ![](test-0.png)

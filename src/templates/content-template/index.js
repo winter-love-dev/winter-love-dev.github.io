@@ -18,9 +18,17 @@ function Index({ data }) {
   const { comments } = data.site?.siteMetadata;
   const utterancesRepo = comments?.utterances?.repo;
 
+  const thumbnailUrl = curPost.thumbnail?.publicURL || null;
+
   return (
     <Layout>
-      <Seo title={curPost?.title + ' | 개발자 윈터'} description={curPost?.excerpt} />
+      <Seo
+        title={curPost?.title + ' | 개발자 윈터'}
+        description={curPost?.excerpt}
+        thumbnail={thumbnailUrl}
+        slug={curPost.slug}
+        tags={curPost.tags}
+      />
       <ArticleHeader post={curPost} />
       <ArticleContent html={curPost.html} />
       <BuyMeACoffeeWrapper />
@@ -47,6 +55,9 @@ export const pageQuery = graphql`
         categories
         author
         emoji
+        thumbnail { # File 타입으로 직접 접근
+          publicURL # File 노드에서 제공
+        }
       }
       fields {
         slug

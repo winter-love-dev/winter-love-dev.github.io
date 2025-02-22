@@ -16,7 +16,7 @@ module.exports = {
     bio: {
       role: `Android Developer`,
       description: ['겨울과 코딩을 사랑하는', '행복과 성장을 추구하는', '코딩과 위스키를 즐기는'],
-      thumbnail: 'memoji_winter.gif', // Path to the image in the 'asset' folder
+      thumbnail: 'memoji_winter.gif', // Path to the images in the 'asset' folder
       residence: 'Bundang-gu, Seongnam, South Korea',
       profileImage: 'profile.jpeg',
     },
