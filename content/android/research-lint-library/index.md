@@ -3,17 +3,10 @@ emoji: 🔏
 title: 안드로이드 프로젝트에 Lint (Kotlin + Compose) 를 적용했던 과정. KtLint vs Detekt vs Spotless
 date: '2025-02-02 00:01:00'
 author: Winter
-tags:
-  - Detekt
-  - KtLint
-  - 안드로이드린트
-  - 개발자_윈터
-  - 안드로이드_개발자
-  - Android
-  - Android Lint
-categories: 
-  - Android
+tags: Detekt KtLint 안드로이드린트 개발자_윈터 안드로이드_개발자 Android Android_Lint 
+categories: Android
 private: false
+thumbnail: 'cover.png'
 ---
 
 ![](0.jpg)
@@ -608,15 +601,15 @@ Detekt 로 Compose 를 비롯한 커스텀 룰셋 작성 과정은 별도 글로
 끝.
 
 # Reference
-> - https://ko.wikipedia.org/wiki/%EB%A6%B0%ED%8A%B8_(%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4)
-> - https://kotlinlang.org/docs/coding-conventions.html#verify-that-your-code-follows-the-style-guide
-> - https://pinterest.github.io/ktlint/latest/
-> - https://detekt.dev/
-> - https://github.com/diffplug/spotless
-> - https://developer.android.com/develop/ui/compose/api-guidelines
-> - https://mrmans0n.github.io/compose-rules/rules/
-> - https://android.googlesource.com/platform/frameworks/support/+/androidx-main/compose/docs/compose-api-guidelines.md
-> - https://android.googlesource.com/platform/frameworks/support/+/androidx-main/compose/docs/compose-component-api-guidelines.md
+ - https://ko.wikipedia.org/wiki/%EB%A6%B0%ED%8A%B8_(%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4)
+ - https://kotlinlang.org/docs/coding-conventions.html#verify-that-your-code-follows-the-style-guide
+ - https://pinterest.github.io/ktlint/latest/
+ - https://detekt.dev/
+ - https://github.com/diffplug/spotless
+ - https://developer.android.com/develop/ui/compose/api-guidelines
+ - https://mrmans0n.github.io/compose-rules/rules/
+ - https://android.googlesource.com/platform/frameworks/support/+/androidx-main/compose/docs/compose-api-guidelines.md
+ - https://android.googlesource.com/platform/frameworks/support/+/androidx-main/compose/docs/compose-component-api-guidelines.md
 
 ```toc
 
