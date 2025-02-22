@@ -7,8 +7,9 @@ import PostNavigator from '../../components/post-navigator';
 import Post from '../../models/post';
 import PostContent from '../../components/post-content';
 import Utterances from '../../components/utterances';
-import BuyMeACoffee from '../../components/buy-me-a-coffee';
 import './style.scss';
+import Profile from '../../components/profile';
+import BuyMeACoffeeWrapper from '../../components/buy-me-a-coffe-wrapper';
 
 function Index({ data }) {
   const curPost = new Post(data.cur);
@@ -19,13 +20,12 @@ function Index({ data }) {
 
   return (
     <Layout>
-      <Seo title={"개발자 윈터 | " + curPost?.title} description={curPost?.excerpt} />
+      <Seo title={curPost?.title + ' | 개발자 윈터'} description={curPost?.excerpt} />
       <PostHeader post={curPost} />
       <PostContent html={curPost.html} />
-      <div className="donation-section-wrapper">
-        <span className="text">👇 도움이 되셨나요? 👇</span>
-        <BuyMeACoffee />
-      </div>
+      <BuyMeACoffeeWrapper/>
+      <hr className="divider" />
+      <Profile />
       <PostNavigator prevPost={prevPost} nextPost={nextPost} />
       {utterancesRepo && <Utterances repo={utterancesRepo} path={curPost.slug} />}
     </Layout>
