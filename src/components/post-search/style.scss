@@ -1,16 +1,43 @@
 @use '../../styles/variables'as *;
 @use '../../styles/mixins'as *;
 
+.search-container {
+    position: relative;
+    display: inline-block;
+}
+
+.search-toggle-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-toggle-icon {
+    color: var(--primary-text-color);
+    font-size: 24px;
+}
+
+.search-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1000;
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    min-width: 300px;
+    padding: 8px;
+}
 
 .search-input-wrapper {
-    display: none;
+    display: flex;
     align-items: center;
-    width: 180px;
-    margin-top: 3px;
-
-    @include md {
-        display: flex;
-    }
+    width: 100%;
 }
 
 .search-icon {
