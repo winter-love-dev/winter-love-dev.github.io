@@ -17,9 +17,9 @@ function ThemeSwitch() {
     <div className="dark-mode-button-wrapper">
       <IconButton className="dark-mode-button" onClick={() => setIsDarkMode((isDark) => !isDark)}>
         {isDarkMode ? (
-          <LightModeIcon className="dark-mode-icon" fontSize="large" />
+          <LightModeIcon className="dark-mode-icon" />
         ) : (
-          <DarkModeIcon className="dark-mode-icon" fontSize="large" />
+          <DarkModeIcon className="dark-mode-icon" />
         )}
       </IconButton>
     </div>
