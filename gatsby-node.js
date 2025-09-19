@@ -64,8 +64,8 @@ const createArticlesPages = ({ createPage, publicEdges }) => {
   });
 };
 
-const createThoughtsPages = ({ createPage, publicEdges }) => {
-  const thoughtsTemplate = require.resolve(`./src/templates/thoughts-template.js`);
+const createInsightsPages = ({ createPage, publicEdges }) => {
+  const insightsTemplate = require.resolve(`./src/templates/insights-template.js`);
   const categorySet = new Set(['All']);
 
   publicEdges.forEach(({ node }) => {
@@ -76,15 +76,15 @@ const createThoughtsPages = ({ createPage, publicEdges }) => {
   const categories = [...categorySet];
 
   createPage({
-    path: `/thoughts`,
-    component: thoughtsTemplate,
+    path: `/insights`,
+    component: insightsTemplate,
     context: { currentCategory: 'All', publicEdges, categories },
   });
 
   categories.forEach((currentCategory) => {
     createPage({
-      path: `/thoughts/${currentCategory}`,
-      component: thoughtsTemplate,
+      path: `/insights/${currentCategory}`,
+      component: insightsTemplate,
       context: {
         currentCategory,
         categories,
@@ -152,7 +152,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   const publicEdges = edges.filter(({ node }) => !node.frontmatter.private);
   createBlogPages({ createPage, publicEdges });
   createArticlesPages({ createPage, publicEdges });
-  createThoughtsPages({ createPage, publicEdges });
+  createInsightsPages({ createPage, publicEdges });
   createProjectsPages({ createPage });
 };
 

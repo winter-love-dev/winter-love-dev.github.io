@@ -7,7 +7,7 @@ import Post from '../models/post';
 import CategoryPageHeader from '../components/category-page-header';
 import PostTabs from '../components/post-tabs';
 
-function ThoughtsTemplate({ pageContext }) {
+function InsightsTemplate({ pageContext }) {
   const { publicEdges: publicEdges, currentCategory } = pageContext;
   const { categories } = pageContext;
   const currentTabIndex = useMemo(
@@ -18,16 +18,16 @@ function ThoughtsTemplate({ pageContext }) {
 
   const onTabIndexChange = useCallback(
     (e, value) => {
-      if (value === 0) return navigate(`/thoughts`);
-      navigate(`/thoughts/${categories[value]}`);
+      if (value === 0) return navigate(`/insights`);
+      navigate(`/insights/${categories[value]}`);
     },
     [categories],
   );
 
   return (
     <Layout>
-      <Seo title="Thoughts | 개발자 윈터" />
-      <CategoryPageHeader title={categories[currentTabIndex]} subtitle={`${posts.length} thoughts`} />
+      <Seo title="Insights | 개발자 윈터" />
+      <CategoryPageHeader title={categories[currentTabIndex]} subtitle={`${posts.length} insights`} />
       <PostTabs
         tabIndex={currentTabIndex}
         onChange={onTabIndexChange}
@@ -38,4 +38,4 @@ function ThoughtsTemplate({ pageContext }) {
   );
 }
 
-export default ThoughtsTemplate;
+export default InsightsTemplate;

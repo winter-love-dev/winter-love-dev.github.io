@@ -49,7 +49,7 @@ function PageHeader({ siteTitle }) {
                 <Link className="link" to="/articles">
                   articles
                 </Link>
-                <Link className="link" to="/thoughts">
+                <Link className="link" to="/insights">
                   insights
                 </Link>
 {/*                <Link className="link" to="/projects">
@@ -81,7 +81,7 @@ function PageHeader({ siteTitle }) {
                     <Link className="mobile-link" to="/articles" onClick={() => setIsMenuOpen(false)}>
                       articles
                     </Link>
-                    <Link className="mobile-link" to="/thoughts" onClick={() => setIsMenuOpen(false)}>
+                    <Link className="mobile-link" to="/insights" onClick={() => setIsMenuOpen(false)}>
                       insights
                     </Link>
                   </div>
