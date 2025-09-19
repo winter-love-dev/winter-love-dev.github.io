@@ -39,6 +39,9 @@ function PageHeader({ siteTitle }) {
               <Link className="link" to="/articles">
                 articles
               </Link>
+              <Link className="link" to="/thoughts">
+                thoughts
+              </Link>
 {/*              <Link className="link" to="/projects">
                 Projects
               </Link>*/}
