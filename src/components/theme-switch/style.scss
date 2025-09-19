@@ -2,17 +2,12 @@
 
 .dark-mode-button-wrapper {
     position: fixed;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     top: 20px;
     right: 20px;
     z-index: 1;
-
-    @include mobile {
-        top: 55px;
-        right: 10px;
-    }
 }
 
 .dark-mode-button {

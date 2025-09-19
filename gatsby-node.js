@@ -64,6 +64,36 @@ const createArticlesPages = ({ createPage, publicEdges }) => {
   });
 };
 
+const createInsightsPages = ({ createPage, publicEdges }) => {
+  const insightsTemplate = require.resolve(`./src/templates/insights-template.js`);
+  const categorySet = new Set(['All']);
+
+  publicEdges.forEach(({ node }) => {
+    const postCategories = node.frontmatter.categories.split(' ');
+    postCategories.forEach((category) => categorySet.add(category));
+  });
+
+  const categories = [...categorySet];
+
+  createPage({
+    path: `/insights`,
+    component: insightsTemplate,
+    context: { currentCategory: 'All', publicEdges, categories },
+  });
+
+  categories.forEach((currentCategory) => {
+    createPage({
+      path: `/insights/${currentCategory}`,
+      component: insightsTemplate,
+      context: {
+        currentCategory,
+        categories,
+        publicEdges: publicEdges.filter(({ node }) => node.frontmatter.categories.includes(currentCategory)),
+      },
+    });
+  });
+};
+
 const createProjectsPages = ({ createPage }) => {
   const projectsTemplate = path.resolve(`./src/templates/projects-template.js`);
 
@@ -122,6 +152,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   const publicEdges = edges.filter(({ node }) => !node.frontmatter.private);
   createBlogPages({ createPage, publicEdges });
   createArticlesPages({ createPage, publicEdges });
+  createInsightsPages({ createPage, publicEdges });
   createProjectsPages({ createPage });
 };
 
