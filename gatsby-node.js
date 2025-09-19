@@ -34,7 +34,7 @@ const createBlogPages = ({ createPage, publicEdges }) => {
   });
 };
 
-const createPostsPages = ({ createPage, publicEdges }) => {
+const createArticlesPages = ({ createPage, publicEdges }) => {
   const categoryTemplate = require.resolve(`./src/templates/category-template.js`);
   const categorySet = new Set(['All']);
 
@@ -46,14 +46,14 @@ const createPostsPages = ({ createPage, publicEdges }) => {
   const categories = [...categorySet];
 
   createPage({
-    path: `/posts`,
+    path: `/articles`,
     component: categoryTemplate,
     context: { currentCategory: 'All', publicEdges, categories },
   });
 
   categories.forEach((currentCategory) => {
     createPage({
-      path: `/posts/${currentCategory}`,
+      path: `/articles/${currentCategory}`,
       component: categoryTemplate,
       context: {
         currentCategory,
@@ -121,7 +121,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   const edges = results.data.allMarkdownRemark.edges;
   const publicEdges = edges.filter(({ node }) => !node.frontmatter.private);
   createBlogPages({ createPage, publicEdges });
-  createPostsPages({ createPage, publicEdges });
+  createArticlesPages({ createPage, publicEdges });
   createProjectsPages({ createPage });
 };
 

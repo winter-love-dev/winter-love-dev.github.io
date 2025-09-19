@@ -18,16 +18,16 @@ function CategoryTemplate({ pageContext }) {
 
   const onTabIndexChange = useCallback(
     (e, value) => {
-      if (value === 0) return navigate(`/posts`);
-      navigate(`/posts/${categories[value]}`);
+      if (value === 0) return navigate(`/articles`);
+      navigate(`/articles/${categories[value]}`);
     },
     [categories],
   );
 
   return (
     <Layout>
-      <Seo title="Posts | 개발자 윈터" />
-      <CategoryPageHeader title={categories[currentTabIndex]} subtitle={`${posts.length} posts`} />
+      <Seo title="Articles | 개발자 윈터" />
+      <CategoryPageHeader title={categories[currentTabIndex]} subtitle={`${posts.length} articles`} />
       <PostTabs
         tabIndex={currentTabIndex}
         onChange={onTabIndexChange}

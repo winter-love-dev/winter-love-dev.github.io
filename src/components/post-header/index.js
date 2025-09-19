@@ -9,7 +9,7 @@ function ArticleHeader({ post }) {
       <div className="info">
         <div className="categories">
           {post.categories.map((category) => (
-            <Link className="category" key={category} to={`/posts/${category}`}>
+            <Link className="category" key={category} to={`/articles/${category}`}>
               {category}
             </Link>
           ))}
