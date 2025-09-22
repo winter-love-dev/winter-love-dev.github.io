@@ -19,24 +19,27 @@ function PageHeader({ siteTitle }) {
 
   useEffect(() => {
     let ticking = false;
+    let lastScrollYRef = lastScrollY;
 
     const handleScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
           const currentScrollY = window.scrollY;
 
-          if (Math.abs(currentScrollY - lastScrollY) > 10) {
-            if (currentScrollY > lastScrollY && currentScrollY > 100) {
-              if (isHeaderVisible) {
-                setIsHeaderVisible(false);
-                setIsMenuOpen(false);
-              }
-            } else if (currentScrollY < lastScrollY) {
-              if (!isHeaderVisible) {
-                setIsHeaderVisible(true);
-              }
+          if (Math.abs(currentScrollY - lastScrollYRef) > 10) {
+            if (currentScrollY > lastScrollYRef && currentScrollY > 100) {
+              setIsHeaderVisible(prev => {
+                if (prev) {
+                  setIsMenuOpen(false);
+                  return false;
+                }
+                return prev;
+              });
+            } else if (currentScrollY < lastScrollYRef) {
+              setIsHeaderVisible(prev => prev ? prev : true);
             }
 
+            lastScrollYRef = currentScrollY;
             setLastScrollY(currentScrollY);
           }
 
@@ -51,7 +54,7 @@ function PageHeader({ siteTitle }) {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [lastScrollY, isHeaderVisible]);
+  }, []);
 
   return (
     <StaticQuery
