@@ -1,5 +1,5 @@
 import { Link, StaticQuery, graphql } from 'gatsby';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Post from '../../models/post';
 import PostSearch from '../post-search';
 import ThemeSwitch from '../theme-switch';
@@ -11,41 +11,47 @@ import './style.scss';
 function PageHeader({ siteTitle }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollYRef = useRef(0);
+  const tickingRef = useRef(false);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const toggleMenu = useCallback(() => {
+    setIsMenuOpen(prev => !prev);
+  }, []);
 
   useEffect(() => {
-    let ticking = false;
-    let lastScrollYRef = lastScrollY;
+    let timeoutId = null;
 
     const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const currentScrollY = window.scrollY;
+      if (!tickingRef.current) {
+        tickingRef.current = true;
 
-          if (Math.abs(currentScrollY - lastScrollYRef) > 10) {
-            if (currentScrollY > lastScrollYRef && currentScrollY > 100) {
-              setIsHeaderVisible(prev => {
-                if (prev) {
-                  setIsMenuOpen(false);
-                  return false;
-                }
-                return prev;
-              });
-            } else if (currentScrollY < lastScrollYRef) {
-              setIsHeaderVisible(prev => prev ? prev : true);
+        // Throttle: 최대 33ms(30fps)마다 실행
+        if (timeoutId) return;
+
+        timeoutId = setTimeout(() => {
+          requestAnimationFrame(() => {
+            const currentScrollY = window.scrollY;
+
+            if (Math.abs(currentScrollY - lastScrollYRef.current) > 10) {
+              if (currentScrollY > lastScrollYRef.current && currentScrollY > 100) {
+                setIsHeaderVisible(prev => {
+                  if (prev) {
+                    setIsMenuOpen(false);
+                    return false;
+                  }
+                  return prev;
+                });
+              } else if (currentScrollY < lastScrollYRef.current) {
+                setIsHeaderVisible(prev => prev ? prev : true);
+              }
+
+              lastScrollYRef.current = currentScrollY;
             }
 
-            lastScrollYRef = currentScrollY;
-            setLastScrollY(currentScrollY);
-          }
-
-          ticking = false;
-        });
-        ticking = true;
+            tickingRef.current = false;
+            timeoutId = null;
+          });
+        }, 33);
       }
     };
 
@@ -53,6 +59,7 @@ function PageHeader({ siteTitle }) {
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      if (timeoutId) clearTimeout(timeoutId);
     };
   }, []);
 

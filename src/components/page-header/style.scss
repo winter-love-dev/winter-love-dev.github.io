@@ -10,6 +10,7 @@
   z-index: 1;
   background-color: var(--background-color);
   transition: transform 0.3s ease, opacity 0.3s ease;
+  will-change: transform, opacity;
 
   &.visible {
     transform: translateY(0);
@@ -211,6 +212,7 @@
   left: 20px;
   z-index: 2;
   transition: opacity 0.3s ease, transform 0.3s ease;
+  will-change: transform, opacity;
 
   &.visible {
     opacity: 1;
