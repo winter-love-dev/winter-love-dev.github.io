@@ -19,30 +19,39 @@ function PageHeader({ siteTitle }) {
   }, []);
 
   useEffect(() => {
+    let timeoutId = null;
+
     const handleScroll = () => {
       if (!tickingRef.current) {
         tickingRef.current = true;
-        requestAnimationFrame(() => {
-          const currentScrollY = window.scrollY;
 
-          if (Math.abs(currentScrollY - lastScrollYRef.current) > 10) {
-            if (currentScrollY > lastScrollYRef.current && currentScrollY > 100) {
-              setIsHeaderVisible(prev => {
-                if (prev) {
-                  setIsMenuOpen(false);
-                  return false;
-                }
-                return prev;
-              });
-            } else if (currentScrollY < lastScrollYRef.current) {
-              setIsHeaderVisible(prev => prev ? prev : true);
+        // Throttle: 최대 33ms(30fps)마다 실행
+        if (timeoutId) return;
+
+        timeoutId = setTimeout(() => {
+          requestAnimationFrame(() => {
+            const currentScrollY = window.scrollY;
+
+            if (Math.abs(currentScrollY - lastScrollYRef.current) > 10) {
+              if (currentScrollY > lastScrollYRef.current && currentScrollY > 100) {
+                setIsHeaderVisible(prev => {
+                  if (prev) {
+                    setIsMenuOpen(false);
+                    return false;
+                  }
+                  return prev;
+                });
+              } else if (currentScrollY < lastScrollYRef.current) {
+                setIsHeaderVisible(prev => prev ? prev : true);
+              }
+
+              lastScrollYRef.current = currentScrollY;
             }
 
-            lastScrollYRef.current = currentScrollY;
-          }
-
-          tickingRef.current = false;
-        });
+            tickingRef.current = false;
+            timeoutId = null;
+          });
+        }, 33);
       }
     };
 
@@ -50,6 +59,7 @@ function PageHeader({ siteTitle }) {
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      if (timeoutId) clearTimeout(timeoutId);
     };
   }, []);
 
