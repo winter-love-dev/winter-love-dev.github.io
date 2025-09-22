@@ -5,12 +5,19 @@ import SearchIcon from '@mui/icons-material/SearchOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import './style.scss';
 
-function PostSearch({ posts }) {
+function PostSearch({ posts, isHeaderVisible }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
   };
+
+  // 헤더가 숨겨질 때 검색창도 닫기
+  React.useEffect(() => {
+    if (!isHeaderVisible) {
+      setIsSearchOpen(false);
+    }
+  }, [isHeaderVisible]);
 
   return (
     <div className="search-container">

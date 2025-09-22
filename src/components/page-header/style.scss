@@ -9,6 +9,17 @@
   top: 0;
   z-index: 1;
   background-color: var(--background-color);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+
+  &.visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  &.hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
 
   .page-header {
     display: flex;
@@ -189,6 +200,57 @@
           }
         }
       }
+    }
+  }
+}
+
+// 플로팅 로고 스타일
+.floating-logo {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 2;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &.hidden {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+  }
+
+  .logo-link {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--primary-text-color);
+    text-decoration: none;
+    background-color: var(--background-color);
+    padding: 12px 20px;
+    border-radius: 25px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(var(--primary-text-color-rgb), 0.1);
+
+    &:hover {
+      text-decoration: none;
+      background-color: var(--background-color);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    &:focus, &:active {
+      outline: none;
+      background-color: var(--background-color);
+    }
+
+    @include md {
+      font-size: 20px;
+      padding: 14px 24px;
+      border-radius: 30px;
     }
   }
 }

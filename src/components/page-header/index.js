@@ -1,5 +1,5 @@
 import { Link, StaticQuery, graphql } from 'gatsby';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Post from '../../models/post';
 import PostSearch from '../post-search';
 import ThemeSwitch from '../theme-switch';
@@ -10,10 +10,33 @@ import './style.scss';
 
 function PageHeader({ siteTitle }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsHeaderVisible(false);
+        setIsMenuOpen(false);
+      } else if (currentScrollY < lastScrollY) {
+        setIsHeaderVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [lastScrollY]);
 
   return (
     <StaticQuery
@@ -35,8 +58,9 @@ function PageHeader({ siteTitle }) {
         }
       `}
       render={(data) => (
-        <header className="page-header-wrapper">
-          <div className="page-header">
+        <>
+          <header className={`page-header-wrapper ${isHeaderVisible ? 'visible' : 'hidden'}`}>
+            <div className="page-header">
             <div className="front-section">
               <Link className="link" to="/">
                 {siteTitle}
@@ -64,6 +88,7 @@ function PageHeader({ siteTitle }) {
               <div className="search-section">
                 <PostSearch
                   posts={data.allMarkdownRemark.edges.map(({ node }) => new Post(node, true))}
+                  isHeaderVisible={isHeaderVisible}
                 />
               </div>
               <div className="mobile-navigation">
@@ -91,6 +116,14 @@ function PageHeader({ siteTitle }) {
             </div>
           </div>
         </header>
+
+        {/* 헤더가 숨겨졌을 때 표시되는 로고 */}
+        <div className={`floating-logo ${!isHeaderVisible ? 'visible' : 'hidden'}`}>
+          <Link className="logo-link" to="/">
+            {siteTitle}
+          </Link>
+        </div>
+        </>
       )}
     />
   );
