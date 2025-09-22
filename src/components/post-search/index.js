@@ -1,26 +1,33 @@
 import React, { useState } from 'react';
 import { navigate } from 'gatsby';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, TextField, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/SearchOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import './style.scss';
 
-function PostSearch({ posts }) {
+function PostSearch({ posts, isHeaderVisible }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
   };
 
+  // 헤더가 숨겨질 때 검색창도 닫기
+  React.useEffect(() => {
+    if (!isHeaderVisible) {
+      setIsSearchOpen(false);
+    }
+  }, [isHeaderVisible]);
+
   return (
     <div className="search-container">
-      <button className="search-toggle-button" onClick={toggleSearch}>
+      <IconButton className="search-toggle-button" onClick={toggleSearch}>
         {isSearchOpen ? (
           <CloseIcon className="search-toggle-icon" />
         ) : (
           <SearchIcon className="search-toggle-icon" />
         )}
-      </button>
+      </IconButton>
 
       {isSearchOpen && (
         <div className="search-dropdown">
