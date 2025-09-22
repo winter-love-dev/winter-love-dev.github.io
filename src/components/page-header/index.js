@@ -1,5 +1,5 @@
 import { Link, StaticQuery, graphql } from 'gatsby';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Post from '../../models/post';
 import PostSearch from '../post-search';
 import ThemeSwitch from '../theme-switch';
@@ -11,23 +11,22 @@ import './style.scss';
 function PageHeader({ siteTitle }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollYRef = useRef(0);
+  const tickingRef = useRef(false);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const toggleMenu = useCallback(() => {
+    setIsMenuOpen(prev => !prev);
+  }, []);
 
   useEffect(() => {
-    let ticking = false;
-    let lastScrollYRef = lastScrollY;
-
     const handleScroll = () => {
-      if (!ticking) {
+      if (!tickingRef.current) {
+        tickingRef.current = true;
         requestAnimationFrame(() => {
           const currentScrollY = window.scrollY;
 
-          if (Math.abs(currentScrollY - lastScrollYRef) > 10) {
-            if (currentScrollY > lastScrollYRef && currentScrollY > 100) {
+          if (Math.abs(currentScrollY - lastScrollYRef.current) > 10) {
+            if (currentScrollY > lastScrollYRef.current && currentScrollY > 100) {
               setIsHeaderVisible(prev => {
                 if (prev) {
                   setIsMenuOpen(false);
@@ -35,17 +34,15 @@ function PageHeader({ siteTitle }) {
                 }
                 return prev;
               });
-            } else if (currentScrollY < lastScrollYRef) {
+            } else if (currentScrollY < lastScrollYRef.current) {
               setIsHeaderVisible(prev => prev ? prev : true);
             }
 
-            lastScrollYRef = currentScrollY;
-            setLastScrollY(currentScrollY);
+            lastScrollYRef.current = currentScrollY;
           }
 
-          ticking = false;
+          tickingRef.current = false;
         });
-        ticking = true;
       }
     };
 
