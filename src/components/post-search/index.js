@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { navigate } from 'gatsby';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, TextField, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/SearchOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import './style.scss';
@@ -14,13 +14,13 @@ function PostSearch({ posts }) {
 
   return (
     <div className="search-container">
-      <button className="search-toggle-button" onClick={toggleSearch}>
+      <IconButton className="search-toggle-button" onClick={toggleSearch}>
         {isSearchOpen ? (
           <CloseIcon className="search-toggle-icon" />
         ) : (
           <SearchIcon className="search-toggle-icon" />
         )}
-      </button>
+      </IconButton>
 
       {isSearchOpen && (
         <div className="search-dropdown">

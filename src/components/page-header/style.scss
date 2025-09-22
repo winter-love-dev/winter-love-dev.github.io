@@ -20,6 +20,23 @@
       font-weight: 700;
       font-size: 17px;
       color: var(--primary-text-color);
+      text-decoration: none;
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
+
+      &:hover {
+        text-decoration: none;
+        background: none;
+      }
+
+      &:focus {
+        outline: none;
+        background: none;
+      }
+
+      &:active {
+        background: none;
+      }
 
       @include md {
         font-weight: 700;
@@ -73,13 +90,8 @@
         }
 
         .hamburger-button {
-          background: none;
-          border: none;
-          cursor: pointer;
           padding: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          color: var(--primary-text-color);
         }
 
         .hamburger-icon {
@@ -96,19 +108,34 @@
           border: 1px solid var(--border-color);
           border-radius: 4px;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-          min-width: 120px;
-          padding: 8px 0;
+          min-width: 130px;
+          padding: 16px 0;
 
           .mobile-link {
             display: block;
-            padding: 8px 16px;
+            padding: 14px 24px;
             font-weight: 400;
             font-size: 16px;
             color: var(--primary-text-color);
             text-decoration: none;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
 
             &:hover {
               background-color: rgba(var(--primary-text-color-rgb), 0.08);
+            }
+
+            &:focus {
+              outline: none;
+              background-color: rgba(var(--primary-text-color-rgb), 0.08);
+            }
+
+            &:active {
+              background-color: rgba(var(--primary-text-color-rgb), 0.08);
+            }
+
+            &:focus-visible {
+              outline: none;
             }
           }
         }
@@ -129,31 +156,36 @@
         }
 
         .dark-mode-button {
-          width: 24px;
-          height: 24px;
-          padding: 4px;
+          width: 32px;
+          height: 32px;
           background-color: transparent !important;
           box-shadow: none !important;
           backdrop-filter: none !important;
-          border-radius: 50%;
 
           &:hover {
             background-color: rgba(var(--primary-text-color-rgb), 0.08) !important;
           }
 
+          &:focus {
+            background-color: rgba(var(--primary-text-color-rgb), 0.08) !important;
+          }
+
+          &:active {
+            background-color: rgba(var(--primary-text-color-rgb), 0.12) !important;
+          }
+
           @include mobile {
-            width: 32px;
-            height: 32px;
-            padding: 4px;
+            width: 36px;
+            height: 36px;
           }
         }
 
         .dark-mode-icon {
           color: var(--primary-text-color) !important;
-          font-size: 24px;
+          font-size: 20px;
 
           @include mobile {
-            font-size: 20px;
+            font-size: 22px;
           }
         }
       }

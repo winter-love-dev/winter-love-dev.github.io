@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Post from '../../models/post';
 import PostSearch from '../post-search';
 import ThemeSwitch from '../theme-switch';
+import { IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import './style.scss';
@@ -66,13 +67,13 @@ function PageHeader({ siteTitle }) {
                 />
               </div>
               <div className="mobile-navigation">
-                <button className="hamburger-button" onClick={toggleMenu}>
+                <IconButton className="hamburger-button" onClick={toggleMenu}>
                   {isMenuOpen ? (
                     <CloseIcon className="hamburger-icon" />
                   ) : (
                     <MenuIcon className="hamburger-icon" />
                   )}
-                </button>
+                </IconButton>
                 {isMenuOpen && (
                   <div className="mobile-menu-dropdown">
                     <Link className="mobile-link" to="/about" onClick={() => setIsMenuOpen(false)}>
