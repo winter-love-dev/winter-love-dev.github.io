@@ -4,7 +4,7 @@
 
 **Site URL**: [**winter-love.dev**](https://winter-love.dev)
 
-개발자 윈터의 개발 블로그 입니다.
+Winter's archive - 개발 블로그
 
 <img src="/assets/blog_pc.png" width="600">
 
