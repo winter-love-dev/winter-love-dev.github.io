@@ -15,7 +15,7 @@ function AboutPage({ data }) {
   const { timestamps, projects, career } = about;
   return (
     <Layout>
-      <Seo title='About | 개발자 윈터' />
+      <Seo title="About | Winter's archive" />
       <Bio author={author} />
       <TimeStampSection timestamps={timestamps} />
       <ProjectSection title="회사 프로젝트" projects={career} />

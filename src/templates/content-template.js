@@ -23,7 +23,7 @@ function ContentTemplate({ data }) {
   return (
     <Layout>
       <Seo
-        title={curPost?.title + ' | 개발자 윈터'}
+        title={curPost?.title + " | Winter's archive"}
         description={curPost?.excerpt}
         thumbnail={thumbnailUrl}
         slug={curPost.slug}

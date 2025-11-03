@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { graphql } from 'gatsby';
 import Layout from '../layout';
 import Seo from '../components/seo';
-import Bio from '../components/bio';
+import HomeBio from '../components/home-bio';
 import Post from '../models/post';
 
 import { getUniqueCategories } from '../utils/helpers';
@@ -18,8 +18,8 @@ function HomePage({ data }) {
 
   return (
     <Layout>
-      <Seo title="개발자 윈터" />
-      <Bio author={author} language={language} />
+      <Seo title="Winter's archive" />
+      <HomeBio author={author} language={language} />
       <PostTabs
         posts={posts}
         onChange={onTabIndexChange}
