@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { navigate } from 'gatsby';
-import { Autocomplete, TextField, IconButton } from '@mui/material';
+import { Autocomplete, TextField, IconButton, Chip } from '@mui/material';
 import SearchIcon from '@mui/icons-material/SearchOutlined';
 import CloseIcon from '@mui/icons-material/Close';
+import ArticleIcon from '@mui/icons-material/Article';
+import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import './style.scss';
 
 function PostSearch({ posts, isHeaderVisible }) {
@@ -44,12 +46,26 @@ function PostSearch({ posts, isHeaderVisible }) {
             }}
             filterOptions={(options, { inputValue }) =>
               options.filter(
-                ({ title, categories }) =>
+                ({ title, categories, tags }) =>
                   title.toLowerCase().includes(inputValue.toLowerCase()) ||
-                  categories.some(category => category.toLowerCase().includes(inputValue.toLowerCase())),
+                  categories.some(category => category.toLowerCase().includes(inputValue.toLowerCase())) ||
+                  tags.some(tag => tag.toLowerCase().includes(inputValue.toLowerCase())),
               )
             }
             getOptionLabel={(option) => option.title}
+            renderOption={(props, option) => (
+              <li {...props} className="search-result-item">
+                <div className="search-result-content">
+                  <Chip
+                    icon={option.isInsight ? <LightbulbIcon /> : <ArticleIcon />}
+                    label={option.isInsight ? 'Insight' : 'Article'}
+                    size="small"
+                    className={`search-result-badge ${option.isInsight ? 'search-result-badge--insight' : 'search-result-badge--article'}`}
+                  />
+                  <span className="search-result-title">{option.title}</span>
+                </div>
+              </li>
+            )}
             renderInput={(params) => (
               <div className="search-input-wrapper">
                 <TextField
