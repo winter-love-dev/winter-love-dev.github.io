@@ -1,0 +1,162 @@
+@use '../../styles/markdown-style'as *;
+@use 'prismjs/themes/prism-tomorrow'as *;
+
+.gatsby-highlight {
+  background: #1e1f22;
+  border-radius: 8px;
+  margin: 1.5em 0;
+  overflow: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+pre[class*="language-"] {
+  background: #1e1f22 !important;
+  padding: 1.5em;
+  margin: 1.5em 0;
+  color: #bcbec4;
+  border-radius: 8px;
+  overflow: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+code[class*="language-"] {
+  font-size: 14px;
+  line-height: 1.6;
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, Monaco, monospace;
+  color: #bcbec4;
+}
+
+.token.keyword {
+  color: #cf8e6d;
+  font-weight: 500;
+}
+
+.token.function {
+  color: #56a8f5;
+}
+
+.token.string {
+  color: #6aab73;
+}
+
+.token.comment {
+  color: #7a7e85;
+  font-style: italic;
+}
+
+.token.number {
+  color: #2aacb8;
+}
+
+.token.boolean {
+  color: #cf8e6d;
+}
+
+.token.operator {
+  color: #bcbec4;
+}
+
+.token.punctuation {
+  color: #bcbec4;
+}
+
+.token.class-name {
+  color: #56a8f5;
+}
+
+.token.namespace {
+  color: #bcbec4;
+}
+
+.token.annotation {
+  color: #bbb529;
+}
+
+.token.property {
+  color: #c77dbb;
+}
+
+.token.tag {
+  color: #e8bf6a;
+}
+
+.token.attr-name {
+  color: #bababa;
+}
+
+.token.attr-value {
+  color: #6aab73;
+}
+
+.token.builtin {
+  color: #8888c6;
+}
+
+.token.constant {
+  color: #9876aa;
+}
+
+.token.variable {
+  color: #bcbec4;
+}
+
+code[class*="language-"],
+pre[class*="language-"] {
+  font-size: 16px;
+}
+
+.post-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 90%;
+  margin-bottom: 20px;
+
+  // .markdown pre 스타일을 오버라이드 (다크모드 적용)
+  .markdown pre {
+    background-color: #1e1f22 !important;
+  }
+
+  .markdown pre[class*="language-"] {
+    background-color: #1e1f22 !important;
+  }
+
+  // Insight 피드 카드에서는 텍스트 크기와 간격을 줄임
+  .markdown {
+    font-size: 15px;
+    line-height: 1.6;
+
+    p {
+      margin: 0.8em 0;
+    }
+
+    h1 {
+      font-size: 1.6em;
+      margin: 1em 0 0.6em 0;
+    }
+
+    h2 {
+      font-size: 1.4em;
+      margin: 1em 0 0.6em 0;
+    }
+
+    h3 {
+      font-size: 1.2em;
+      margin: 0.8em 0 0.5em 0;
+    }
+
+    ul, ol {
+      margin: 0.8em 0;
+      padding-left: 1.5em;
+    }
+
+    li {
+      margin: 0.3em 0;
+    }
+
+    blockquote {
+      margin: 0.8em 0;
+      padding: 0.5em 1em;
+    }
+  }
+}

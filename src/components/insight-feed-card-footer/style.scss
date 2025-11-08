@@ -1,0 +1,20 @@
+@use '../../styles/variables' as *;
+
+// Footer
+.insight-feed-card-footer {
+  margin-top: 24px;
+
+  &__read-more {
+    display: inline-block;
+    color: var(--secondary-text-color);
+    font-size: 16px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--primary-text-color);
+      text-decoration: underline;
+    }
+  }
+}

@@ -4,6 +4,7 @@ import { IconButton, Tooltip, Chip } from '@mui/material';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import ShareIcon from '@mui/icons-material/Share';
 import CheckIcon from '@mui/icons-material/Check';
+import './style.scss';
 
 const InsightFeedCardHeader = ({
   author = 'Winter',

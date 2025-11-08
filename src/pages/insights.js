@@ -2,17 +2,13 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { graphql } from 'gatsby';
 import Layout from '../layout';
 import Seo from '../components/seo';
-import InsightFeedCard from '../components/InsightFeedCard';
+import InsightFeedCard from '../components/insight-feed-card';
+import './insights.scss';
 
 // 빈 상태 메시지 컴포넌트
 const EmptyMessage = () => {
   return (
-    <div style={{
-      textAlign: 'center',
-      padding: '60px 20px',
-      color: '#999',
-      fontSize: '18px',
-    }}>
+    <div className="insights-empty-message">
       모든 인사이트를 확인하셨어요 🤗
     </div>
   );
@@ -129,7 +125,7 @@ const InsightsPage = ({ data }) => {
     <Layout>
       <Seo title="Insights | Winter's archive" />
 
-      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '40px 20px' }}>
+      <div className="insights-container">
         {displayedInsights.map((insight, index) => (
           <InsightFeedCard
             key={insight.id}

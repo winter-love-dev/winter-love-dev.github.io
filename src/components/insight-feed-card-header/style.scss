@@ -1,0 +1,93 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+// 헤더 (author, date, tags, icons)
+.insight-feed-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 8px 8px 12px 8px;
+  margin-bottom: 12px;
+  gap: 12px;
+  width: 100%;
+  max-width: 100%;
+
+  &__left {
+    flex: 1;
+    min-width: 0; // flex item이 텍스트 넘침 방지
+    overflow: hidden; // 텍스트가 너무 길 경우 대비
+  }
+
+  &__author {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-text-color);
+    margin-bottom: 4px;
+    word-break: break-word; // 긴 단어 줄바꿈
+  }
+
+  &__date {
+    font-size: 14px;
+    color: var(--secondary-text-color);
+    margin-bottom: 8px;
+    white-space: nowrap; // 날짜는 한 줄로
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  &__right {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  @include md {
+    gap: 8px;
+
+    &__author {
+      font-size: 15px;
+    }
+
+    &__date {
+      font-size: 13px;
+    }
+  }
+}
+
+// MUI Chip 커스터마이징
+.insight-tag-chip {
+  height: 24px !important;
+  font-size: 12px !important;
+  background-color: var(--tag-bg-color) !important;
+  color: var(--tag-text-color) !important;
+  cursor: default !important;
+
+  &:hover {
+    background-color: var(--tag-bg-color) !important;
+  }
+}
+
+// 아이콘 버튼
+.insight-icon-button {
+  color: var(--secondary-text-color) !important;
+
+  &:hover {
+    color: var(--primary-text-color) !important;
+    background-color: var(--hover-bg-color) !important;
+  }
+}
+
+.insight-icon {
+  font-size: 20px !important;
+
+  &--success {
+    color: #4caf50 !important;
+  }
+}

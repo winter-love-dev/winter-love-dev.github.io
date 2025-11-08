@@ -1,6 +1,34 @@
 const { createFilePath } = require(`gatsby-source-filesystem`);
 const path = require('path');
 const { marked } = require('marked');
+const Prism = require('prismjs');
+const loadLanguages = require('prismjs/components/');
+
+// Prism.js 언어 로드
+loadLanguages(['kotlin', 'javascript', 'typescript', 'java', 'python', 'bash']);
+
+// Marked에 Prism.js 적용을 위한 커스텀 렌더러
+const renderer = new marked.Renderer();
+const originalCodeRenderer = renderer.code.bind(renderer);
+
+renderer.code = function(code, language) {
+  // 언어가 지정되고 Prism이 지원하는 경우
+  if (language && Prism.languages[language]) {
+    try {
+      const highlighted = Prism.highlight(code, Prism.languages[language], language);
+      return `<pre class="language-${language}"><code class="language-${language}">${highlighted}</code></pre>`;
+    } catch (e) {
+      console.error('Prism highlight error:', e);
+      return originalCodeRenderer(code, language);
+    }
+  }
+  // 언어가 없거나 지원하지 않는 경우 기본 렌더링
+  return originalCodeRenderer(code, language);
+};
+
+marked.setOptions({
+  renderer: renderer
+});
 
 // Helper function: 20줄 제한 로직
 const truncateMarkdown = (rawMarkdownBody, maxLines = 20) => {
