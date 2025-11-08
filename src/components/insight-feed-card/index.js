@@ -18,10 +18,10 @@ const InsightFeedCard = ({
   } = insight;
 
   const {
-    postId,
-    title,
-    date,
-    tags
+    insightPostId,
+    insightTitle,
+    insightDate,
+    insightTags
   } = frontmatter || {};
 
   const isTruncated = fields?.isTruncated || false;
@@ -35,19 +35,19 @@ const InsightFeedCard = ({
       {/* Header: author, date, tags, icons */}
       <InsightFeedCardHeader
         author="Winter"
-        date={date}
-        tags={tags}
-        postId={postId}
+        date={insightDate}
+        tags={insightTags}
+        postId={insightPostId}
         isDetailPage={isDetailPage}
         loadedCount={loadedCount}
       />
 
       {/* Title */}
-      {title && !isDetailPage && (
-        <div className="insight-feed-card__title">{title}</div>
+      {insightTitle && !isDetailPage && (
+        <div className="insight-feed-card__title">{insightTitle}</div>
       )}
-      {title && isDetailPage && (
-        <h1 className="insight-feed-card__title--detail">{title}</h1>
+      {insightTitle && isDetailPage && (
+        <h1 className="insight-feed-card__title--detail">{insightTitle}</h1>
       )}
 
       {/* Body: 마크다운 컨텐츠 (코드 블록 포함) */}
@@ -55,7 +55,7 @@ const InsightFeedCard = ({
 
       {/* Footer: "...더보기" 링크 */}
       <InsightFeedCardFooter
-        postId={postId}
+        postId={insightPostId}
         isTruncated={isTruncated}
         isDetailPage={isDetailPage}
         loadedCount={loadedCount}

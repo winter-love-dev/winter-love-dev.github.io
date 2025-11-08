@@ -12,10 +12,10 @@ const InsightDetailTemplate = ({ data, pageContext }) => {
       <p>Phase 1 빌드 테스트용 임시 페이지입니다.</p>
 
       <div style={{ border: '1px solid #ccc', padding: '16px', marginTop: '24px' }}>
-        <h2>{insight.frontmatter.title}</h2>
-        <p>post-id: {insight.frontmatter.postId}</p>
-        <p>date: {insight.frontmatter.date}</p>
-        <p>tags: {insight.frontmatter.tags?.join(', ') || 'none'}</p>
+        <h2>{insight.frontmatter.insightTitle}</h2>
+        <p>post-id: {insight.frontmatter.insightPostId}</p>
+        <p>date: {insight.frontmatter.insightDate}</p>
+        <p>tags: {insight.frontmatter.insightTags?.join(', ') || 'none'}</p>
         <p>isTruncated: {isTruncated ? 'Yes' : 'No'}</p>
         <p>maxLines: {maxLines}</p>
 
@@ -28,19 +28,19 @@ const InsightDetailTemplate = ({ data, pageContext }) => {
 };
 
 export const query = graphql`
-  query InsightDetailQuery($postId: String!) {
+  query InsightDetailQuery($insightPostId: String!) {
     markdownRemark(
-      frontmatter: { post_id: { eq: $postId } }
+      frontmatter: { insightPostId: { eq: $insightPostId } }
       fileAbsolutePath: { regex: "/insights/" }
     ) {
       id
       html
       rawMarkdownBody
       frontmatter {
-        postId: post_id
-        title
-        date
-        tags
+        insightPostId
+        insightTitle
+        insightDate
+        insightTags
       }
     }
   }

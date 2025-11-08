@@ -36,7 +36,10 @@ export default HomePage;
 export const pageQuery = graphql`
   query {
     allMarkdownRemark(
-      filter: { frontmatter: { private: { ne: true } } }
+      filter: {
+        frontmatter: { private: { ne: true } }
+        fileAbsolutePath: { regex: "/content/" }
+      }
       sort: { fields: frontmatter___date, order: DESC }
     ) {
       edges {

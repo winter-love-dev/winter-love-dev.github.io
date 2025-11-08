@@ -261,7 +261,7 @@ const createInsightDetailPages = ({ createPage, insightEdges }) => {
   const insightDetailTemplate = require.resolve(`./src/templates/insight-detail-template.js`);
 
   insightEdges.forEach(({ node }) => {
-    const postId = node.frontmatter.postId;
+    const postId = node.frontmatter.insightPostId;
 
     // 20줄 제한 로직 적용
     const { isTruncated, truncatedContent } = truncateContent(node.rawMarkdownBody, 20);
@@ -270,7 +270,7 @@ const createInsightDetailPages = ({ createPage, insightEdges }) => {
       path: `/insights/${postId}`,
       component: insightDetailTemplate,
       context: {
-        postId,
+        insightPostId: postId,
         isTruncated,
         truncatedContent,
         maxLines: 20,
@@ -347,10 +347,10 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     {
       allMarkdownRemark(
         filter: {
-          frontmatter: { private: { ne: true } }
+          frontmatter: { insightPrivate: { ne: true } }
           fileAbsolutePath: { regex: "/insights/" }
         }
-        sort: { order: DESC, fields: [frontmatter___date] }
+        sort: { order: DESC, fields: [frontmatter___insightDate] }
         limit: 1000
       ) {
         edges {
@@ -358,11 +358,12 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
             id
             rawMarkdownBody
             frontmatter {
-              postId: post_id
-              title
-              date
-              tags
-              private
+              insightPostId
+              insightTitle
+              insightDate
+              insightTags
+              insightPrivate
+              insightThumbnail
             }
           }
         }
@@ -376,7 +377,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   }
 
   const insightEdges = insightResults.data.allMarkdownRemark.edges;
-  const publicInsightEdges = insightEdges.filter(({ node }) => !node.frontmatter.private);
+  const publicInsightEdges = insightEdges.filter(({ node }) => !node.frontmatter.insightPrivate);
 
   createInsightListPage({ createPage });
   createInsightDetailPages({ createPage, insightEdges: publicInsightEdges });
@@ -390,8 +391,12 @@ exports.createSchemaCustomization = ({ actions }) => {
   createTypes(`
     type MarkdownRemarkFrontmatter {
       thumbnail: File @fileByRelativePath
-      post_id: String
-      tags: [String]
+      insightPostId: String
+      insightTitle: String
+      insightDate: String
+      insightTags: [String]
+      insightPrivate: Boolean
+      insightThumbnail: String
     }
   `)
 }

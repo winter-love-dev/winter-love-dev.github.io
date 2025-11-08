@@ -153,10 +153,10 @@ export const query = graphql`
   query InsightsListQuery {
     allMarkdownRemark(
       filter: {
-        frontmatter: { private: { ne: true } }
+        frontmatter: { insightPrivate: { ne: true } }
         fileAbsolutePath: { regex: "/insights/" }
       }
-      sort: { order: DESC, fields: [frontmatter___date] }
+      sort: { order: DESC, fields: [frontmatter___insightDate] }
     ) {
       edges {
         node {
@@ -167,11 +167,11 @@ export const query = graphql`
             truncatedHtml
           }
           frontmatter {
-            postId: post_id
-            title
-            date
-            tags
-            private
+            insightPostId
+            insightTitle
+            insightDate
+            insightTags
+            insightPrivate
           }
         }
       }
