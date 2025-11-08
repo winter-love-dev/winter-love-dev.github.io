@@ -1,5 +1,17 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useRef } from 'react';
 import './style.scss';
+
+// Prism.js를 클라이언트에서 import
+let Prism;
+if (typeof window !== 'undefined') {
+  Prism = require('prismjs');
+  require('prismjs/components/prism-kotlin');
+  require('prismjs/components/prism-javascript');
+  require('prismjs/components/prism-typescript');
+  require('prismjs/components/prism-java');
+  require('prismjs/components/prism-python');
+  require('prismjs/components/prism-bash');
+}
 
 // gatsby-node.js의 MAX_CONTENT_LINES와 동일하게 설정
 const MAX_CONTENT_LINES = 20;
@@ -40,17 +52,24 @@ function truncateHtmlContent(html, maxLines = MAX_CONTENT_LINES) {
         lineCount += codeLines;
 
         if (lineCount <= maxLines) {
+          // 코드 블록이 제한 내에 있으면 전체 포함 (하이라이팅 유지)
           elementsToKeep.push(node.cloneNode(true));
         } else {
           // 코드 블록이 제한을 초과하면 잘라서 추가
           const linesToInclude = maxLines - (lineCount - codeLines);
           if (linesToInclude > 0) {
             const truncatedLines = codeText.split('\n').slice(0, linesToInclude);
-            const clonedNode = node.cloneNode(true);
-            const clonedCode = clonedNode.querySelector('code');
-            if (clonedCode) {
-              clonedCode.textContent = truncatedLines.join('\n');
+            const clonedNode = node.cloneNode(false); // pre만 복제 (내용 제외)
+            const clonedCode = document.createElement('code');
+
+            // 원본 code 요소의 클래스 복사 (language-kotlin 등)
+            if (codeElement.className) {
+              clonedCode.className = codeElement.className;
             }
+
+            // 잘린 텍스트 설정 (하이라이팅 없이 plain text)
+            clonedCode.textContent = truncatedLines.join('\n');
+            clonedNode.appendChild(clonedCode);
             elementsToKeep.push(clonedNode);
           }
           shouldTruncate = true;
@@ -113,6 +132,7 @@ function truncateHtmlContent(html, maxLines = MAX_CONTENT_LINES) {
 
 function InsightFeedContent({ html, isDetailPage, isTruncated }) {
   const shouldTruncate = !isDetailPage && isTruncated;
+  const contentRef = useRef(null);
 
   // 클라이언트 사이드에서 HTML 자르기
   const displayHtml = useMemo(() => {
@@ -122,8 +142,23 @@ function InsightFeedContent({ html, isDetailPage, isTruncated }) {
     return html;
   }, [html, shouldTruncate]);
 
+  // truncation 후 Prism.js 다시 실행
+  useEffect(() => {
+    if (shouldTruncate && Prism && contentRef.current) {
+      // 잘린 코드 블록에만 하이라이팅 재적용
+      const codeBlocks = contentRef.current.querySelectorAll('pre code[class*="language-"]');
+      codeBlocks.forEach(block => {
+        Prism.highlightElement(block);
+      });
+    }
+  }, [displayHtml, shouldTruncate]);
+
+  const contentClass = `post-content ${
+    isDetailPage ? 'post-content--detail' : ''
+  } ${shouldTruncate ? 'post-content--truncated' : ''}`.trim();
+
   return (
-    <div className={`post-content ${shouldTruncate ? 'post-content--truncated' : ''}`}>
+    <div className={contentClass} ref={contentRef}>
       <div className="markdown" dangerouslySetInnerHTML={{ __html: displayHtml }} />
     </div>
   );

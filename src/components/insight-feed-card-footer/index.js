@@ -21,16 +21,10 @@ const InsightFeedCardFooter = ({
     }
   };
 
-  // footer는 항상 표시 (tags 때문에)
-  // 단, 상세 페이지에서는 표시 안 함
-  if (isDetailPage) {
-    return null;
-  }
-
   return (
-    <div className="insight-feed-card-footer">
-      {/* 더보기 버튼 - 잘린 경우만 표시 */}
-      {isTruncated && (
+    <div className={`insight-feed-card-footer ${isDetailPage ? 'insight-feed-card-footer--detail' : ''}`}>
+      {/* 더보기 버튼 - 목록 페이지에서 잘린 경우만 표시 */}
+      {!isDetailPage && isTruncated && (
         <div className="insight-feed-card-footer__read-more-wrapper">
           <Link
             to={`/insights/${postId}`}
@@ -55,6 +49,11 @@ const InsightFeedCardFooter = ({
             />
           ))}
         </div>
+      )}
+
+      {/* Spacer - 디테일 페이지에서만 표시 */}
+      {isDetailPage && (
+        <div className="insight-feed-card-footer__spacer"></div>
       )}
     </div>
   );

@@ -20,6 +20,16 @@
     justify-content: flex-end;
     align-items: center;
   }
+
+  &__spacer {
+    height: 20px;
+    width: 100%;
+  }
+
+  // 디테일 페이지 스타일
+  &--detail {
+    padding-bottom: 0;
+  }
 }
 
 // 더보기 버튼

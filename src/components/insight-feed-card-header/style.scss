@@ -4,7 +4,7 @@
 // 헤더 (profile, author, date, tags, icons)
 .insight-feed-card-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   padding: 24px 12px 12px;
   margin-bottom: 12px;
   gap: 12px;
@@ -33,7 +33,7 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 0;
   }
 
   &__nickname {
@@ -49,12 +49,15 @@
     color: var(--secondary-text-color);
     font-weight: 600;
     line-height: 1.3;
+    margin-top: 1px;
   }
 
   &__date {
     font-size: 13px;
-    color: var(--secondary-text-color);
-    margin-top: 2px;
+    color: var(--primary-text-color);
+    opacity: 0.75;
+    font-weight: 600;
+    margin-top: 1px;
     line-height: 1.3;
   }
 

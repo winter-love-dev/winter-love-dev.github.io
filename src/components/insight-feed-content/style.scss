@@ -111,11 +111,17 @@ pre[class*="language-"] {
   justify-content: center;
   width: 90%;
   margin-bottom: 20px;
-  padding: 0 4px 0 4px;
+  padding: 0 12px 0 12px;
 
   // 목록 페이지에서는 높이 제한 없이 컨텐츠만큼 늘어남
   &--truncated {
-    // CSS 높이 제한 제거 - 20줄 제한은 gatsby-node.js에서 처리
+    // CSS 높이 제한 제거 - 20줄 제한은 클라이언트에서 처리
+  }
+
+  // 디테일 페이지 전용 스타일
+  &--detail {
+    // 필요시 디테일 페이지 전용 패딩이나 스타일 설정
+    // 예: padding: 0 12px;
   }
 
   // .markdown pre 스타일을 오버라이드 (다크모드 적용)
