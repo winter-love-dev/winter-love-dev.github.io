@@ -2,54 +2,99 @@
 @use 'prismjs/themes/prism-tomorrow'as *;
 
 .gatsby-highlight {
-  background: #2b2b2b;
+  background: #1e1f22;
   border-radius: 8px;
   margin: 1.5em 0;
   overflow: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 pre[class*="language-"] {
   background: transparent;
   padding: 1.5em;
   margin: 0;
+  color: #bcbec4;
 }
 
 code[class*="language-"] {
   font-size: 14px;
-  line-height: 1.5;
-  font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
+  line-height: 1.6;
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, Monaco, monospace;
+  color: #bcbec4;
 }
 
 .token.keyword {
-  color: #cc7832; // 키워드 (fun, class, val 등)
+  color: #cf8e6d;
+  font-weight: 500;
 }
 
 .token.function {
-  color: #ffc66d; // 함수
+  color: #56a8f5;
 }
 
 .token.string {
-  color: #6a8759; // 문자열
+  color: #6aab73;
 }
 
 .token.comment {
-  color: #808080; // 주석
+  color: #7a7e85;
+  font-style: italic;
 }
 
 .token.number {
-  color: #6897bb; // 숫자
+  color: #2aacb8;
+}
+
+.token.boolean {
+  color: #cf8e6d;
 }
 
 .token.operator {
-  color: #a9b7c6; // 연산자
+  color: #bcbec4;
 }
 
-.token.class-name, .token.namespace {
-  color: #a9b7c6; // 클래스, 네임스페이스
+.token.punctuation {
+  color: #bcbec4;
+}
+
+.token.class-name {
+  color: #56a8f5;
+}
+
+.token.namespace {
+  color: #bcbec4;
 }
 
 .token.annotation {
-  color: #bbb529; // 애노테이션
+  color: #bbb529;
+}
+
+.token.property {
+  color: #c77dbb;
+}
+
+.token.tag {
+  color: #e8bf6a;
+}
+
+.token.attr-name {
+  color: #bababa;
+}
+
+.token.attr-value {
+  color: #6aab73;
+}
+
+.token.builtin {
+  color: #8888c6;
+}
+
+.token.constant {
+  color: #9876aa;
+}
+
+.token.variable {
+  color: #bcbec4;
 }
 
 code[class*="language-"],
