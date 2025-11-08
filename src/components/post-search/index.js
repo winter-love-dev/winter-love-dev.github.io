@@ -82,6 +82,11 @@ function PostSearch({ posts, isHeaderVisible }) {
               </div>
             )}
             noOptionsText="해당하는 글이 없습니다."
+            componentsProps={{
+              paper: {
+                className: 'search-results-paper'
+              }
+            }}
           />
         </div>
       )}

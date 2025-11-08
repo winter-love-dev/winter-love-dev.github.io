@@ -21,12 +21,25 @@
     top: 100%;
     right: 0;
     z-index: 1000;
-    background: var(--background-color);
+    background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     min-width: 300px;
     padding: 8px;
+
+    [data-theme='dark'] & {
+        background: #2a2a2a;
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+}
+
+.search-results-paper {
+    background-color: #ffffff !important;
+
+    [data-theme='dark'] & {
+        background-color: #2a2a2a !important;
+    }
 }
 
 .search-input-wrapper {
@@ -70,9 +83,18 @@
 .search-result-item {
     padding: 8px 12px !important;
     cursor: pointer;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+    &:last-child {
+        border-bottom: none;
+    }
 
     &:hover {
         background-color: var(--hover-bg-color) !important;
+    }
+
+    [data-theme='dark'] & {
+        border-bottom-color: rgba(255, 255, 255, 0.08);
     }
 }
 
@@ -103,8 +125,11 @@
             color: #f57c00 !important;
         }
     }
+}
 
-    [data-theme='dark'] & {
+// 다크모드 대응
+[data-theme='dark'] {
+    .search-result-badge {
         &--article {
             background-color: rgba(25, 118, 210, 0.2) !important;
             color: #90caf9 !important;
@@ -122,6 +147,10 @@
                 color: #ffb74d !important;
             }
         }
+    }
+
+    .search-result-title {
+        color: var(--primary-text-color) !important;
     }
 }
 
