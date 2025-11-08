@@ -151,7 +151,7 @@ function PageHeader({ siteTitle }) {
         {/* 헤더가 숨겨졌을 때 표시되는 로고 */}
         <div className={`floating-logo ${!isHeaderVisible ? 'visible' : 'hidden'}`}>
           <Link className="logo-link" to="/">
-            {siteTitle}
+            Winter's archive
           </Link>
         </div>
         </>

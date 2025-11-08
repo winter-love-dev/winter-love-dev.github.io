@@ -236,39 +236,96 @@
     pointer-events: none;
   }
 
+  // 모바일에서 위치 조정
+  @include mobile {
+    top: 12px;
+    left: 12px;
+  }
+
   .logo-link {
     display: inline-block;
     font-weight: 700;
     font-size: 17px;
     color: var(--primary-text-color);
     text-decoration: none;
-    background-color: rgba(var(--background-color-rgb), 0.5);
+    background-color: rgba(255, 255, 255, 0.8);
     padding: 12px 20px;
     border-radius: 25px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(var(--primary-text-color-rgb), 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12),
+                0 2px 4px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     outline: none;
     -webkit-tap-highlight-color: transparent;
 
+    // 다크모드
+    [data-theme='dark'] & {
+      background-color: rgba(30, 30, 30, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3),
+                  0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
     &:hover {
       text-decoration: none;
-      background-color: rgba(var(--background-color-rgb), 0.7);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      background-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15),
+                  0 3px 6px rgba(0, 0, 0, 0.1);
+      transform: translateY(-1px);
+
+      [data-theme='dark'] & {
+        background-color: rgba(40, 40, 40, 0.9);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4),
+                    0 3px 6px rgba(0, 0, 0, 0.25);
+      }
     }
 
     &:focus {
       outline: none;
-      background-color: rgba(var(--background-color-rgb), 0.7);
+      background-color: rgba(255, 255, 255, 0.9);
+
+      [data-theme='dark'] & {
+        background-color: rgba(40, 40, 40, 0.9);
+      }
     }
 
     &:active {
       outline: none;
-      background-color: rgba(var(--background-color-rgb), 0.7);
+      background-color: rgba(255, 255, 255, 0.9);
+      transform: translateY(0);
+
+      [data-theme='dark'] & {
+        background-color: rgba(40, 40, 40, 0.9);
+      }
     }
 
     &:focus-visible {
       outline: none;
+    }
+
+    // 모바일에서 크기 축소
+    @include mobile {
+      font-size: 14px;
+      padding: 8px 14px;
+      border-radius: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
+                  0 1px 3px rgba(0, 0, 0, 0.06);
+
+      [data-theme='dark'] & {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25),
+                    0 1px 3px rgba(0, 0, 0, 0.15);
+      }
+
+      &:hover {
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12),
+                    0 2px 4px rgba(0, 0, 0, 0.08);
+
+        [data-theme='dark'] & {
+          box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3),
+                      0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+      }
     }
 
     @include md {
