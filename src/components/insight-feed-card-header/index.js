@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'gatsby';
+import { Link, navigate } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
 import { IconButton, Tooltip } from '@mui/material';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import ShareIcon from '@mui/icons-material/Share';
 import CheckIcon from '@mui/icons-material/Check';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import './style.scss';
 
 const InsightFeedCardHeader = ({
@@ -51,8 +52,28 @@ const InsightFeedCardHeader = ({
     }
   };
 
+  // Back 버튼 클릭
+  const handleBack = () => {
+    navigate('/insights');
+  };
+
   return (
     <div className="insight-feed-card-header">
+      {/* Back 버튼 (상세 페이지에서만 표시) */}
+      {isDetailPage && (
+        <div className="insight-feed-card-header__back">
+          <Tooltip title="목록으로" arrow>
+            <IconButton
+              size="small"
+              onClick={handleBack}
+              className="insight-icon-button"
+            >
+              <ArrowBackIcon className="insight-icon" />
+            </IconButton>
+          </Tooltip>
+        </div>
+      )}
+
       {/* 프로필 이미지 - 맨 왼쪽 */}
       {profileImage && (
         <div className="insight-feed-card-header__profile">

@@ -113,6 +113,11 @@ pre[class*="language-"] {
   margin-bottom: 20px;
   padding: 0 4px 0 4px;
 
+  // 목록 페이지에서는 높이 제한 없이 컨텐츠만큼 늘어남
+  &--truncated {
+    // CSS 높이 제한 제거 - 20줄 제한은 gatsby-node.js에서 처리
+  }
+
   // .markdown pre 스타일을 오버라이드 (다크모드 적용)
   .markdown pre {
     background-color: #1e1f22 !important;

@@ -1,0 +1,35 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.insight-detail-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 100px 20px 40px 20px;
+
+  @include mobile {
+    padding: 100px 12px 40px 12px;
+  }
+}
+
+// Thumbnail 이미지
+.insight-detail-thumbnail {
+  width: 480px;
+  max-width: 100%;
+  margin-bottom: 24px;
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 18px;
+    object-fit: cover;
+  }
+
+  @include mobile {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}

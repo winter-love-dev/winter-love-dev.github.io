@@ -2,31 +2,82 @@ import React from 'react';
 import { graphql } from 'gatsby';
 import Layout from '../layout';
 import Seo from '../components/seo';
+import InsightFeedCard from '../components/insight-feed-card';
+import Profile from '../components/profile';
+import Utterances from '../components/utterances';
+import Divider from '../components/divider-horizon';
+import { getImage } from 'gatsby-plugin-image';
+import './insight-detail-template.scss';
 
-// 임시 Insight 상세 페이지 (Phase 4에서 정식 작성 예정)
-const InsightDetailTemplate = ({ data, pageContext }) => {
+const InsightDetailTemplate = ({ data }) => {
   const insight = data.markdownRemark;
-  const { isTruncated, truncatedContent, maxLines } = pageContext;
+  const { comments } = data.site?.siteMetadata;
+  const utterancesRepo = comments?.utterances?.repo;
+
+  // Author 데이터
+  const profileImage = getImage(data.profileImage);
+  const { nickname, bio } = data.site.siteMetadata.author;
+  const authorData = { profileImage, nickname, role: bio.role };
+
+  // Thumbnail 이미지
+  const thumbnailUrl = insight.frontmatter.insightThumbnail
+    ? insight.frontmatter.insightThumbnail.publicURL
+    : null;
 
   return (
     <Layout pageType="insight">
-      <Seo title={`${insight.frontmatter.insightTitle} | Winter's archive`} />
-      <div style={{ padding: '40px', maxWidth: '800px', margin: '0 auto' }}>
-        <h1>Insight Detail (임시 페이지)</h1>
-        <p>Phase 1 빌드 테스트용 임시 페이지입니다.</p>
+      <Seo
+        title={`${insight.frontmatter.insightTitle} | Winter's archive`}
+        description={insight.excerpt}
+        thumbnail={thumbnailUrl}
+        slug={`/insights/${insight.frontmatter.insightPostId}`}
+        tags={insight.frontmatter.insightTags}
+      />
 
-        <div style={{ border: '1px solid #ccc', padding: '16px', marginTop: '24px' }}>
-          <h2>{insight.frontmatter.insightTitle}</h2>
-          <p>post-id: {insight.frontmatter.insightPostId}</p>
-          <p>date: {insight.frontmatter.insightDate}</p>
-          <p>tags: {insight.frontmatter.insightTags?.join(', ') || 'none'}</p>
-          <p>isTruncated: {isTruncated ? 'Yes' : 'No'}</p>
-          <p>maxLines: {maxLines}</p>
+      <div className="insight-detail-container">
+        {/* Thumbnail 이미지 (있는 경우) */}
+        {thumbnailUrl && (
+          <div className="insight-detail-thumbnail">
+            <img src={thumbnailUrl} alt={insight.frontmatter.insightTitle} />
+          </div>
+        )}
 
-          <hr />
+        {/* InsightFeedCard 재사용 (isDetailPage=true) */}
+        <InsightFeedCard
+          insight={{
+            id: insight.id,
+            html: insight.html,
+            frontmatter: {
+              insightPostId: insight.frontmatter.insightPostId,
+              insightTitle: insight.frontmatter.insightTitle,
+              insightDate: insight.frontmatter.insightDate,
+              insightTags: insight.frontmatter.insightTags,
+            },
+            fields: {
+              isTruncated: false, // 상세 페이지에서는 항상 false
+            }
+          }}
+          authorData={authorData}
+          isDetailPage={true}
+          loadedCount={0} // 상세 페이지에서는 사용하지 않음
+        />
 
-          <div dangerouslySetInnerHTML={{ __html: insight.html }} />
-        </div>
+        {/* Divider */}
+        <Divider />
+
+        {/* Profile 컴포넌트 */}
+        <Profile />
+
+        {/* Divider */}
+        <Divider />
+
+        {/* Utterances 댓글 */}
+        {utterancesRepo && (
+          <Utterances
+            repo={utterancesRepo}
+            path={`/insights/${insight.frontmatter.insightPostId}`}
+          />
+        )}
       </div>
     </Layout>
   );
@@ -40,12 +91,36 @@ export const query = graphql`
     ) {
       id
       html
+      excerpt(pruneLength: 500, truncate: true)
       rawMarkdownBody
       frontmatter {
         insightPostId
         insightTitle
         insightDate
         insightTags
+        insightThumbnail {
+          publicURL
+        }
+      }
+    }
+    profileImage: file(relativePath: { eq: "profile.jpeg" }) {
+      childImageSharp {
+        gatsbyImageData(width: 48, height: 48, layout: FIXED)
+      }
+    }
+    site {
+      siteMetadata {
+        author {
+          nickname
+          bio {
+            role
+          }
+        }
+        comments {
+          utterances {
+            repo
+          }
+        }
       }
     }
   }

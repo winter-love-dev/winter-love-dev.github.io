@@ -29,10 +29,6 @@ const InsightFeedCard = ({
   } = frontmatter || {};
 
   const isTruncated = fields?.isTruncated || false;
-  const truncatedHtml = fields?.truncatedHtml || '';
-
-  // 표시할 HTML 결정
-  const displayHtml = isDetailPage ? html : (truncatedHtml || html);
 
   return (
     <article className="insight-feed-card">
@@ -56,7 +52,11 @@ const InsightFeedCard = ({
       )}
 
       {/* Body: 마크다운 컨텐츠 (코드 블록 포함) */}
-      <InsightFeedContent html={displayHtml} />
+      <InsightFeedContent
+        html={html}
+        isDetailPage={isDetailPage}
+        isTruncated={isTruncated}
+      />
 
       {/* Footer: "...더보기" 링크, tags */}
       <InsightFeedCardFooter

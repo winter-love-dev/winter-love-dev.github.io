@@ -171,7 +171,6 @@ export const query = graphql`
           html
           fields {
             isTruncated
-            truncatedHtml
           }
           frontmatter {
             insightPostId

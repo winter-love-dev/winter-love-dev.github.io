@@ -11,6 +11,11 @@
   width: 100%;
   max-width: 100%;
 
+  // Back 버튼 (상세 페이지)
+  &__back {
+    flex-shrink: 0;
+  }
+
   // 프로필 이미지
   &__profile {
     flex-shrink: 0;

@@ -30,8 +30,11 @@ marked.setOptions({
   renderer: renderer
 });
 
+// 설정 상수: 컨텐츠 제한 라인 수
+const MAX_CONTENT_LINES = 20;
+
 // Helper function: 20줄 제한 로직
-const truncateMarkdown = (rawMarkdownBody, maxLines = 20) => {
+const truncateMarkdown = (rawMarkdownBody, maxLines = MAX_CONTENT_LINES) => {
   if (!rawMarkdownBody) return { isTruncated: false, truncatedContent: '', lineCount: 0 };
 
   // frontmatter 제거
@@ -110,13 +113,27 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
     // Insight 노드에만 truncated 필드 추가
     const fileNode = getNode(node.parent);
     if (fileNode && fileNode.absolutePath && fileNode.absolutePath.includes('/insights/')) {
-      const { isTruncated, truncatedContent } = truncateMarkdown(node.rawMarkdownBody, 20);
+      const { isTruncated, truncatedContent } = truncateMarkdown(node.rawMarkdownBody);
 
-      // truncated markdown을 HTML로 변환
-      const truncatedHtml = marked(truncatedContent);
-
+      // isTruncated 저장
       createNodeField({ node, name: `isTruncated`, value: isTruncated });
-      createNodeField({ node, name: `truncatedHtml`, value: truncatedHtml });
+
+      // 잘린 마크다운을 HTML로 변환
+      if (isTruncated && truncatedContent) {
+        // 이미지 경로를 상대 경로에서 절대 경로로 변환
+        const insightFolder = fileNode.relativePath.replace('/index.md', '');
+        const contentWithFixedImages = truncatedContent.replace(
+          /!\[(.*?)\]\(\.\/(.+?)\)/g,
+          (match, alt, filename) => {
+            // Gatsby가 처리한 이미지 경로 형식으로 변환 불가능하므로 원본 경로 사용
+            return `![${alt}](/${insightFolder}/${filename})`;
+          }
+        );
+
+        // marked로 HTML 변환
+        const truncatedHtml = marked(contentWithFixedImages);
+        createNodeField({ node, name: `truncatedHtml`, value: truncatedHtml });
+      }
     }
   }
 };
@@ -176,76 +193,6 @@ const createArticlesPages = ({ createPage, publicEdges }) => {
   });
 };
 
-// Helper function: 20줄 제한 로직
-const truncateContent = (rawMarkdownBody, maxLines = 20) => {
-  if (!rawMarkdownBody) return { isTruncated: false, truncatedContent: '', lineCount: 0 };
-
-  // frontmatter 제거
-  const contentWithoutFrontmatter = rawMarkdownBody.replace(/^---[\s\S]*?---\n/, '');
-  const lines = contentWithoutFrontmatter.split('\n');
-
-  let lineCount = 0;
-  let truncatedLines = [];
-  let inCodeBlock = false;
-  let isTruncated = false;
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-
-    // 코드 블록 시작/종료 감지
-    if (line.trim().startsWith('```')) {
-      if (!inCodeBlock) {
-        inCodeBlock = true;
-        truncatedLines.push(line);
-        lineCount++;
-      } else {
-        inCodeBlock = false;
-        truncatedLines.push(line);
-        lineCount++;
-      }
-
-      if (lineCount >= maxLines) {
-        if (inCodeBlock) {
-          truncatedLines.push('```'); // 코드 블록 강제 종료
-        }
-        isTruncated = true;
-        break;
-      }
-      continue;
-    }
-
-    // 이미지 감지 (![...](...) 패턴)
-    if (line.trim().match(/^!\[.*\]\(.*\)$/)) {
-      lineCount++; // 이미지는 1 line
-      truncatedLines.push(line);
-
-      if (lineCount >= maxLines) {
-        isTruncated = true;
-        break;
-      }
-      continue;
-    }
-
-    // 일반 라인 (코드 블록 내부 포함)
-    lineCount++;
-    truncatedLines.push(line);
-
-    if (lineCount >= maxLines) {
-      if (inCodeBlock) {
-        truncatedLines.push('```'); // 코드 블록 강제 종료
-      }
-      isTruncated = true;
-      break;
-    }
-  }
-
-  return {
-    isTruncated: isTruncated || lineCount > maxLines,
-    truncatedContent: truncatedLines.join('\n'),
-    lineCount,
-  };
-};
-
 // Insight 목록 페이지 생성 (category 없음)
 const createInsightListPage = ({ createPage }) => {
   const insightsTemplate = require.resolve(`./src/pages/insights.js`);
@@ -263,17 +210,11 @@ const createInsightDetailPages = ({ createPage, insightEdges }) => {
   insightEdges.forEach(({ node }) => {
     const postId = node.frontmatter.insightPostId;
 
-    // 20줄 제한 로직 적용
-    const { isTruncated, truncatedContent } = truncateContent(node.rawMarkdownBody, 20);
-
     createPage({
       path: `/insights/${postId}`,
       component: insightDetailTemplate,
       context: {
         insightPostId: postId,
-        isTruncated,
-        truncatedContent,
-        maxLines: 20,
       },
     });
   });
@@ -363,7 +304,6 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
               insightDate
               insightTags
               insightPrivate
-              insightThumbnail
             }
           }
         }
@@ -396,7 +336,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       insightDate: String
       insightTags: [String]
       insightPrivate: Boolean
-      insightThumbnail: String
+      insightThumbnail: File @fileByRelativePath
     }
   `)
 }
