@@ -1,0 +1,107 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.insight-feed-card {
+  border: 1px solid var(--post-card-border-color);
+  border-radius: 18px;
+  padding: 0 8px 0 8px;
+  margin-bottom: 24px;
+  background-color: #ffffff;
+  transition: box-shadow 0.2s;
+  width: 480px;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden; // 카드 밖으로 넘치는 컨텐츠 방지
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  // 다크 모드
+  [data-theme='dark'] & {
+    background-color: #1a1a1a;
+    border-color: rgba(255, 255, 255, 0.1);
+
+    &:hover {
+      box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  @include md {
+    width: 100%;
+    margin-bottom: 24px;
+  }
+}
+
+// 제목 (피드 카드용 - 컴팩트)
+.insight-feed-card__title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--primary-text-color);
+  margin-bottom: 12px;
+  margin-top: 8px;
+  padding: 0 12px 0 12px;
+  line-height: 1.6;
+}
+
+// 제목 (상세 페이지용 - 원래 스타일)
+.insight-feed-card__title--detail {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--primary-text-color);
+  margin-bottom: 24px;
+  margin-top: 16px;
+  padding: 0 12px 0 12px;
+  line-height: 1.4;
+
+  @include md {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+}
+
+// post-content 컴포넌트 오버라이드 (InsightFeedCard 전용 스타일)
+.insight-feed-card {
+  .post-content {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 0;
+    overflow-x: auto; // 긴 코드 블록 등이 있을 때 스크롤 가능하게
+
+    // 이미지: 패딩 무시하고 카드 좌우 꽉차게
+    img {
+      width: calc(100% + 36px) !important;
+      max-width: calc(100% + 36px) !important;
+      margin-left: -18px !important;
+      margin-right: -18px !important;
+      margin-top: 16px;
+      margin-bottom: 16px;
+      display: block;
+      object-fit: cover;
+    }
+
+    // 코드 블록 반응형 처리
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    // 테이블 반응형 처리
+    table {
+      display: block;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+  }
+
+  @include md {
+    .post-content {
+      img {
+        width: calc(100% + 16px) !important;
+        max-width: calc(100% + 16px) !important;
+        margin-left: -8px !important;
+        margin-right: -8px !important;
+      }
+    }
+  }
+}

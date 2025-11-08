@@ -1,0 +1,111 @@
+@use '../../styles/variables' as *;
+
+// Footer
+.insight-feed-card-footer {
+  margin-top: 24px;
+  padding: 8px 12px 18px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  &__read-more-wrapper {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  &__spacer {
+    height: 20px;
+    width: 100%;
+  }
+
+  // 디테일 페이지 스타일
+  &--detail {
+    padding-bottom: 0;
+  }
+}
+
+// 더보기 버튼
+.insight-read-more-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  height: 32px;
+  font-size: 13px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0 16px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+  &__icon {
+    font-size: 18px !important;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, #111827 0%, #030712 100%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  // 다크 모드 대응
+  @media (prefers-color-scheme: dark) {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+
+    &:hover {
+      background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+  }
+}
+
+// MUI Chip 커스터마이징
+.insight-tag-chip {
+  height: 32px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  background-color: transparent !important;
+  color: #3b82f6 !important;
+  border: none !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  padding: 0 6px !important;
+  transition: all 0.2s ease !important;
+
+  .MuiChip-label {
+    padding: 0 !important;
+  }
+
+  &:hover {
+    background-color: rgba(59, 130, 246, 0.1) !important;
+  }
+
+  // 다크 모드 대응
+  @media (prefers-color-scheme: dark) {
+    background-color: transparent !important;
+    color: #60a5fa !important;
+
+    &:hover {
+      background-color: rgba(59, 130, 246, 0.15) !important;
+    }
+  }
+}

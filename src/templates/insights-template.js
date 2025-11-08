@@ -26,7 +26,7 @@ function InsightsTemplate({ pageContext }) {
 
   return (
     <Layout>
-      <Seo title="Insights | 개발자 윈터" />
+      <Seo title="Insights | Winter's archive" />
       <CategoryPageHeader title={categories[currentTabIndex]} subtitle={`${posts.length} insights`} />
       <PostTabs
         tabIndex={currentTabIndex}

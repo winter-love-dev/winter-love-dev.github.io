@@ -12,7 +12,7 @@ function ProjectsTemplate({ data }) {
   const { timestamps, projects, career } = about;
   return (
     <Layout>
-      <Seo title="Projects | 개발자 윈터" />
+      <Seo title="Projects | Winter's archive" />
       <TimeStampSection timestamps={timestamps} />
       <ProjectSection title="회사 프로젝트" projects={career} />
       <ProjectSection title="개인 프로젝트" projects={projects} />

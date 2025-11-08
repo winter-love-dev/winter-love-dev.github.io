@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
 
-const Image = ({ src, ...rest }) => {
+const Image = ({ src, noFade, ...rest }) => {
   const data = useStaticQuery(graphql`
     query {
       images: allFile(filter: { sourceInstanceName: { eq: "assets" } }) {
@@ -33,7 +33,11 @@ const Image = ({ src, ...rest }) => {
     return <img src={publicURL} alt={publicURL} {...rest} />;
   }
 
-  return <GatsbyImage image={childImageSharp.gatsbyImageData} alt={publicURL} {...rest} />;
+  const imageProps = noFade
+    ? { ...rest, loading: 'eager', backgroundColor: 'transparent' }
+    : rest;
+
+  return <GatsbyImage image={childImageSharp.gatsbyImageData} alt={publicURL} {...imageProps} />;
 };
 
 export default Image;

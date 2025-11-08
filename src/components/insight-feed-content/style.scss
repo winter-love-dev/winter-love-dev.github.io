@@ -10,10 +10,13 @@
 }
 
 pre[class*="language-"] {
-  background: transparent;
+  background: #1e1f22 !important;
   padding: 1.5em;
-  margin: 0;
+  margin: 1.5em 0;
   color: #bcbec4;
+  border-radius: 8px;
+  overflow: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 code[class*="language-"] {
@@ -108,4 +111,64 @@ pre[class*="language-"] {
   justify-content: center;
   width: 90%;
   margin-bottom: 20px;
+  padding: 0 12px 0 12px;
+
+  // 목록 페이지에서는 높이 제한 없이 컨텐츠만큼 늘어남
+  &--truncated {
+    // CSS 높이 제한 제거 - 20줄 제한은 클라이언트에서 처리
+  }
+
+  // 디테일 페이지 전용 스타일
+  &--detail {
+    // 필요시 디테일 페이지 전용 패딩이나 스타일 설정
+    // 예: padding: 0 12px;
+  }
+
+  // .markdown pre 스타일을 오버라이드 (다크모드 적용)
+  .markdown pre {
+    background-color: #1e1f22 !important;
+  }
+
+  .markdown pre[class*="language-"] {
+    background-color: #1e1f22 !important;
+  }
+
+  // Insight 피드 카드에서는 텍스트 크기와 간격을 줄임
+  .markdown {
+    font-size: 15px;
+    line-height: 1.6;
+
+    p {
+      margin: 0.8em 0;
+    }
+
+    h1 {
+      font-size: 1.6em;
+      margin: 1em 0 0.6em 0;
+    }
+
+    h2 {
+      font-size: 1.4em;
+      margin: 1em 0 0.6em 0;
+    }
+
+    h3 {
+      font-size: 1.2em;
+      margin: 0.8em 0 0.5em 0;
+    }
+
+    ul, ol {
+      margin: 0.8em 0;
+      padding-left: 1.5em;
+    }
+
+    li {
+      margin: 0.3em 0;
+    }
+
+    blockquote {
+      margin: 0.8em 0;
+      padding: 0.5em 1em;
+    }
+  }
 }

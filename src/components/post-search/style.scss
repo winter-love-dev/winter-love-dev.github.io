@@ -21,12 +21,25 @@
     top: 100%;
     right: 0;
     z-index: 1000;
-    background: var(--background-color);
+    background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     min-width: 300px;
     padding: 8px;
+
+    [data-theme='dark'] & {
+        background: #2a2a2a;
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+}
+
+.search-results-paper {
+    background-color: #ffffff !important;
+
+    [data-theme='dark'] & {
+        background-color: #2a2a2a !important;
+    }
 }
 
 .search-input-wrapper {
@@ -64,4 +77,89 @@
     .MuiInput-underline:after {
         border-bottom-color: var(--primary-text-color);
     }
+}
+
+// 검색 결과 아이템
+.search-result-item {
+    padding: 8px 12px !important;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &:hover {
+        background-color: var(--hover-bg-color) !important;
+    }
+
+    [data-theme='dark'] & {
+        border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+}
+
+.search-result-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.search-result-badge {
+    flex-shrink: 0;
+
+    &--article {
+        background-color: #e3f2fd !important;
+        color: #1976d2 !important;
+
+        .MuiChip-icon {
+            color: #1976d2 !important;
+        }
+    }
+
+    &--insight {
+        background-color: #fff3e0 !important;
+        color: #f57c00 !important;
+
+        .MuiChip-icon {
+            color: #f57c00 !important;
+        }
+    }
+}
+
+// 다크모드 대응
+[data-theme='dark'] {
+    .search-result-badge {
+        &--article {
+            background-color: rgba(25, 118, 210, 0.2) !important;
+            color: #90caf9 !important;
+
+            .MuiChip-icon {
+                color: #90caf9 !important;
+            }
+        }
+
+        &--insight {
+            background-color: rgba(245, 124, 0, 0.2) !important;
+            color: #ffb74d !important;
+
+            .MuiChip-icon {
+                color: #ffb74d !important;
+            }
+        }
+    }
+
+    .search-result-title {
+        color: var(--primary-text-color) !important;
+    }
+}
+
+.search-result-title {
+    flex: 1;
+    color: var(--primary-text-color);
+    font-size: 14px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

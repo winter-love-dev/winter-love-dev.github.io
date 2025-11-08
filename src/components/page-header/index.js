@@ -67,16 +67,22 @@ function PageHeader({ siteTitle }) {
     <StaticQuery
       query={graphql`
         query SearchIndexQuery {
-          allMarkdownRemark(sort: { fields: frontmatter___date, order: DESC }) {
+          allMarkdownRemark(
+            filter: { frontmatter: { private: { ne: true }, insightPrivate: { ne: true } } }
+            sort: { fields: frontmatter___date, order: DESC }
+          ) {
             edges {
               node {
                 frontmatter {
                   title
                   categories
+                  insightTitle
+                  insightPostId
                 }
                 fields {
                   slug
                 }
+                fileAbsolutePath
               }
             }
           }
@@ -145,7 +151,7 @@ function PageHeader({ siteTitle }) {
         {/* 헤더가 숨겨졌을 때 표시되는 로고 */}
         <div className={`floating-logo ${!isHeaderVisible ? 'visible' : 'hidden'}`}>
           <Link className="logo-link" to="/">
-            {siteTitle}
+            Winter's archive
           </Link>
         </div>
         </>
