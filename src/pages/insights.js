@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { graphql } from 'gatsby';
+import { graphql, navigate } from 'gatsby';
 import { getImage } from 'gatsby-plugin-image';
+import { Chip, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import Layout from '../layout';
 import Seo from '../components/seo';
 import InsightFeedCard from '../components/insight-feed-card';
@@ -15,7 +17,7 @@ const EmptyMessage = () => {
   );
 };
 
-const InsightsPage = ({ data }) => {
+const InsightsPage = ({ data, location }) => {
   const allInsights = useMemo(() => data.allMarkdownRemark.edges.map(({ node }) => node), [data.allMarkdownRemark.edges]);
 
   // Author 메타데이터 (한 번만 추출)
@@ -25,6 +27,24 @@ const InsightsPage = ({ data }) => {
   const PAGE_SIZE = 5;
   const INITIAL_LOAD = 5; // 초기 로드는 5개 (화면을 확실히 채우기 위해)
 
+  // URL 쿼리 파라미터에서 태그 읽기
+  const [selectedTag, setSelectedTag] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(location.search);
+      return params.get('tag') || null;
+    }
+    return null;
+  });
+
+  // 태그로 필터링된 insights
+  const filteredInsights = useMemo(() => {
+    if (!selectedTag) return allInsights;
+    return allInsights.filter(insight => {
+      const tags = insight.frontmatter.insightTags || [];
+      return tags.includes(selectedTag);
+    });
+  }, [allInsights, selectedTag]);
+
   // 무한 스크롤 상태
   const [displayedInsights, setDisplayedInsights] = useState([]);
   const [hasMore, setHasMore] = useState(true);
@@ -32,32 +52,34 @@ const InsightsPage = ({ data }) => {
 
   // Intersection Observer ref
   const observerTarget = useRef(null);
-  const allInsightsRef = useRef(allInsights);
+  const filteredInsightsRef = useRef(filteredInsights);
   const pageSizeRef = useRef(PAGE_SIZE);
   const hasMoreRef = useRef(hasMore);
   const currentPageRef = useRef(currentPage);
 
   // refs 업데이트
   useEffect(() => {
-    allInsightsRef.current = allInsights;
+    filteredInsightsRef.current = filteredInsights;
     hasMoreRef.current = hasMore;
     currentPageRef.current = currentPage;
-  }, [allInsights, hasMore, currentPage]);
+  }, [filteredInsights, hasMore, currentPage]);
 
-  // sessionStorage 스크롤 복원
+  // 태그 변경시 또는 초기 로드
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
     const savedScroll = sessionStorage.getItem('insights-scroll');
     const savedLoadedCount = sessionStorage.getItem('insights-loaded-count');
+    const savedTag = sessionStorage.getItem('insights-tag');
 
-    if (savedLoadedCount) {
-      // 저장된 개수만큼 미리 로드
+    // 태그가 변경되었거나 처음 로드인 경우
+    if (savedLoadedCount && savedTag === selectedTag) {
+      // 저장된 개수만큼 미리 로드 (같은 태그인 경우에만)
       const loadedCount = parseInt(savedLoadedCount, 10);
-      const initialDisplayed = allInsights.slice(0, loadedCount);
+      const initialDisplayed = filteredInsights.slice(0, loadedCount);
       setDisplayedInsights(initialDisplayed);
       setCurrentPage(Math.ceil(loadedCount / PAGE_SIZE));
-      setHasMore(loadedCount < allInsights.length);
+      setHasMore(loadedCount < filteredInsights.length);
 
       // 스크롤 위치 복원
       if (savedScroll) {
@@ -69,14 +91,20 @@ const InsightsPage = ({ data }) => {
       // sessionStorage 초기화
       sessionStorage.removeItem('insights-scroll');
       sessionStorage.removeItem('insights-loaded-count');
+      sessionStorage.removeItem('insights-tag');
     } else {
-      // 초기 로드 (처음 5개 - 화면을 채우기 위해)
-      const initialDisplayed = allInsights.slice(0, INITIAL_LOAD);
+      // 초기 로드 또는 태그 변경 (처음 5개 - 화면을 채우기 위해)
+      const initialDisplayed = filteredInsights.slice(0, INITIAL_LOAD);
       setDisplayedInsights(initialDisplayed);
       setCurrentPage(Math.ceil(INITIAL_LOAD / PAGE_SIZE));
-      setHasMore(allInsights.length > INITIAL_LOAD);
+      setHasMore(filteredInsights.length > INITIAL_LOAD);
+
+      // 태그 변경시 스크롤 맨 위로
+      if (savedTag !== selectedTag) {
+        window.scrollTo(0, 0);
+      }
     }
-  }, [allInsights]);
+  }, [filteredInsights, selectedTag]);
 
   // Intersection Observer 설정 - 딱 한 번만 생성
   useEffect(() => {
@@ -91,11 +119,11 @@ const InsightsPage = ({ data }) => {
           const nextPage = currentPageRef.current + 1;
           const startIndex = 0;
           const endIndex = nextPage * pageSizeRef.current;
-          const newDisplayed = allInsightsRef.current.slice(startIndex, endIndex);
+          const newDisplayed = filteredInsightsRef.current.slice(startIndex, endIndex);
 
           setDisplayedInsights(newDisplayed);
           setCurrentPage(nextPage);
-          setHasMore(endIndex < allInsightsRef.current.length);
+          setHasMore(endIndex < filteredInsightsRef.current.length);
         }
       },
       {
@@ -117,6 +145,23 @@ const InsightsPage = ({ data }) => {
     };
   }, []); // 빈 배열 - 딱 한 번만 실행!
 
+  // 태그 필터 핸들러
+  const handleTagClick = (tag) => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('insights-tag', tag);
+    }
+    setSelectedTag(tag);
+    navigate(`/insights?tag=${encodeURIComponent(tag)}`);
+  };
+
+  const handleClearFilter = () => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('insights-tag');
+    }
+    setSelectedTag(null);
+    navigate('/insights');
+  };
+
   // 빈 상태 처리
   if (allInsights.length === 0) {
     return (
@@ -132,6 +177,24 @@ const InsightsPage = ({ data }) => {
       <Seo title="Insights | Winter's archive" />
 
       <div className="insights-container">
+        {/* 태그 필터 UI */}
+        {selectedTag && (
+          <div className="insights-filter-bar">
+            <button
+              onClick={handleClearFilter}
+              className="insights-read-all-button"
+            >
+              Read all insights
+            </button>
+            <Chip
+              label={`#${selectedTag}`}
+              className="insights-filter-tag"
+            />
+            <span className="insights-filter-count">
+              {filteredInsights.length}개의 글
+            </span>
+          </div>
+        )}
         {displayedInsights.map((insight, index) => (
           <InsightFeedCard
             key={insight.id}
@@ -139,6 +202,7 @@ const InsightsPage = ({ data }) => {
             authorData={authorData}
             isDetailPage={false}
             loadedCount={displayedInsights.length}
+            onTagClick={handleTagClick}
           />
         ))}
 

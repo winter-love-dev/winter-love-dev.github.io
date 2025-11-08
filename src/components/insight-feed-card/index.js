@@ -8,7 +8,8 @@ const InsightFeedCard = ({
   insight,
   authorData,
   isDetailPage = false,
-  loadedCount
+  loadedCount,
+  onTagClick
 }) => {
   if (!insight) return null;
 
@@ -65,6 +66,7 @@ const InsightFeedCard = ({
         isDetailPage={isDetailPage}
         loadedCount={loadedCount}
         tags={insightTags}
+        onTagClick={onTagClick}
       />
     </article>
   );

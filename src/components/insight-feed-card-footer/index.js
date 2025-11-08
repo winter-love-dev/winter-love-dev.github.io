@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'gatsby';
+import { Link, navigate } from 'gatsby';
 import { Chip } from '@mui/material';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import './style.scss';
@@ -9,7 +9,8 @@ const InsightFeedCardFooter = ({
   isTruncated,
   isDetailPage,
   loadedCount,
-  tags = []
+  tags = [],
+  onTagClick
 }) => {
   // sessionStorage 저장 핸들러
   const handleReadMoreClick = () => {
@@ -43,9 +44,17 @@ const InsightFeedCardFooter = ({
           {tags.map((tag, index) => (
             <Chip
               key={index}
-              label={tag}
+              label={`#${tag}`}
               size="small"
               className="insight-tag-chip"
+              onClick={() => {
+                if (onTagClick) {
+                  onTagClick(tag);
+                } else {
+                  // fallback: 직접 네비게이션
+                  navigate(`/insights?tag=${encodeURIComponent(tag)}`);
+                }
+              }}
             />
           ))}
         </div>
