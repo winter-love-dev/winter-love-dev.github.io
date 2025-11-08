@@ -67,16 +67,22 @@ function PageHeader({ siteTitle }) {
     <StaticQuery
       query={graphql`
         query SearchIndexQuery {
-          allMarkdownRemark(sort: { fields: frontmatter___date, order: DESC }) {
+          allMarkdownRemark(
+            filter: { frontmatter: { private: { ne: true }, insightPrivate: { ne: true } } }
+            sort: { fields: frontmatter___date, order: DESC }
+          ) {
             edges {
               node {
                 frontmatter {
                   title
                   categories
+                  insightTitle
+                  insightPostId
                 }
                 fields {
                   slug
                 }
+                fileAbsolutePath
               }
             }
           }
