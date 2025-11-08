@@ -23,3 +23,6 @@ public
 
 # Mac files
 .DS_Store
+
+# IDE
+.idea/
