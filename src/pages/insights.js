@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { graphql } from 'gatsby';
+import { getImage } from 'gatsby-plugin-image';
 import Layout from '../layout';
 import Seo from '../components/seo';
 import InsightFeedCard from '../components/insight-feed-card';
@@ -16,6 +17,11 @@ const EmptyMessage = () => {
 
 const InsightsPage = ({ data }) => {
   const allInsights = useMemo(() => data.allMarkdownRemark.edges.map(({ node }) => node), [data.allMarkdownRemark.edges]);
+
+  // Author 메타데이터 (한 번만 추출)
+  const profileImage = getImage(data.profileImage);
+  const { nickname, bio } = data.site.siteMetadata.author;
+  const authorData = { profileImage, nickname, role: bio.role };
   const PAGE_SIZE = 5;
   const INITIAL_LOAD = 5; // 초기 로드는 5개 (화면을 확실히 채우기 위해)
 
@@ -114,7 +120,7 @@ const InsightsPage = ({ data }) => {
   // 빈 상태 처리
   if (allInsights.length === 0) {
     return (
-      <Layout>
+      <Layout pageType="insight">
         <Seo title="Insights | Winter's archive" />
         <EmptyMessage />
       </Layout>
@@ -122,7 +128,7 @@ const InsightsPage = ({ data }) => {
   }
 
   return (
-    <Layout>
+    <Layout pageType="insight">
       <Seo title="Insights | Winter's archive" />
 
       <div className="insights-container">
@@ -130,6 +136,7 @@ const InsightsPage = ({ data }) => {
           <InsightFeedCard
             key={insight.id}
             insight={insight}
+            authorData={authorData}
             isDetailPage={false}
             loadedCount={displayedInsights.length}
           />
@@ -172,6 +179,21 @@ export const query = graphql`
             insightDate
             insightTags
             insightPrivate
+          }
+        }
+      }
+    }
+    profileImage: file(relativePath: { eq: "profile.jpeg" }) {
+      childImageSharp {
+        gatsbyImageData(width: 48, height: 48, layout: FIXED)
+      }
+    }
+    site {
+      siteMetadata {
+        author {
+          nickname
+          bio {
+            role
           }
         }
       }

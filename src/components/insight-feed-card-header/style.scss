@@ -1,76 +1,85 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
-// 헤더 (author, date, tags, icons)
+// 헤더 (profile, author, date, tags, icons)
 .insight-feed-card-header {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
-  padding: 8px 8px 12px 8px;
+  padding: 24px 12px 12px;
   margin-bottom: 12px;
   gap: 12px;
   width: 100%;
   max-width: 100%;
 
-  &__left {
-    flex: 1;
-    min-width: 0; // flex item이 텍스트 넘침 방지
-    overflow: hidden; // 텍스트가 너무 길 경우 대비
-  }
-
-  &__author {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--primary-text-color);
-    margin-bottom: 4px;
-    word-break: break-word; // 긴 단어 줄바꿈
-  }
-
-  &__date {
-    font-size: 14px;
-    color: var(--secondary-text-color);
-    margin-bottom: 8px;
-    white-space: nowrap; // 날짜는 한 줄로
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  &__tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 8px;
-  }
-
-  &__right {
-    display: flex;
-    gap: 4px;
+  // 프로필 이미지
+  &__profile {
     flex-shrink: 0;
   }
 
-  @include md {
+  .insight-profile-image {
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+  }
+
+  // 중앙 컨텐츠 영역
+  &__content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__nickname {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary-text-color);
+    word-break: break-word;
+    line-height: 1.3;
+  }
+
+  &__role {
+    font-size: 13px;
+    color: var(--secondary-text-color);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  &__date {
+    font-size: 13px;
+    color: var(--secondary-text-color);
+    margin-top: 2px;
+    line-height: 1.3;
+  }
+
+  // 우측 아이콘
+  &__actions {
+    display: flex;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  @include mobile {
+    padding: 24px 12px 8px 12px;
     gap: 8px;
 
-    &__author {
-      font-size: 15px;
+    .insight-profile-image {
+      width: 40px;
+      height: 40px;
+    }
+
+    &__nickname {
+      font-size: 14px;
+    }
+
+    &__role {
+      font-size: 12px;
     }
 
     &__date {
-      font-size: 13px;
+      font-size: 12px;
     }
-  }
-}
-
-// MUI Chip 커스터마이징
-.insight-tag-chip {
-  height: 24px !important;
-  font-size: 12px !important;
-  background-color: var(--tag-bg-color) !important;
-  color: var(--tag-text-color) !important;
-  cursor: default !important;
-
-  &:hover {
-    background-color: var(--tag-bg-color) !important;
   }
 }
 

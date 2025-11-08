@@ -2,15 +2,21 @@
 @use '../styles/mixins' as *;
 
 .insights-container {
-  max-width: 800px;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  //width: 600px;
+  max-width: 100%;
+  min-width: 50%;
   margin: 0 auto;
   padding: 100px 20px 40px 20px;
   box-sizing: border-box;
 
   // 모바일 버전
   @include mobile {
-    padding: 100px 0px 40px 0px;
+    padding: 100px 12px 40px 12px;
+    width: 100%;
   }
 }
 

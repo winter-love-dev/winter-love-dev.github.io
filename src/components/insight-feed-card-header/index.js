@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { Link } from 'gatsby';
-import { IconButton, Tooltip, Chip } from '@mui/material';
+import { GatsbyImage } from 'gatsby-plugin-image';
+import { IconButton, Tooltip } from '@mui/material';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import ShareIcon from '@mui/icons-material/Share';
 import CheckIcon from '@mui/icons-material/Check';
 import './style.scss';
 
 const InsightFeedCardHeader = ({
-  author = 'Winter',
+  profileImage,
+  nickname,
+  role,
   date,
-  tags = [],
   postId,
   isDetailPage = false,
   loadedCount
@@ -51,24 +53,26 @@ const InsightFeedCardHeader = ({
 
   return (
     <div className="insight-feed-card-header">
-      <div className="insight-feed-card-header__left">
-        <div className="insight-feed-card-header__author">{author}</div>
+      {/* 프로필 이미지 - 맨 왼쪽 */}
+      {profileImage && (
+        <div className="insight-feed-card-header__profile">
+          <GatsbyImage
+            image={profileImage}
+            alt={nickname}
+            className="insight-profile-image"
+          />
+        </div>
+      )}
+
+      {/* 중앙 컨텐츠 */}
+      <div className="insight-feed-card-header__content">
+        <div className="insight-feed-card-header__nickname">{nickname}</div>
+        <div className="insight-feed-card-header__role">{role}</div>
         <div className="insight-feed-card-header__date">{formatDate(date)}</div>
-        {tags && tags.length > 0 && (
-          <div className="insight-feed-card-header__tags">
-            {tags.map((tag, index) => (
-              <Chip
-                key={index}
-                label={tag}
-                size="small"
-                className="insight-tag-chip"
-              />
-            ))}
-          </div>
-        )}
       </div>
 
-      <div className="insight-feed-card-header__right">
+      {/* 우측 아이콘 */}
+      <div className="insight-feed-card-header__actions">
         {!isDetailPage && (
           <Tooltip title="상세 보기" arrow>
             <IconButton

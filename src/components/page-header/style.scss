@@ -22,6 +22,17 @@
     opacity: 0;
   }
 
+  // Insight 페이지일 때 헤더 배경색 변경
+  .page-wrapper--insight & {
+    // 라이트 모드: 베이지 톤
+    background-color: rgb(244, 242, 238);
+  }
+
+  // 다크 모드: 살짝 밝은 회색
+  [data-theme='dark'] .page-wrapper--insight & {
+    background-color: rgb(30, 32, 35);
+  }
+
   .page-header {
     display: flex;
     align-items: center;

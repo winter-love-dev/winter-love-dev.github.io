@@ -6,10 +6,14 @@ import './style.scss';
 
 const InsightFeedCard = ({
   insight,
+  authorData,
   isDetailPage = false,
   loadedCount
 }) => {
   if (!insight) return null;
+
+  // authorData에서 props 추출
+  const { profileImage, nickname, role } = authorData || {};
 
   const {
     frontmatter,
@@ -32,11 +36,12 @@ const InsightFeedCard = ({
 
   return (
     <article className="insight-feed-card">
-      {/* Header: author, date, tags, icons */}
+      {/* Header: author, date, icons */}
       <InsightFeedCardHeader
-        author="Winter"
+        profileImage={profileImage}
+        nickname={nickname}
+        role={role}
         date={insightDate}
-        tags={insightTags}
         postId={insightPostId}
         isDetailPage={isDetailPage}
         loadedCount={loadedCount}
@@ -53,12 +58,13 @@ const InsightFeedCard = ({
       {/* Body: 마크다운 컨텐츠 (코드 블록 포함) */}
       <InsightFeedContent html={displayHtml} />
 
-      {/* Footer: "...더보기" 링크 */}
+      {/* Footer: "...더보기" 링크, tags */}
       <InsightFeedCardFooter
         postId={insightPostId}
         isTruncated={isTruncated}
         isDetailPage={isDetailPage}
         loadedCount={loadedCount}
+        tags={insightTags}
       />
     </article>
   );

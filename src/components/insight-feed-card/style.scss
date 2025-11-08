@@ -4,11 +4,11 @@
 .insight-feed-card {
   border: 1px solid var(--post-card-border-color);
   border-radius: 18px;
-  padding: 18px;
+  padding: 0 8px 0 8px;
   margin-bottom: 24px;
-  background-color: var(--bg-color);
+  background-color: #ffffff;
   transition: box-shadow 0.2s;
-  width: 100%;
+  width: 480px;
   max-width: 100%;
   box-sizing: border-box;
   overflow: hidden; // 카드 밖으로 넘치는 컨텐츠 방지
@@ -17,9 +17,19 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 
+  // 다크 모드
+  [data-theme='dark'] & {
+    background-color: #1a1a1a;
+    border-color: rgba(255, 255, 255, 0.1);
+
+    &:hover {
+      box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
+    }
+  }
+
   @include md {
+    width: 100%;
     margin-bottom: 24px;
-    padding: 8px;
   }
 }
 
@@ -30,6 +40,7 @@
   color: var(--primary-text-color);
   margin-bottom: 12px;
   margin-top: 8px;
+  padding: 0 4px;
   line-height: 1.6;
 }
 

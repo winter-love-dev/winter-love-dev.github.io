@@ -19,6 +19,17 @@ body {
     background-color: var(--background-color) !important;
 }
 
+// Insight 페이지 전용 배경색
+body:has(.page-wrapper--insight) {
+    // 라이트 모드: 베이지 톤
+    background-color: rgb(244, 242, 238) !important;
+}
+
+// 다크 모드: 살짝 밝은 회색
+[data-theme='dark'] body:has(.page-wrapper--insight) {
+    background-color: rgb(30, 32, 35) !important;
+}
+
 
 a {
     color: var(--link-text-color);
