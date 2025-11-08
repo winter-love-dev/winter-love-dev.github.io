@@ -64,31 +64,104 @@ const createArticlesPages = ({ createPage, publicEdges }) => {
   });
 };
 
-const createInsightsPages = ({ createPage, publicEdges }) => {
-  const insightsTemplate = require.resolve(`./src/templates/insights-template.js`);
-  const categorySet = new Set(['All']);
+// Helper function: 20줄 제한 로직
+const truncateContent = (rawMarkdownBody, maxLines = 20) => {
+  if (!rawMarkdownBody) return { isTruncated: false, truncatedContent: '', lineCount: 0 };
 
-  publicEdges.forEach(({ node }) => {
-    const postCategories = node.frontmatter.categories.split(' ');
-    postCategories.forEach((category) => categorySet.add(category));
-  });
+  // frontmatter 제거
+  const contentWithoutFrontmatter = rawMarkdownBody.replace(/^---[\s\S]*?---\n/, '');
+  const lines = contentWithoutFrontmatter.split('\n');
 
-  const categories = [...categorySet];
+  let lineCount = 0;
+  let truncatedLines = [];
+  let inCodeBlock = false;
+  let isTruncated = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // 코드 블록 시작/종료 감지
+    if (line.trim().startsWith('```')) {
+      if (!inCodeBlock) {
+        inCodeBlock = true;
+        truncatedLines.push(line);
+        lineCount++;
+      } else {
+        inCodeBlock = false;
+        truncatedLines.push(line);
+        lineCount++;
+      }
+
+      if (lineCount >= maxLines) {
+        if (inCodeBlock) {
+          truncatedLines.push('```'); // 코드 블록 강제 종료
+        }
+        isTruncated = true;
+        break;
+      }
+      continue;
+    }
+
+    // 이미지 감지 (![...](...) 패턴)
+    if (line.trim().match(/^!\[.*\]\(.*\)$/)) {
+      lineCount++; // 이미지는 1 line
+      truncatedLines.push(line);
+
+      if (lineCount >= maxLines) {
+        isTruncated = true;
+        break;
+      }
+      continue;
+    }
+
+    // 일반 라인 (코드 블록 내부 포함)
+    lineCount++;
+    truncatedLines.push(line);
+
+    if (lineCount >= maxLines) {
+      if (inCodeBlock) {
+        truncatedLines.push('```'); // 코드 블록 강제 종료
+      }
+      isTruncated = true;
+      break;
+    }
+  }
+
+  return {
+    isTruncated: isTruncated || lineCount > maxLines,
+    truncatedContent: truncatedLines.join('\n'),
+    lineCount,
+  };
+};
+
+// Insight 목록 페이지 생성 (category 없음)
+const createInsightListPage = ({ createPage }) => {
+  const insightsTemplate = require.resolve(`./src/pages/insights.js`);
 
   createPage({
     path: `/insights`,
     component: insightsTemplate,
-    context: { currentCategory: 'All', publicEdges, categories },
   });
+};
 
-  categories.forEach((currentCategory) => {
+// Insight 상세 페이지 생성
+const createInsightDetailPages = ({ createPage, insightEdges }) => {
+  const insightDetailTemplate = require.resolve(`./src/templates/insight-detail-template.js`);
+
+  insightEdges.forEach(({ node }) => {
+    const postId = node.frontmatter.postId;
+
+    // 20줄 제한 로직 적용
+    const { isTruncated, truncatedContent } = truncateContent(node.rawMarkdownBody, 20);
+
     createPage({
-      path: `/insights/${currentCategory}`,
-      component: insightsTemplate,
+      path: `/insights/${postId}`,
+      component: insightDetailTemplate,
       context: {
-        currentCategory,
-        categories,
-        publicEdges: publicEdges.filter(({ node }) => node.frontmatter.categories.includes(currentCategory)),
+        postId,
+        isTruncated,
+        truncatedContent,
+        maxLines: 20,
       },
     });
   });
@@ -106,11 +179,15 @@ const createProjectsPages = ({ createPage }) => {
 exports.createPages = async ({ actions, graphql, reporter }) => {
   const { createPage } = actions;
 
-  const results = await graphql(`
+  // ===== Article 프로세스 =====
+  const articleResults = await graphql(`
     {
       allMarkdownRemark(
-        filter: { frontmatter: { private: { ne: true } } }
-        sort: { order: DESC, fields: [frontmatter___date] }, 
+        filter: {
+          frontmatter: { private: { ne: true } }
+          fileAbsolutePath: { regex: "/content/" }
+        }
+        sort: { order: DESC, fields: [frontmatter___date] }
         limit: 1000
       ) {
         edges {
@@ -142,25 +219,67 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     }
   `);
 
-  // Handle errors
-  if (results.errors) {
-    reporter.panicOnBuild(`Error while running GraphQL query.`);
+  if (articleResults.errors) {
+    reporter.panicOnBuild(`Error while running Article GraphQL query.`);
     return;
   }
 
-  const edges = results.data.allMarkdownRemark.edges;
-  const publicEdges = edges.filter(({ node }) => !node.frontmatter.private);
-  createBlogPages({ createPage, publicEdges });
-  createArticlesPages({ createPage, publicEdges });
-  createInsightsPages({ createPage, publicEdges });
+  const articleEdges = articleResults.data.allMarkdownRemark.edges;
+  const publicArticleEdges = articleEdges.filter(({ node }) => !node.frontmatter.private);
+
+  createBlogPages({ createPage, publicEdges: publicArticleEdges });
+  createArticlesPages({ createPage, publicEdges: publicArticleEdges });
+
+  // ===== Insight 프로세스 =====
+  const insightResults = await graphql(`
+    {
+      allMarkdownRemark(
+        filter: {
+          frontmatter: { private: { ne: true } }
+          fileAbsolutePath: { regex: "/insights/" }
+        }
+        sort: { order: DESC, fields: [frontmatter___date] }
+        limit: 1000
+      ) {
+        edges {
+          node {
+            id
+            rawMarkdownBody
+            frontmatter {
+              postId: post_id
+              title
+              date
+              tags
+              private
+            }
+          }
+        }
+      }
+    }
+  `);
+
+  if (insightResults.errors) {
+    reporter.panicOnBuild(`Error while running Insight GraphQL query.`);
+    return;
+  }
+
+  const insightEdges = insightResults.data.allMarkdownRemark.edges;
+  const publicInsightEdges = insightEdges.filter(({ node }) => !node.frontmatter.private);
+
+  createInsightListPage({ createPage });
+  createInsightDetailPages({ createPage, insightEdges: publicInsightEdges });
+
+  // ===== Projects 페이지 =====
   createProjectsPages({ createPage });
 };
 
 exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions
   createTypes(`
-    type Frontmatter {
+    type MarkdownRemarkFrontmatter {
       thumbnail: File @fileByRelativePath
+      post_id: String
+      tags: [String]
     }
   `)
 }
