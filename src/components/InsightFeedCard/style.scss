@@ -1,0 +1,234 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.insight-feed-card {
+  border: 1px solid var(--post-card-border-color);
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 24px;
+  background-color: var(--bg-color);
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  @include md {
+    margin-bottom: 24px;
+  }
+}
+
+// 헤더 (author, date, tags, icons)
+.insight-feed-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  gap: 12px;
+
+  &__left {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__author {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-text-color);
+    margin-bottom: 4px;
+  }
+
+  &__date {
+    font-size: 14px;
+    color: var(--secondary-text-color);
+    margin-bottom: 8px;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  &__right {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+}
+
+// MUI Chip 커스터마이징
+.insight-tag-chip {
+  height: 24px !important;
+  font-size: 12px !important;
+  background-color: var(--tag-bg-color) !important;
+  color: var(--tag-text-color) !important;
+  cursor: default !important;
+
+  &:hover {
+    background-color: var(--tag-bg-color) !important;
+  }
+}
+
+// 아이콘 버튼
+.insight-icon-button {
+  color: var(--secondary-text-color) !important;
+
+  &:hover {
+    color: var(--primary-text-color) !important;
+    background-color: var(--hover-bg-color) !important;
+  }
+}
+
+.insight-icon {
+  font-size: 20px !important;
+
+  &--success {
+    color: #4caf50 !important;
+  }
+}
+
+// 제목 (상세 페이지에서만)
+.insight-feed-card__title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary-text-color);
+  margin-bottom: 16px;
+  line-height: 1.4;
+
+  @include md {
+    font-size: 20px;
+  }
+}
+
+// 컨텐츠 영역
+.insight-feed-card__content {
+  color: var(--primary-text-color);
+  font-size: 16px;
+  line-height: 1.7;
+  word-break: break-word;
+
+  // 이미지: 패딩 무시하고 카드 좌우 꽉차게
+  img {
+    width: calc(100% + 36px);
+    margin-left: -18px;
+    margin-right: -18px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    display: block;
+    object-fit: cover;
+  }
+
+  // 코드 블록
+  pre {
+    background-color: var(--code-block-bg-color);
+    border-radius: 8px;
+    padding: 16px;
+    overflow-x: auto;
+    margin: 16px 0;
+
+    code {
+      font-family: 'Fira Code', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+  }
+
+  // 인라인 코드
+  code {
+    background-color: var(--inline-code-bg-color);
+    color: var(--inline-code-text-color);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+  }
+
+  // 제목
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--primary-text-color);
+    margin-top: 24px;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  h1 { font-size: 28px; }
+  h2 { font-size: 24px; }
+  h3 { font-size: 20px; }
+  h4 { font-size: 18px; }
+  h5 { font-size: 16px; }
+  h6 { font-size: 14px; }
+
+  // 단락
+  p {
+    margin-bottom: 12px;
+  }
+
+  // 리스트
+  ul, ol {
+    margin-left: 20px;
+    margin-bottom: 12px;
+
+    li {
+      margin-bottom: 6px;
+    }
+  }
+
+  // 인용구
+  blockquote {
+    border-left: 4px solid var(--blockquote-border-color);
+    padding-left: 16px;
+    margin: 16px 0;
+    color: var(--secondary-text-color);
+    font-style: italic;
+  }
+
+  // 링크
+  a {
+    color: var(--link-color);
+    text-decoration: underline;
+
+    &:hover {
+      color: var(--link-hover-color);
+    }
+  }
+
+  // 구분선
+  hr {
+    border: none;
+    border-top: 1px solid var(--divider-color);
+    margin: 24px 0;
+  }
+}
+
+// "...더보기" 링크
+.insight-feed-card__read-more {
+  display: inline-block;
+  margin-top: 24px;
+  color: var(--secondary-text-color);
+  font-size: 16px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: var(--primary-text-color);
+    text-decoration: underline;
+  }
+}
+
+// 반응형
+@include md {
+  .insight-feed-card {
+    padding: 16px;
+
+    &__content {
+      img {
+        width: calc(100% + 32px);
+        margin-left: -16px;
+        margin-right: -16px;
+      }
+    }
+  }
+}

@@ -1,32 +1,8 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { graphql } from 'gatsby';
 import Layout from '../layout';
 import Seo from '../components/seo';
-
-// 임시 InsightFeedCard 컴포넌트 (Phase 3에서 정식 작성 예정)
-const TempInsightFeedCard = ({ insight }) => {
-  return (
-    <div style={{
-      border: '1px solid #ccc',
-      borderRadius: '18px',
-      padding: '18px',
-      marginBottom: '24px',
-    }}>
-      <h2 style={{ margin: '0 0 8px 0' }}>{insight.frontmatter.title}</h2>
-      <p style={{ margin: '0', color: '#666' }}>
-        post-id: {insight.frontmatter.postId}
-      </p>
-      <p style={{ margin: '4px 0 0 0', color: '#666' }}>
-        date: {insight.frontmatter.date}
-      </p>
-      {insight.frontmatter.tags && insight.frontmatter.tags.length > 0 && (
-        <p style={{ margin: '4px 0 0 0', color: '#666' }}>
-          tags: {insight.frontmatter.tags.join(', ')}
-        </p>
-      )}
-    </div>
-  );
-};
+import InsightFeedCard from '../components/InsightFeedCard';
 
 // 빈 상태 메시지 컴포넌트
 const EmptyMessage = () => {
@@ -155,7 +131,12 @@ const InsightsPage = ({ data }) => {
 
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '40px 20px' }}>
         {displayedInsights.map((insight, index) => (
-          <TempInsightFeedCard key={insight.id} insight={insight} />
+          <InsightFeedCard
+            key={insight.id}
+            insight={insight}
+            isDetailPage={false}
+            loadedCount={displayedInsights.length}
+          />
         ))}
 
         {/* Intersection Observer 타겟 */}
@@ -184,6 +165,11 @@ export const query = graphql`
       edges {
         node {
           id
+          html
+          fields {
+            isTruncated
+            truncatedHtml
+          }
           frontmatter {
             postId: post_id
             title

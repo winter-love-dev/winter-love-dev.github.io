@@ -1,0 +1,103 @@
+import React, { useState } from 'react';
+import { Link } from 'gatsby';
+import { IconButton, Tooltip, Chip } from '@mui/material';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import ShareIcon from '@mui/icons-material/Share';
+import CheckIcon from '@mui/icons-material/Check';
+
+const InsightFeedCardHeader = ({
+  author = 'Winter',
+  date,
+  tags = [],
+  postId,
+  isDetailPage = false,
+  loadedCount
+}) => {
+  const [isShared, setIsShared] = useState(false);
+
+  // 날짜 포맷팅 (YYYY.MM.DD)
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const d = new Date(dateString);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}.${month}.${day}`;
+  };
+
+  // Share 버튼 클릭
+  const handleShare = () => {
+    const url = typeof window !== 'undefined'
+      ? `${window.location.origin}/insights/${postId}`
+      : `/insights/${postId}`;
+
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(url);
+      setIsShared(true);
+      setTimeout(() => setIsShared(false), 2000);
+    }
+  };
+
+  // Book 아이콘 클릭 시 sessionStorage 저장
+  const handleBookClick = () => {
+    if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
+      sessionStorage.setItem('insights-scroll', window.scrollY);
+      if (loadedCount) {
+        sessionStorage.setItem('insights-loaded-count', loadedCount);
+      }
+    }
+  };
+
+  return (
+    <div className="insight-feed-card-header">
+      <div className="insight-feed-card-header__left">
+        <div className="insight-feed-card-header__author">{author}</div>
+        <div className="insight-feed-card-header__date">{formatDate(date)}</div>
+        {tags && tags.length > 0 && (
+          <div className="insight-feed-card-header__tags">
+            {tags.map((tag, index) => (
+              <Chip
+                key={index}
+                label={tag}
+                size="small"
+                className="insight-tag-chip"
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="insight-feed-card-header__right">
+        {!isDetailPage && (
+          <Tooltip title="상세 보기" arrow>
+            <IconButton
+              size="small"
+              component={Link}
+              to={`/insights/${postId}`}
+              onClick={handleBookClick}
+              className="insight-icon-button"
+            >
+              <MenuBookIcon className="insight-icon" />
+            </IconButton>
+          </Tooltip>
+        )}
+
+        <Tooltip title={isShared ? '복사 완료!' : 'URL 복사'} arrow>
+          <IconButton
+            size="small"
+            onClick={handleShare}
+            className="insight-icon-button"
+          >
+            {isShared ? (
+              <CheckIcon className="insight-icon insight-icon--success" />
+            ) : (
+              <ShareIcon className="insight-icon" />
+            )}
+          </IconButton>
+        </Tooltip>
+      </div>
+    </div>
+  );
+};
+
+export default InsightFeedCardHeader;

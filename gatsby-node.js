@@ -1,11 +1,95 @@
 const { createFilePath } = require(`gatsby-source-filesystem`);
 const path = require('path');
+const { marked } = require('marked');
+
+// Helper function: 20줄 제한 로직
+const truncateMarkdown = (rawMarkdownBody, maxLines = 20) => {
+  if (!rawMarkdownBody) return { isTruncated: false, truncatedContent: '', lineCount: 0 };
+
+  // frontmatter 제거
+  const contentWithoutFrontmatter = rawMarkdownBody.replace(/^---[\s\S]*?---\n/, '');
+  const lines = contentWithoutFrontmatter.split('\n');
+
+  let lineCount = 0;
+  let truncatedLines = [];
+  let inCodeBlock = false;
+  let isTruncated = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // 코드 블록 시작/종료 감지
+    if (line.trim().startsWith('```')) {
+      if (!inCodeBlock) {
+        inCodeBlock = true;
+        truncatedLines.push(line);
+        lineCount++;
+      } else {
+        inCodeBlock = false;
+        truncatedLines.push(line);
+        lineCount++;
+      }
+
+      if (lineCount >= maxLines) {
+        if (inCodeBlock) {
+          truncatedLines.push('```'); // 코드 블록 강제 종료
+        }
+        isTruncated = true;
+        break;
+      }
+      continue;
+    }
+
+    // 이미지 감지 (![...](...) 패턴)
+    if (line.trim().match(/^!\[.*\]\(.*\)$/)) {
+      lineCount++; // 이미지는 1 line
+      truncatedLines.push(line);
+
+      if (lineCount >= maxLines) {
+        isTruncated = true;
+        break;
+      }
+      continue;
+    }
+
+    // 일반 라인 (코드 블록 내부 포함)
+    lineCount++;
+    truncatedLines.push(line);
+
+    if (lineCount >= maxLines) {
+      if (inCodeBlock) {
+        truncatedLines.push('```'); // 코드 블록 강제 종료
+      }
+      isTruncated = true;
+      break;
+    }
+  }
+
+  return {
+    isTruncated: isTruncated || lineCount > maxLines,
+    truncatedContent: truncatedLines.join('\n'),
+    lineCount,
+  };
+};
 
 exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions;
+
   if (node.internal.type === `MarkdownRemark`) {
     const slug = createFilePath({ node, getNode, basePath: `content` });
     createNodeField({ node, name: `slug`, value: slug });
+
+    // Insight 노드에만 truncated 필드 추가
+    const fileNode = getNode(node.parent);
+    if (fileNode && fileNode.absolutePath && fileNode.absolutePath.includes('/insights/')) {
+      const { isTruncated, truncatedContent } = truncateMarkdown(node.rawMarkdownBody, 20);
+
+      // truncated markdown을 HTML로 변환
+      const truncatedHtml = marked(truncatedContent);
+
+      createNodeField({ node, name: `isTruncated`, value: isTruncated });
+      createNodeField({ node, name: `truncatedHtml`, value: truncatedHtml });
+    }
   }
 };
 
