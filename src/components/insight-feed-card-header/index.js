@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, navigate } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
 import { IconButton, Tooltip } from '@mui/material';
@@ -6,6 +6,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import ShareIcon from '@mui/icons-material/Share';
 import CheckIcon from '@mui/icons-material/Check';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import PersonIcon from '@mui/icons-material/Person';
 import './style.scss';
 
 const InsightFeedCardHeader = ({
@@ -18,6 +19,8 @@ const InsightFeedCardHeader = ({
   loadedCount
 }) => {
   const [isShared, setIsShared] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const profileRef = useRef(null);
 
   // 날짜 포맷팅 (YYYY.MM.DD)
   const formatDate = (dateString) => {
@@ -57,6 +60,37 @@ const InsightFeedCardHeader = ({
     navigate('/insights');
   };
 
+  // 프로필 클릭
+  const handleProfileClick = (e) => {
+    e.stopPropagation();
+    setShowTooltip(!showTooltip);
+  };
+
+  // About 페이지로 이동
+  const handleGoToAbout = (e) => {
+    e.stopPropagation();
+    navigate('/about');
+  };
+
+  // 외부 클릭 감지
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setShowTooltip(false);
+      }
+    };
+
+    if (showTooltip) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [showTooltip]);
+
   return (
     <div className="insight-feed-card-header">
       {/* Back 버튼 (상세 페이지에서만 표시) */}
@@ -74,22 +108,42 @@ const InsightFeedCardHeader = ({
         </div>
       )}
 
-      {/* 프로필 이미지 - 맨 왼쪽 */}
-      {profileImage && (
-        <div className="insight-feed-card-header__profile">
-          <GatsbyImage
-            image={profileImage}
-            alt={nickname}
-            className="insight-profile-image"
-          />
-        </div>
-      )}
+      {/* 프로필 영역 (클릭 가능) */}
+      <div
+        className="insight-feed-card-header__profile-section"
+        onClick={handleProfileClick}
+        ref={profileRef}
+      >
+        {/* 프로필 이미지 */}
+        {profileImage && (
+          <div className="insight-feed-card-header__profile">
+            <GatsbyImage
+              image={profileImage}
+              alt={nickname}
+              className="insight-profile-image"
+            />
+          </div>
+        )}
 
-      {/* 중앙 컨텐츠 */}
-      <div className="insight-feed-card-header__content">
-        <div className="insight-feed-card-header__nickname">{nickname}</div>
-        <div className="insight-feed-card-header__role">{role}</div>
-        <div className="insight-feed-card-header__date">{formatDate(date)}</div>
+        {/* 중앙 컨텐츠 */}
+        <div className="insight-feed-card-header__content">
+          <div className="insight-feed-card-header__nickname">{nickname}</div>
+          <div className="insight-feed-card-header__role">{role}</div>
+          <div className="insight-feed-card-header__date">{formatDate(date)}</div>
+        </div>
+
+        {/* 말풍선 툴팁 */}
+        {showTooltip && (
+          <div className="insight-profile-tooltip">
+            <button
+              className="insight-profile-tooltip__button"
+              onClick={handleGoToAbout}
+            >
+              <PersonIcon className="insight-profile-tooltip__icon" />
+              Go about page?
+            </button>
+          </div>
+        )}
       </div>
 
       {/* 우측 아이콘 */}

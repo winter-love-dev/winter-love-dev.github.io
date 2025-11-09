@@ -3,6 +3,7 @@ import { graphql, navigate } from 'gatsby';
 import { getImage } from 'gatsby-plugin-image';
 import { Chip, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Layout from '../layout';
 import Seo from '../components/seo';
 import InsightFeedCard from '../components/insight-feed-card';
@@ -12,7 +13,7 @@ import './insights.scss';
 const EmptyMessage = () => {
   return (
     <div className="insights-empty-message">
-      모든 인사이트를 확인하셨어요 🤗
+      You've seen all insights 🤗
     </div>
   );
 };
@@ -184,6 +185,7 @@ const InsightsPage = ({ data, location }) => {
               onClick={handleClearFilter}
               className="insights-read-all-button"
             >
+              <ArrowBackIcon style={{ fontSize: '18px' }} />
               Read all insights
             </button>
             <Chip
@@ -191,7 +193,7 @@ const InsightsPage = ({ data, location }) => {
               className="insights-filter-tag"
             />
             <span className="insights-filter-count">
-              {filteredInsights.length}개의 글
+              {filteredInsights.length} {filteredInsights.length === 1 ? 'insight' : 'insights'}
             </span>
           </div>
         )}

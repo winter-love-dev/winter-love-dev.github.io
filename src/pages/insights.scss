@@ -6,7 +6,6 @@
   flex-direction: column;
   align-items: center;
   width: 80%;
-  //width: 600px;
   max-width: 100%;
   min-width: 50%;
   margin: 0 auto;
@@ -15,7 +14,7 @@
 
   // 모바일 버전
   @include mobile {
-    padding: 100px 12px 40px 12px;
+    padding: 100px 0 40px 0;
     width: 100%;
   }
 }
@@ -23,6 +22,7 @@
 .insights-filter-bar {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 12px;
   width: 100%;
   margin-bottom: 24px;

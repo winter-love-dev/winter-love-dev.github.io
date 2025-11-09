@@ -5,8 +5,42 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 15px;
   padding: 20px;
-  text-align: center;
+  position: relative;
+}
+
+.profile-clickable {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+  position: relative;
+  border-radius: 12px;
+  padding: 8px;
+  margin: -8px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--hover-bg-color);
+  }
+}
+
+.profile-left-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 12px;
+  gap: 15px;
+  flex-shrink: 0;
+}
+
+.profile-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .profile-image {
@@ -23,17 +57,25 @@
   object-fit: cover;
 }
 
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
 .profile-name {
-  margin-top: 15px;
   font-size: 18px;
   font-weight: 600;
   color: var(--primary-text-color);
+  text-align: left;
 }
 
 .profile-nickname {
   margin-top: 5px;
   font-size: 14px;
   color: var(--primary-text-color);
+  text-align: left;
 }
 
 .profile-role {
@@ -41,6 +83,7 @@
   font-size: 14px;
   font-weight: 500;
   color: var(--secondary-text-color);
+  text-align: left;
 }
 
 .profile-description {
@@ -50,6 +93,7 @@
   flex-direction: column;
   gap: 4px;
   color: var(--content-text-color);
+  text-align: left;
 }
 
 .description-item {
@@ -60,19 +104,104 @@
   margin-top: 10px;
   font-size: 12px;
   color: var(--secondary-text-color);
+  text-align: left;
 }
 
 .profile-links {
-  margin-top: 15px;
   display: flex;
   gap: 15px;
+  justify-content: center;
 }
 
 .social-icon {
   width: 24px;
   height: 24px;
   transition: all 0.2s;
+
   &:hover {
     opacity: 0.7;
+  }
+}
+
+a[href*="github"] .social-icon {
+  color: #000000;
+
+  [data-theme='dark'] & {
+    color: #ffffff;
+  }
+}
+
+// 프로필 말풍선 툴팁
+.profile-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 12px;
+  z-index: 0;
+  animation: profileTooltipFadeIn 0.2s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-top-color: #1f2937;
+
+    @media (prefers-color-scheme: dark) {
+      border-top-color: #2563eb;
+    }
+  }
+
+  &__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: linear-gradient(135deg, #111827 0%, #030712 100%);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+
+      &:hover {
+        background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
+      }
+    }
+  }
+
+  &__icon {
+    font-size: 18px !important;
+  }
+}
+
+@keyframes profileTooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 }

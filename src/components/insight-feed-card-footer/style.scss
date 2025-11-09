@@ -22,7 +22,11 @@
   }
 
   &__spacer {
-    height: 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 24px;
     width: 100%;
   }
 
@@ -67,6 +71,46 @@
   }
 
   // 다크 모드 대응
+  @media (prefers-color-scheme: dark) {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+
+    &:hover {
+      background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+  }
+}
+
+// 뒤로가기 버튼 (디테일 페이지)
+.insight-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  font-size: 13px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+  &:hover {
+    background: linear-gradient(135deg, #111827 0%, #030712 100%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
   @media (prefers-color-scheme: dark) {
     background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
     box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);

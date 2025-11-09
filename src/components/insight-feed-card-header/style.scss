@@ -16,6 +16,25 @@
     flex-shrink: 0;
   }
 
+  // 프로필 섹션 (클릭 가능 영역)
+  &__profile-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+    cursor: pointer;
+    position: relative;
+    border-radius: 12px;
+    padding: 4px;
+    margin: -4px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: var(--hover-bg-color);
+    }
+  }
+
   // 프로필 이미지
   &__profile {
     flex-shrink: 0;
@@ -29,11 +48,10 @@
 
   // 중앙 컨텐츠 영역
   &__content {
-    flex: 1;
-    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 0;
+    min-width: 0;
   }
 
   &__nickname {
@@ -106,5 +124,78 @@
 
   &--success {
     color: #4caf50 !important;
+  }
+}
+
+// 프로필 말풍선 툴팁
+.insight-profile-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 12px;
+  z-index: 0;
+  animation: tooltipFadeIn 0.2s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 24px;
+    border: 8px solid transparent;
+    border-top-color: #1f2937;
+
+    @media (prefers-color-scheme: dark) {
+      border-top-color: #2563eb;
+    }
+  }
+
+  &__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: linear-gradient(135deg, #111827 0%, #030712 100%);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+
+      &:hover {
+        background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
+      }
+    }
+  }
+
+  &__icon {
+    font-size: 18px !important;
+  }
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
