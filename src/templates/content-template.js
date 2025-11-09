@@ -5,11 +5,9 @@ import Seo from '../components/seo';
 import ArticleNavigator from '../components/post-navigator';
 import Post from '../models/post';
 import Utterances from '../components/utterances';
-import Profile from '../components/profile';
-import BuyMeACoffeeWrapper from '../components/buy-me-a-coffe-wrapper';
+import ProfileWithDividers from '../components/profile-with-dividers';
 import ArticleHeader from '../components/post-header';
 import ArticleContent from '../components/post-content';
-import Divider from '../components/divider-horizon';
 
 function ContentTemplate({ data }) {
   const curPost = new Post(data.cur);
@@ -31,10 +29,7 @@ function ContentTemplate({ data }) {
       />
       <ArticleHeader post={curPost} />
       <ArticleContent html={curPost.html} />
-      <BuyMeACoffeeWrapper />
-      <Divider />
-      <Profile />
-      <Divider />
+      <ProfileWithDividers />
       <ArticleNavigator prevPost={prevPost} nextPost={nextPost} />
       {utterancesRepo && <Utterances repo={utterancesRepo} path={curPost.slug} />}
     </Layout>

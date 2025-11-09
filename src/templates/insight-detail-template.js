@@ -3,9 +3,8 @@ import { graphql } from 'gatsby';
 import Layout from '../layout';
 import Seo from '../components/seo';
 import InsightFeedCard from '../components/insight-feed-card';
-import Profile from '../components/profile';
+import ProfileWithDividers from '../components/profile-with-dividers';
 import Utterances from '../components/utterances';
-import Divider from '../components/divider-horizon';
 import { getImage } from 'gatsby-plugin-image';
 import './insight-detail-template.scss';
 
@@ -62,14 +61,8 @@ const InsightDetailTemplate = ({ data }) => {
           loadedCount={0} // 상세 페이지에서는 사용하지 않음
         />
 
-        {/* Divider */}
-        <Divider />
-
-        {/* Profile 컴포넌트 */}
-        <Profile />
-
-        {/* Divider */}
-        <Divider />
+        {/* Profile 컴포넌트 (with dividers) */}
+        <ProfileWithDividers />
 
         {/* Utterances 댓글 */}
         {utterancesRepo && (

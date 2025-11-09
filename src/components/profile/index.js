@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { graphql, useStaticQuery, navigate } from "gatsby";
 import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import PersonIcon from '@mui/icons-material/Person';
+import BuyMeACoffeeWrapper from '../buy-me-a-coffe-wrapper';
 import "./style.scss";
 
 const Profile = () => {
@@ -164,6 +165,11 @@ const Profile = () => {
             </button>
           </div>
         )}
+      </div>
+
+      {/* BuyMeACoffee - 좌측 정렬 */}
+      <div className="profile-donation">
+        <BuyMeACoffeeWrapper />
       </div>
     </div>
   );
