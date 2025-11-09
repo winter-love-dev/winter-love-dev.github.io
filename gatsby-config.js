@@ -35,7 +35,10 @@ module.exports = {
       resolve: 'gatsby-plugin-robots-txt',
       options: {
         host: siteUrl,
-        sitemap: `${siteUrl}/sitemap.xml`,
+        sitemap: [
+          `${siteUrl}/sitemap-index.xml`,
+          `${siteUrl}/sitemap-0.xml`,
+        ],
         policy: [{ userAgent: '*', allow: '/' }],
       },
     },
@@ -153,7 +156,157 @@ module.exports = {
     `gatsby-plugin-image`,
     `gatsby-plugin-offline`,
     `gatsby-plugin-react-helmet`,
-    `gatsby-plugin-sitemap`,
+    {
+      resolve: `gatsby-plugin-feed`,
+      options: {
+        query: `
+          {
+            site {
+              siteMetadata {
+                title
+                description
+                siteUrl
+                site_url: siteUrl
+              }
+            }
+          }
+        `,
+        feeds: [
+          {
+            serialize: ({ query: { site, allMarkdownRemark } }) => {
+              return allMarkdownRemark.nodes
+                .filter(node => {
+                  // 비공개 글 제외
+                  const frontmatter = node.frontmatter;
+                  return frontmatter.private !== true && frontmatter.insightPrivate !== true;
+                })
+                .map(node => {
+                  const frontmatter = node.frontmatter;
+                  const url = site.siteMetadata.siteUrl + node.fields.slug;
+
+                  return {
+                    title: frontmatter.insightTitle || frontmatter.title,
+                    description: node.excerpt,
+                    date: frontmatter.insightDate || frontmatter.date,
+                    url,
+                    guid: url,
+                    custom_elements: [
+                      { "content:encoded": node.html },
+                    ],
+                  };
+                });
+            },
+            query: `
+              {
+                allMarkdownRemark(
+                  sort: { frontmatter: { date: DESC } }
+                ) {
+                  nodes {
+                    excerpt
+                    html
+                    fields {
+                      slug
+                    }
+                    frontmatter {
+                      title
+                      date
+                      private
+                      insightTitle
+                      insightDate
+                      insightPrivate
+                    }
+                  }
+                }
+              }
+            `,
+            output: "/rss.xml",
+            title: "winter-love.dev RSS Feed",
+            description: "Winter's Archive / Blog",
+          },
+        ],
+      },
+    },
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        query: `
+          {
+            site {
+              siteMetadata {
+                siteUrl
+              }
+            }
+            allSitePage {
+              nodes {
+                path
+              }
+            }
+            allMarkdownRemark {
+              nodes {
+                frontmatter {
+                  date
+                  private
+                  insightPrivate
+                  insightDate
+                }
+                fields {
+                  slug
+                }
+              }
+            }
+          }
+        `,
+        resolvePages: ({ allSitePage: { nodes: allPages }, allMarkdownRemark: { nodes: allPosts } }) => {
+          const postMap = allPosts.reduce((acc, post) => {
+            const { slug } = post.fields || {};
+            if (slug) {
+              acc[slug] = post;
+            }
+            return acc;
+          }, {});
+
+          return allPages.map(page => {
+            const post = postMap[page.path];
+            return {
+              ...page,
+              ...post,
+            };
+          });
+        },
+        serialize: ({ path, frontmatter }) => {
+          // 비공개 글 제외
+          if (frontmatter?.private === true || frontmatter?.insightPrivate === true) {
+            return null;
+          }
+
+          // URL 우선순위 설정
+          let priority = 0.5;
+          let changefreq = 'weekly';
+
+          if (path === '/') {
+            priority = 1.0;
+            changefreq = 'daily';
+          } else if (path.startsWith('/articles/') || path.startsWith('/insights/')) {
+            priority = 0.7;
+            changefreq = 'weekly';
+          } else if (path.startsWith('/about/') || path.startsWith('/tags/')) {
+            priority = 0.6;
+            changefreq = 'monthly';
+          }
+
+          // lastmod 설정 (최신 날짜 사용)
+          const lastmod = frontmatter?.insightDate || frontmatter?.date;
+
+          return {
+            url: path,
+            changefreq,
+            priority,
+            lastmod,
+          };
+        },
+        excludes: ['/dev-404-page/', '/404/', '/404.html'],
+      },
+    },
     `gatsby-plugin-sass`,
   ],
 };
