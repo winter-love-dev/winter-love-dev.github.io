@@ -23,14 +23,23 @@ const InsightDetailTemplate = ({ data }) => {
     ? insight.frontmatter.insightThumbnail.publicURL
     : null;
 
+  const frontmatter = insight.frontmatter;
+
   return (
     <Layout pageType="insight">
       <Seo
-        title={`${insight.frontmatter.insightTitle} | Winter's archive`}
+        title={`${frontmatter.insightTitle} | Winter's archive`}
         description={insight.excerpt}
         thumbnail={thumbnailUrl}
-        slug={`/insights/${insight.frontmatter.insightPostId}`}
-        tags={insight.frontmatter.insightTags}
+        slug={`/insights/${frontmatter.insightPostId}`}
+        tags={frontmatter.insightTags}
+        // 인사이트 전용 SEO 필드
+        insightDescription={frontmatter.insightDescription}
+        insightKeywords={frontmatter.insightKeywords}
+        insightAuthor={nickname}
+        insightDate={frontmatter.insightDate}
+        insightModifiedDate={frontmatter.insightModifiedDate}
+        type="article"
       />
 
       <div className="insight-detail-container">
@@ -94,6 +103,10 @@ export const query = graphql`
         insightThumbnail {
           publicURL
         }
+        # SEO 필드 추가 (인사이트 전용)
+        insightDescription
+        insightKeywords
+        insightModifiedDate
       }
     }
     profileImage: file(relativePath: { eq: "profile.jpeg" }) {
