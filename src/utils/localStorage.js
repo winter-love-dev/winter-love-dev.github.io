@@ -1,6 +1,13 @@
 export function getValueFromLocalStorage(key) {
   if (typeof window === 'undefined') return;
-  return JSON.parse(window.localStorage.getItem(key));
+  const storedValue = window.localStorage.getItem(key);
+
+  if (storedValue === null && key === 'isDarkMode') {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return prefersDark;
+  }
+
+  return JSON.parse(storedValue);
 }
 
 export function setValueToLocalStorage(key, value) {
