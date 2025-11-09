@@ -29,9 +29,10 @@
   background-color: #15353A;
   border-radius: 5px;
   position: relative;
-  width: 260px;
+  width: 300px;
   height: 50px;
   border-radius: 10px;
+  padding: 0 20px;
 
   @include mobile {
     margin-bottom: 20px;
@@ -49,8 +50,9 @@
   }
 
   @include mobile {
-    width: 180px;
+    width: 220px;
     height: 40px;
+    padding: 0 15px;
   }
 }
 
@@ -62,30 +64,26 @@
   font-family: 'Anton', sans-serif;
   font-weight: 800;
   top: 12px;
+  letter-spacing: 1px;
 
   @include mobile {
     font-size: 20px;
     top: 11px;
+    letter-spacing: 0.5px;
   }
 
   p {
-    &:nth-of-type(1n) {
-      transform: rotate(8deg);
-      animation: shake 0.5s ease infinite;
+    transform: rotate(8deg);
+    animation: shake 0.5s ease infinite;
+
+    // 홀수: 노란색
+    &.color-odd {
       color: #FFC736;
     }
-    &:nth-of-type(2n) {
-      transform: rotate(5deg);
-      animation: shake 0.5s ease-out infinite reverse;
+
+    // 짝수: 흰색
+    &.color-even {
       color: #fff;
-    }
-    &:nth-of-type(3n) {
-      transform: rotate(-2deg);
-      animation: shake 0.5s 0.1s ease infinite;
-    }
-    &:nth-of-type(4n) {
-      transform: rotate(-5deg);
-      animation: shake 0.5s ease-in infinite reverse;
     }
   }
 }
@@ -110,6 +108,8 @@
   border-radius: 15px;
   box-shadow: 0 5px 30px 0 rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.5s ease both;
+  max-width: 90vw;
+  width: auto;
 }
 
 .buy-me-coffee-title {
@@ -130,46 +130,97 @@
   gap: 20px;
 }
 
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 210px;
-
-  & > a {
-    color: #1b64da;
-  }
-
-  & > div:first-of-type {
-    font-weight: bold;
-  }
-}
-
-.qr {
+// 결제 그룹들 (카카오, 토스)을 수평으로 배치
+.payment-groups {
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 30px;
+  justify-content: center;
+  align-items: flex-start;
+}
 
-  & > div {
+// 각 결제 그룹 (QR + 버튼을 세로로)
+.payment-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+
+  // QR 영역
+  &__qr {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
 
-    & > img:first-of-type {
-      width: 30px;
-    }
-    & > img:last-child {
+    & > img {
       width: 100px;
     }
   }
+
+  // 아이콘 행 (아이콘 + 돋보기 버튼)
+  &__icon-row {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+
+    & > img {
+      width: 30px;
+    }
+  }
 }
 
-.mobile-links {
+.qr-zoom-button {
+  color: var(--secondary-text-color) !important;
+
+  &:hover {
+    color: var(--primary-text-color) !important;
+    background-color: var(--hover-bg-color) !important;
+  }
+}
+
+.qr-zoom-icon {
+  font-size: 30px !important;
+}
+
+// QR 확대 모달
+.qr-zoom-modal {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
-  flex-direction: row;
-  gap: 10px;
-  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+  z-index: 10001;
+  animation: fadeIn 0.3s ease both;
+  backdrop-filter: blur(5px);
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    max-width: 350px;
+    max-height: 350px;
+
+    @include mobile {
+      max-width: 70%;
+      max-height: 70%;
+    }
+  }
+
+  &__image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  }
 }
 
 .deep-link-button {
@@ -181,13 +232,15 @@
   text-align: center;
   text-decoration: none;
   transition: background-color 0.3s;
-  box-shadow: 0 2px 4px var(--tab-hover-text-color);
-  flex: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  min-width: 100px;
 
   .p {
     margin: 0;
     color: #ffffff;
     font-weight: 470;
+    line-height: 1.5;
   }
 
   .a {
@@ -206,15 +259,40 @@
     outline: none;
     background: none;
   }
-}
 
-.deep-link-button:hover {
-  color: var(--link-text-color);
-  background-color: var(--tab-hover-text-color);
-  box-shadow: 0 4px 8px var(--tab-hover-text-color);
-}
+  // 카카오 버튼 (노란색)
+  &--kakao {
+    background-color: #FEE500;
 
-.deep-link-button:active {
-  color: var(--button-background-color);
-  background-color: var(--link-text-color);
+    .p {
+      color: #000000;
+    }
+
+    &:hover {
+      background-color: #FDD835;
+      box-shadow: 0 4px 8px rgba(254, 229, 0, 0.4);
+    }
+
+    &:active {
+      background-color: #F9A825;
+    }
+  }
+
+  // 토스 버튼 (파란색)
+  &--toss {
+    background-color: #0064FF;
+
+    .p {
+      color: #ffffff;
+    }
+
+    &:hover {
+      background-color: #0052CC;
+      box-shadow: 0 4px 8px rgba(0, 100, 255, 0.4);
+    }
+
+    &:active {
+      background-color: #0041A8;
+    }
+  }
 }

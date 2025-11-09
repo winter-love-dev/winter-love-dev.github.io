@@ -11,7 +11,8 @@
   padding: 100px 20px 40px 20px;
 
   @include mobile {
-    padding: 100px 12px 40px 12px;
+    padding: 100px 0 40px 0;
+    width: 100%;
   }
 }
 
