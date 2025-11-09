@@ -130,17 +130,22 @@ function truncateHtmlContent(html, maxLines = MAX_CONTENT_LINES) {
   return truncatedContainer.innerHTML;
 }
 
-function InsightFeedContent({ html, isDetailPage, isTruncated }) {
+function InsightFeedContent({ html, isDetailPage, isTruncated, truncatedHtml }) {
   const shouldTruncate = !isDetailPage && isTruncated;
   const contentRef = useRef(null);
 
   // 클라이언트 사이드에서 HTML 자르기
   const displayHtml = useMemo(() => {
     if (shouldTruncate) {
+      // 1순위: gatsby-node.js에서 생성한 truncatedHtml 사용
+      if (truncatedHtml) {
+        return truncatedHtml;
+      }
+      // 2순위: 클라이언트 사이드에서 자르기 (fallback)
       return truncateHtmlContent(html);
     }
     return html;
-  }, [html, shouldTruncate]);
+  }, [html, shouldTruncate, truncatedHtml]);
 
   // truncation 후 Prism.js 다시 실행
   useEffect(() => {

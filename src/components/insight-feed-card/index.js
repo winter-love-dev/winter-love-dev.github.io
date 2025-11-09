@@ -30,6 +30,7 @@ const InsightFeedCard = ({
   } = frontmatter || {};
 
   const isTruncated = fields?.isTruncated || false;
+  const truncatedHtml = fields?.truncatedHtml || null;
 
   return (
     <article className="insight-feed-card">
@@ -57,6 +58,7 @@ const InsightFeedCard = ({
         html={html}
         isDetailPage={isDetailPage}
         isTruncated={isTruncated}
+        truncatedHtml={truncatedHtml}
       />
 
       {/* Footer: "...더보기" 링크, tags */}

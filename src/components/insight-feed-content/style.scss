@@ -113,9 +113,28 @@ pre[class*="language-"] {
   margin-bottom: 20px;
   padding: 0 12px 0 12px;
 
-  // 목록 페이지에서는 높이 제한 없이 컨텐츠만큼 늘어남
+  // 목록 페이지에서 잘린 컨텐츠 스타일
   &--truncated {
-    // CSS 높이 제한 제거 - 20줄 제한은 클라이언트에서 처리
+    position: relative;
+
+    // 하단 그라데이션 오버레이
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      // 라이트 모드: 흰색 그라데이션
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.8) 70%,
+        rgba(255, 255, 255, 1) 100%
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
   }
 
   // 디테일 페이지 전용 스타일
@@ -170,5 +189,16 @@ pre[class*="language-"] {
       margin: 0.8em 0;
       padding: 0.5em 1em;
     }
+  }
+}
+
+html[data-theme='dark'] {
+  .post-content--truncated::after {
+    background: linear-gradient(
+      to bottom,
+      rgba(26, 26, 26, 0) 0%,
+      rgba(26, 26, 26, 0.8) 70%,
+      rgba(26, 26, 26, 1) 100%
+    ) !important;
   }
 }
