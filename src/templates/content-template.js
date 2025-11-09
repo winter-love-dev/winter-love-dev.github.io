@@ -18,6 +18,8 @@ function ContentTemplate({ data }) {
 
   const thumbnailUrl = curPost.thumbnail ? curPost.thumbnail.publicURL : null;
 
+  const frontmatter = data.cur.frontmatter;
+
   return (
     <Layout>
       <Seo
@@ -26,6 +28,13 @@ function ContentTemplate({ data }) {
         thumbnail={thumbnailUrl}
         slug={curPost.slug}
         tags={curPost.tags}
+        // 아티클 전용 SEO 필드
+        articleDescription={frontmatter.articleDescription}
+        articleKeywords={frontmatter.articleKeywords}
+        articleAuthor={frontmatter.author}
+        articleDate={data.cur.frontmatter.date}
+        articleModifiedDate={frontmatter.articleModifiedDate}
+        type="article"
       />
       <ArticleHeader post={curPost} />
       <ArticleContent html={curPost.html} />
@@ -53,6 +62,10 @@ export const pageQuery = graphql`
         thumbnail { # File 타입으로 직접 접근
           publicURL # File 노드에서 제공
         }
+        # SEO 필드 추가 (아티클 전용)
+        articleDescription
+        articleKeywords
+        articleModifiedDate
       }
       fields {
         slug

@@ -337,6 +337,14 @@ exports.createSchemaCustomization = ({ actions }) => {
       insightTags: [String]
       insightPrivate: Boolean
       insightThumbnail: File @fileByRelativePath
+      # 아티클 SEO 필드
+      articleDescription: String
+      articleKeywords: String
+      articleModifiedDate: String
+      # 인사이트 SEO 필드
+      insightDescription: String
+      insightKeywords: String
+      insightModifiedDate: String
     }
   `)
 }
