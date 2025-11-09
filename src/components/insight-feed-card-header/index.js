@@ -127,7 +127,7 @@ const InsightFeedCardHeader = ({
 
         {/* 중앙 컨텐츠 */}
         <div className="insight-feed-card-header__content">
-          <div className="insight-feed-card-header__nickname">{nickname}</div>
+          <div className="insight-feed-card-header__nickname"><strong>{nickname}</strong></div>
           <div className="insight-feed-card-header__role">{role}</div>
           <div className="insight-feed-card-header__date">{formatDate(date)}</div>
         </div>
