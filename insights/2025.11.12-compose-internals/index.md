@@ -7,7 +7,7 @@ insightTags: ['Android', 'JetpackComposeInternals']
 insightThumbnail: 'cover.png'
 ---
 
-의식의 흐름대로 글을 마구 휘갈겼더니 나는 어느새 Jetpack Compose Internals 서적 완독 목표를 세워버렸다. "올해 안에" 
+의식의 흐름대로 글을 마구 휘갈겼더니 나는 어느새 Jetpack Compose Internals 서적 완독 목표를 세운 사람이 되어버렸다. "올해 안에" 
 하필 요즘같이 바쁜 시기에 이런 생각을 떠올린거니. 
 워낙 오래 미뤄왔던 일중 하나를 청산할 기회인데 뭐 좋게좋게 생각하고 이 계획을 확정하기로 했다.
 
@@ -26,5 +26,16 @@ Jetpack Compose UI 프레임워크의 내부 동작 원리를 깊이 있게 다�
 올해 1분기 쯤 출장으로 이동중인 비행기 내부가 너무 지루해서 이 책을 읽었었다.
 가만히 앉아있기는 지루했지만 비행 소음은 이 책에 집중할 수 있게 도와주는 일종의 화이트 노이즈 역할을 했던 기억이 난다.
 초반 파트를 바짝 읽고 그 뒤로 몇 달 째 방치중인 현 상태를 반성하며, 미뤄온 일을 하루하루 청산해보겠다.
+
+앞으로 읽고 다루게 될 챕터 이름만 미리 나열하고 마무리. 
+추후 해당 챕터와 관련된 글이 게시되면 링크도 첨부 해두겠다.
+
+1. Composable 함수들 (Composable functions)
+2. Compose 컴파일러 (The Compose compiler)
+3. 컴포즈 런타임 (The Compose runtime)
+4. Compose UI
+5. 상태 스냅샷 시스템 (State snapshot system)
+6. 이펙트 및 이펙트 핸들러 (Effects and effect handlers)
+7. Compose Runtime 고급 사용 사례 (Advanced Compose Runtime use cases)
 
 ![](./cover.png)
