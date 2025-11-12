@@ -7,7 +7,9 @@ insightTags: ['Android', 'JetpackComposeInternals']
 insightThumbnail: 'cover.png'
 ---
 
-의식의 흐름대로 글을 마구 휘갈겼더니 나는 어느새 Jetpack Compose Internals 서적 완독 목표를 세운 사람이 되어버렸다. "올해 안에" 
+한줄 요약: Jetpack Compose Internals 서적을 읽고 기록하겠다는 말을 하는 글이다.
+
+의식의 흐름대로 글을 마구 휘갈겼더니 나는 어느새 Jetpack Compose Internals 완독 목표를 세운 사람이 되어버렸다. "올해 안에" 
 하필 요즘같이 바쁜 시기에 이런 생각을 떠올린거니. 
 워낙 오래 미뤄왔던 일중 하나를 청산할 기회인데 뭐 좋게좋게 생각하고 이 계획을 확정하기로 했다.
 
