@@ -8,6 +8,7 @@ insightThumbnail: 'cover.png'
 ---
 
 Jetpack Compose Internals 를 읽고 정리하는 글이다. 
+어쩌다보니 올해 안에 완독 하겠다는 목표를 세워서 [(관련글)](https://winter-love.dev/insights/compose-internals) 열심히 읽는중이다.
 이 글의 수준을 다음과 같이 설정했다.
 
 대학생이나 현업 개발자 등 컴포즈를 평소보다 좀 더 깊이 있게 파고들고 싶은 자가 받아들일 수 있을 정도로 쉬운 난이도.
