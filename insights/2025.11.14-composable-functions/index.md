@@ -2,7 +2,7 @@
 insightPostId: composable-functions
 insightPrivate: false
 insightTitle: 1장 - Composable 함수들 (Composable functions) 내맘대로 정리
-insightDate: '2025-11-12 00:10:00'
+insightDate: '2025-11-14 00:10:00'
 insightTags: ['Android', 'JetpackComposeInternals']
 insightThumbnail: 'cover.png'
 ---
