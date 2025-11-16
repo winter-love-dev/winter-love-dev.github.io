@@ -117,45 +117,36 @@ Composable 함수는 트리에 대한 변경사항을 전달하고,
 
 ---
 
-**멱등성 (Idempotent)**: 연산을 여러 번 적용하더라도 결과가 달라지지 않는 불가변의 성질.
+**멱등성 (Idempotent)** 
 
-Composable 함수가 생성하는 노드 트리는 명등성을 가져야 한다.
-여러번 다시 실행하더라도 입력 값이 같다면 동일한 트리가 생성되어야 한다.
-Compose Runtime 은 recomposition 과 같은 작업을 위해 멱등성이라는 가정에 의존한다.
+멱등성: 같은 입력에 대해 항상 같은 결과를 내는 성질.
 
-recomposition 의 의미: 
-입력값이 변경될 때마다 Composable 함수를 다시 실행하여 업데이트된 정보를 방출시키고 트리를 업데이트 하는 작업.
+Composable 함수는 반드시 멱등성을 가져야 한다.
+같은 입력값으로 여러번 실행해도 동일한 노드 트리를 생성해야 한다는 뜻이다.
 
-Compose Runtime 은 몇 가지 이유에 의해 Composable 함수를 recomposition 해줘야한다.
+멱등성이 중요한 이유는 Composable 의 핵심 최적화 기법인 **리컴포지션 스킵(Skip)** 때문이다.
 
-Recomposition 실행 과정: 트리를 아래로 순회하면서 어떤 노드를 재구성 해야되는지 확인한다. 
-이 과정에서 입력값이 변경된 노드만 recomposition 을 하고 나머지는 생략한다.
+Composable 함수는 입력값이 바뀌면 재실행(Recomposition) 된다. 
+그런데 앱 전체를 매번 다시 그리면 UI 를 그리는 성능상으로 좋지 않다.
 
-Recomposition 생략 과정: 트리 순회 과정중 노드를 대표하는 Composable 함수가 멱등성의 성질을 가질때 생략된다.
+Compose Runtime 은 트리를 아래로 순회하면서 **입력값이 바뀐 노드만** 다시 실행하고
+**입력값이 안 바뀐 노드는 건너뛴다(Skip)**
 
-Compose Runtime 이 동일한 입력값을 제공할 경우 동일한 결과를 생성할 수 있다고 가정하기 때문이다.
-동일한 입력값에 대한 결과는 이미 메모리에 적재되어 있으므로 Compose 는 다시 실행할 필요가 없고, 결과적으로 생략할 수 있게된다.
+멱등성이 보장되면 Compose Runtime 은 다음과 같이 가정할 수 있게된다. 
+"같은 입력값이면 같은 결과를 낼 것임",
+"이미 메모리에 결과가 있으니 다시 실행 안해도 됨".
+결과: Skip
+
+이렇게 불필요한 재실행을 생략해서 성능을 최적화 한다.
 
 ---
 
-통제되지 않은 사이드 이펙트 방지 (Free of uncontrolled side effects)
+**통제되지 않은 사이드 이펙트 방지 (Free of uncontrolled side effects)**
 
 사이드 이펙트 (Side Effect):
 호출되는 함수의 제어를 벗어나서 발생할 수 있는 예상치 못한 모든 동작.
-
-사이드 이펙트로 간주되는 것:
 로컬 캐시에서 데이터 읽기, 네트워크 요청 작업, 전역변수 설정 변경 등 예상치 못한 모든 동작.
-
-Composable 함수는 결과를 생성하기 위해서 입력값에만 의존하게 되는것이 아니라 외부 요인에도 의존한다.
-
-Compose Runtime 은 Composable 함수가 예측 가능하도록(결정론적인) 기대하기 때문에
-Side Effect 가 포함된 Composable 함수는 예측이 어려워지고, 결과적으로 Compose 에게 좋지 않다.
-
-사이드 이펙트는 Compose 내에서 아무 통제를 받지 않고 여러번 실행될 수 있다.
-Composable 함수가 사이드 이펙트를 실행한다면 매 함수 호출 시마다 새로운 프로그램 상태를 생성할 수 있으므로
-Compose Runtime 에게 필수적인 멱등성을 따르지 않게된다.
-
-통제되지 않은 사이드 이펙트는 왜 문제일까?
+즉 Composable 함수 내부적인 요인에 의해서만 발생하는게 아니라 외부 요인으로 인한 Side Effect 가 발생할 수 있다.
 
 ```kotlin
 @Composable
@@ -168,12 +159,10 @@ fun EventsFeed(networkService: EventsNetworkService) {
     }
 }
 ```
-
 이 코드의 문제점: 함수가 호출될 때마다 네트워크 요청이 실행된다는 것이다.
 
-Composable 함수는 Input 값이 바뀌면 재실행된다.
-그런데 재실행이 언제, 몇 번 일어날지는 Compose Runtime 이 결정한다. 
-우리가 통제할 수 없다.
+앞서 언급했듯이 Composable 함수는 Input 값이 바뀌면 재실행된다.
+그런데 재실행이 언제, 몇 번 일어날지는 Compose Runtime 이 결정한다. 우리가 통제할 수 없다.
 
 예를 들어
 - 화면 회전하면 재실행
@@ -182,6 +171,9 @@ Composable 함수는 Input 값이 바뀌면 재실행된다.
 
 결과적으로 loadAllEvents() 가 우리 의도와 상관없이 수십 번 호출될 수 있다.
 이게 바로 "통제되지 않은 사이드 이펙트" 문제다.
+
+Compose Runtime 은 Composable 함수가 **예측 가능하기를(결정론적인)** 기대하는데
+사이드 이펙트가 포함되면 예측이 불가능해진다.
 
 또 다른 문제: 실행 순서 의존
 
@@ -196,13 +188,16 @@ fun MainScreen() {
 
 `Header()` 가 먼저 실행되고, 그 다음 `ProfileDetail()` 이 실행되겠지? **"NO"**
 
-Compose Compiler 는 이 함수들을 순서 바꿔서 실행할 수도 있고 동시에 병렬로 실행할 수도 있다.
-따라서 "Header 에서 변수 세팅하고, ProfileDetail 에서 읽기" 같은 로직은 이 의도대로 작동하지 않는다.
+Compose Compiler 는 이 함수들을 순서를 바꿔서 실행할 수도 있고 동시에 병렬로 실행할 수도 있다. 
+따라서 Header 에서 변수 세팅하고, Profile 에서 읽기 같은 로직은 의도대로 작동하지 않는다.
 
 그럼 어떻게 해야 하나? 우리는 모든 Composable 함수를 stateless 하게 만들수 있게 노력해야 한다.
-Composable 함수는 최대한 "멍청하게" 만들자. 모든 필요한 데이터는 파라미터로 받고, 함수 안에서는 받은 데이터로 UI 그리기만 하게 만들자.
+Composable 함수는 최대한 "멍청하게" 만들어야 한다. 
+모든 필요한 데이터는 파라미터로 받고, 함수 안에서는 받은 데이터로 UI 그리기만 하게 만들자.
 
-핵심:
+그럼 네트워크 요청은 어디서 하나? Effect Handler 를 사용한다. 추후 챕터에서 다룰거라고 함.
+
+정리:
 - Composable 함수 안에서 네트워크 요청, DB 접근 같은 걸 직접 하면 안 됨.
 - 왜? 함수가 언제든 여러 번 실행될 수 있어서.
 - 해결책: Effect Handler 사용.
