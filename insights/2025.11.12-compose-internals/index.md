@@ -32,7 +32,7 @@ Jetpack Compose UI 프레임워크의 내부 동작 원리를 깊이 있게 다�
 앞으로 읽고 다루게 될 챕터 이름만 미리 나열하고 마무리. 
 해당 챕터와 관련된 글이 게시되면 링크를 첨부하겠음.
 
-1. Composable 함수들 (Composable functions)
+1. [Composable 함수들 (Composable functions)](https://winter-love.dev/composeinternals/1-composable-functions/)
 2. Compose 컴파일러 (The Compose compiler)
 3. 컴포즈 런타임 (The Compose runtime)
 4. Compose UI
