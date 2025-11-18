@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Sitemap: https://www.winter-love.dev/sitemap-index.xml
+Sitemap: https://www.winter-love.dev/sitemap-0.xml
+Host: https://www.winter-love.dev
