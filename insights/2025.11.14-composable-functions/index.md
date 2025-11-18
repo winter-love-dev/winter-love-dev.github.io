@@ -14,7 +14,7 @@ Jetpack Compose Internals 를 읽고 정리하는 글이다.
 
 ---
 
-**Composable 함수의 의미 (The meaning of Composable functions)**
+### Composable 함수의 의미 (The meaning of Composable functions)
 
 Composable 함수는 Jetpack Compose 의 가장 기본적인 요소이며 처음부터 올바른 관념으로 받아들이는 게 좋다.
 Composable 함수를 처음부터 제대로 이해하려면 일반 함수와 다른 관점으로 봐야 한다.
@@ -46,7 +46,9 @@ Composable 함수: Node 데이터를 방출해서 컴포지션 하는것이 결�
 
 ---
 
-**Composable 함수의 속성 (Properties of Composable functions)**
+\* **Compose Runtime:** 실행 중에 UI 트리를 관리하고 최적화하는 시스템.<br/>
+
+### Composable 함수의 속성 (Properties of Composable functions)
 
 `@Composable` 어노테이션은 단순 마커가 아니라 함수에 특정 제약과 규칙을 부여한다.
 이 제약으로 Compose Runtime 은 코드 실행에 대한 “확실성”을 갖게 되고, 다음과 같은 최적화 기법이 적용된다.
@@ -65,11 +67,11 @@ Composable 함수 최적화는 “이 함수는 부수 효과가 없다”, “�
 
 ---
 
-\* IR: Intermediate Representation, Kotlin 컴파일러가 소스파일을 해석하는 하나의 과정.
-\* Composer: 런타임중 트리의 형태를 빌드하거나 업데이트하는 객체.
-\* Compose Compiler: Kotlin 컴파일러 플러그인
+\* **Compose Compiler:** Kotlin 컴파일러 플러그인. Composable 함수를 변환하는 역할.<br/>
+\* **IR:** Intermediate Representation, Kotlin 컴파일러가 소스파일을 해석하는 하나의 과정.<br/>
+\* **Composer:** 런타임중 트리의 형태를 빌드하거나 업데이트하는 객체.<br/>
 
-**호출 컨텍스트 (Calling context)**
+### 호출 컨텍스트 (Calling context)
 
 Compose Compiler 는 Composable 함수에 엄격한 제약을 하나 부과하는데,
 Composable 함수는 오로지 다른 Composable 함수에서만 호출할 수 있다는 것이다.
@@ -89,15 +91,15 @@ fun NamePlate(
     name: String, 
     lastname: String,
 ) {
-    Column(
-        modifier = Modifier.padding(16.dp),
-    ) {
-        Text(text = name)
-        Text(
-            text = lastname, 
-            style = MaterialTheme.typography.subtitle1,
-        )
-    }
+  Column(
+    modifier = Modifier.padding(16.dp),
+  ) {
+    Text(text = name)
+    Text(
+      text = lastname, 
+      style = MaterialTheme.typography.subtitle1,
+    )
+  }
 }
 ```
 
@@ -109,22 +111,22 @@ fun NamePlate(
     lastname: String, 
     $composer: Composer<*>, <- 추가
 ) {
-    ...
-    Column(
-        modifier = Modifier.padding(16.dp), 
-        $composer, <- 추가
-    ) {
-        Text(
-            text = name,
-            $composer, <- 추가
-        )
-        Text(
-            text = lastname,
-            style = MaterialTheme.typography.subtitle1,
-            $composer, <- 추가
-        )
-    }
-    ...
+  ...
+  Column(
+    modifier = Modifier.padding(16.dp), 
+    $composer, <- 추가
+  ) {
+    Text(
+      text = name,
+      $composer, <- 추가
+    )
+    Text(
+      text = lastname,
+      style = MaterialTheme.typography.subtitle1,
+      $composer, <- 추가
+    )
+  }
+  ...
 }
 ```
 
@@ -141,9 +143,9 @@ Compose Runtime 은 트리를 하향 순회하면서 변경 사항을 확인한�
 
 ---
 
-**멱등성 (Idempotent)** 
+### 멱등성 (Idempotent)
 
-멱등성: 같은 입력에 대해 항상 같은 결과를 내는 성질.
+\* **멱등성:** 같은 입력에 대해 항상 같은 결과를 내는 성질.
 
 Composable 함수는 반드시 멱등성을 가져야 한다.
 같은 입력값으로 여러번 실행해도 동일한 노드 트리를 생성해야 한다는 뜻이다.
@@ -165,7 +167,7 @@ Compose Runtime 은 트리를 아래로 순회하면서 **입력값이 바뀐 �
 
 ---
 
-**통제되지 않은 사이드 이펙트 방지 (Free of uncontrolled side effects)**
+### 통제되지 않은 사이드 이펙트 방지 (Free of uncontrolled side effects)
 
 사이드 이펙트 (Side Effect):
 호출되는 함수의 제어를 벗어나서 발생할 수 있는 예상치 못한 모든 동작.
@@ -175,12 +177,12 @@ Compose Runtime 은 트리를 아래로 순회하면서 **입력값이 바뀐 �
 ```kotlin
 @Composable
 fun EventsFeed(networkService: EventsNetworkService) {
-    val events = networkService.loadAllEvents()
-    LazyColumn {
-        items(events) { event ->
-            Text(text = event.name)
-        }
+  val events = networkService.loadAllEvents()
+  LazyColumn {
+    items(events) { event ->
+      Text(text = event.name)
     }
+  }
 }
 ```
 이 코드의 문제점: 함수가 호출될 때마다 네트워크 요청이 실행된다는 것이다.
@@ -204,9 +206,9 @@ Compose Runtime 은 Composable 함수가 **예측 가능하기를(결정론적�
 ```kotlin
 @Composable
 fun MainScreen() {
-    Header()       
-    ProfileDetail()
-    EventList()    
+  Header()       
+  ProfileDetail()
+  EventList()    
 }
 ```
 
@@ -221,14 +223,14 @@ Composable 함수는 최대한 "멍청하게" 만들어야 한다.
 
 그럼 네트워크 요청은 어디서 하나? Effect Handler 를 사용한다. 추후 챕터에서 다룰거라고 함.
 
-정리:
-- Composable 함수 안에서 네트워크 요청, DB 접근 같은 걸 직접 하면 안 됨.
-- 왜? 함수가 언제든 여러 번 실행될 수 있어서.
-- 해결책: Effect Handler 사용.
+정리. Composable 함수 안에서 네트워크 요청, DB 접근 같은 걸 직접 하면 안 됨. 
+왜? 함수가 언제든 여러 번 실행될 수 있어서. 
+
+해결책: Effect Handler 사용.
 
 ---
 
-**재시작 가능 (Restartable)**
+### 재시작 가능 (Restartable)
 
 일반적인 코틀린 함수는 콜스택 (call stack) 상으로 단 한 번만 호출된다.
 Composable 함수는 recomposition 으로 여러번 다시 시작될 수 있다.
@@ -242,7 +244,7 @@ stateless 한 함수는 재시작할 필요가 없기 때문에 이런 Composabl
 
 ---
 
-**빠른 실행 (Fast execution)**
+### 빠른 실행 (Fast execution)
 
 Composable 함수들은 직접적으로 UI 를 구축하거나 반환하지 않는다.
 Composable 은 단순히 Tree 구조를 구축 및 업데이트 하기위한 데이터(Node) 를 방출할 뿐이다.
@@ -255,26 +257,213 @@ Composable 은 단순히 Tree 구조를 구축 및 업데이트 하기위한 데
 
 ---
 
-\* 메모이제이션 (Memoization): 
-이전에 계산한 값을 메모리에 저장함으로써 동일한 계산의 반복 수행을 줄임, 캐싱의 한 유형.
-함수형 프로그래밍 패러다임에서 널리 알려진 기술이며, 함수가 순수할 때만 이것을 사용할 수 있다.
+\* **메모이제이션 (Memoization):**
+캐싱의 한 유형. 이전에 계산한 값을 메모리에 저장함으로써 동일한 계산의 반복 수행을 줄임. <br/>
+\* **위치 기억법:** 함수 메모이제이션의 한 형태이다.
 
-**위치 기억법 (Positional memoization)**
+### 위치 기억법 (Positional memoization)
 
-위치 기억법: 함수 메모이제이션의 한 형태이다. 
-순수한 함수(stateless)는 동일한 입력값에 대해 항상 동일한 결과를 반환할거라는 확실성이 있다.
-동일한 입력값에 대해 함수가 호출될 때마다 다시 계산할 필요가 없다.
+함수 실행 결과를 캐싱해서 같은 입력에 대해 다시 계산하지 않는 기법.
 
+일반적인 함수의 메모이제이션 방법: 함수의 이름, 타입, 파라미터의 조합으로 고유한 키를 생성하고 다시 실행될 때 이 키를 이용해서 메모이제이션 여부를 판단한다.
+
+Composable 함수: 위의 일반적인 방법  + 소스 코드 위치(고유 키) 생성.
+하지만 같은 함수여도 호출 위치가 다르면 UI Tree 상 다른 고유 키로 취급된다.
+
+```kotlin
+@Composable
+fun MyComposable() { <- 부모 트리
+   Text(”Hello”) // id 1
+   Text(”Hello”) // id 2
+   Text(”Hello”) // id 3
+}
+```
+
+같은 `Text("Hello")`지만, 소스 코드 위치가 다르므로 각각 다른 ID를 받는다.
+입력값이 바뀌지 않으면 이 id는 recomposition 시 Skip 될 수 있다.
+
+```kotlin
+@Composable
+fun TalksScreen(talks: List<Talk>) {
+  Column {
+    for (talk in talks) {
+      Talk(talk)
+    }
+  }
+}
+```
+
+위 코드가 문제인 이유: Compose Runtime 입장에서 함수에 고유 ID 를 할당하기 어려운 케이스임.
+
+처음엔 `Talk` 가 생성된만큼 ID 가 생성되어 각각의 `Talk` item 을 구분할 수 있긴 하다.
+List 순서상 맨 끝에 새로운 item 이 추가 되어도 모든 item 은 각자의 고유한 ID 를 잘 유지할 수 있다.
+
+문제는 List 순서상 중간의 아이템이 추가되거나 삭제 된다면? 
+해당 위치 이후의 item 들은 Composable 의 위치가 바뀌며 각자의 고유 ID 를 잃게되고 결과적으로 전부 recomposition 된다.
+
+업데이트가 생략 되었어야 할 Composable 함수들이 전부 recomposition 을 하게 되었으니 리스트가 길면 길수록 비효율적이게 된다.
+
+```kotlin
+@Composable
+fun TalksScreen(talks: List<Talk>) {
+  Column {
+    for (talk in talks) {
+      key(talk.id) { <- Unique key 추가
+        Talk(talk)
+      }
+    }
+  }
+}
+```
+
+위의 방법처럼 Key 로 Composable 각자에 고유한 ID 를 직접 부여해서 트리 내 각자의 위치를 유지하게 할 수 있다.
+위에 말한 비효율 문제를 해결할 수 있다.
+
+```kotlin
+@Composable
+fun FilteredImage(path: String) {
+  val filters = remember { computeFilters(path) }
+  ImageWithFiltersApplied(filters)
+}
+
+@Composable
+fun ImageWithFiltersApplied(filters: List<Filter>) {
+  TODO()
+}
+```
+
+`remember` 는 `computeFilters(path)` 를 실행하고 결과 저장, path 가 바뀌지 않으면 `remember` 에 저장된 값을 재사용.
+해당 방법으로 recomposition Skip.
+
+핵심: Composable 은 호출 위치로 고유 ID 를 가짐.
+입력값의 변화가 없다면 해당 위치의 Composable 은 recomposition 을 Skip 한다. 
+반복문에서는 `Key()` 로 명시적인 ID 지정 필요. 
+함수 내부의 계산 결과를 캐싱하려면 `remember` 함수를 사용하자.
 
 ---
 
-**아직 꽤 많은 내용이 더 남았다는 사실**
+### Suspend 함수와의 유사성 (Similarities with suspend functions)
+
+suspend 와 Compose 함수는 비슷한 제약을 가진다.
+
+**Coroutine:** suspend 함수는 다른 suspend 함수에서 호출될 수 있다. <br/>
+**Compose:** Composable 함수는 다른 Composable 함수에서 호출될 수 있다.
+
+때문에 이 둘은 호출 컨텍스트가 필요하다.
+이 제약으로 suspend 는 suspend 끼리, Composable 역시 Composable 끼리 묶일 수 있게 보장해준다.
+
+```kotlin
+// Coroutine 함수 변환 전
+suspend fun publishTweet(tweet: Tweet): Post = ...
+
+// Coroutine 함수 변환 후
+fun publishTweet(
+    tweet: Tweet, 
+    callback: Continuation<Post> <- 추가
+): Unit
+```
+
+둘 다 암시적인 파라미터를 추가한다는 점에서 유사하다.
+
+핵심 차이점: <br/>
+**Continuation:** Kotlin Runtime 으로부터 다양한 중단점에서 실행을 중단, 재개에 대한 정보를 담고 있는 객체. 본질적으론 일반 함수와 똑같이 한 번 실행되면 끝이다. <br/>
+**Composer:** Compose Runtime 으로부터 여러번 실행되는 이벤트에 반응하며 항상 UI Tree 를 최신 상태로 유지하게 만들기 위한 객체.
+
+"한 번 실행하고 중단, 재개 / 상태 변화에 반응해서 계속 재실행"
+
+유사하긴 하지만 완전히 다른 문제를 해결하니 각자의 매커니즘이 필요하다.
+
+---
+
+### Composable 함수의 색깔 (The color of Composable functions)
+
+서로 다른 종류의 함수는 잘 섞이지 않는다는 이야기다.
+
+동기 함수에서 비동기 함수를 직접 호출할 수 없고, 일반 함수에서 suspend 함수를 직접 호출할 수 없듯이. 
+그리고 일반 함수에서 Composable 함수를 직접 호출할 수 없듯이.
+
+이렇게 함수들이 서로 다른 "색깔"을 가진 것처럼 분리되어 있다고 해서 함수 컬러링이라고 부른다.
+
+Composable 함수는 다른 Composable 함수에서만 호출 가능하다. 일반 함수와 섞으려면 통합점이 필요하다 (예: `setContent`)
+
+왜 이런 제약이 있을까? Composable 함수는 일반 함수와 완전히 다른 목적을 가지기 때문.
+
+```kotlin
+@Composable
+fun SpeakerList(speakers: List) {
+    Column {
+        speakers.forEach { // 일반 함수인데?
+            Speaker(it) // Composable 호출 가능
+        }
+    }
+}
+```
+
+`forEach`는 일반 함수인데 어떻게 안에서 Composable을 호출할 수 있을까? **inline** 때문이라고 한다. `forEach` 같은 컬렉션 연산자는 inline 으로 선언되어 있다.
+inline 함수는 호출 시점에 코드가 그대로 복사되어 들어간다. 결국 `Speaker(it)`는 `SpeakerList` 본문 안에서 호출되는 것과 같다. 둘 다 Composable이니까 문제없다.
+inline 덕분에 함수 컬러링 문제를 우회하고 자연스러운 코드를 작성할 수 있다.
+
+함수 컬러링은 문제일까? 오히려 장점이라고 한다. 컴파일러와 런타임이 "colored 함수"를 특별하게 처리할 수 있기 때문이다.
+
+suspend 함수는 비동기 non-blocking 프로그래밍을 가능하게 한다.
+Composable 함수는 재시작 가능(Restartable), 생략 가능(Skippable), 반응형(Reactive)이다.
+일반 함수에는 없는 이런 특별한 기능을 얻는 대가로 "색깔"이라는 제약이 생긴 것이다.
+
+---
+
+### Composable 함수 타입 (Composable function types)
+
+`@Composable` 어노테이션은 함수의 타입 자체를 변경한다.
+
+일반 함수 타입: `(T) -> A` <br/>
+Composable 함수 타입: `@Composable (T) -> A`
+
+`@Composable`이 타입의 일부가 된다는 뜻이다.
+
+Composable 람다: 일반 람다를 선언하듯이 Composable 람다도 선언할 수 있다.
+
+```kotlin
+// Composable 람다를 프로퍼티로 저장
+val textComposable: @Composable (String) -> Unit = {
+    Text(
+        text = it,
+        style = MaterialTheme.typography.subtitle1
+    )
+}
+
+@Composable
+fun NamePlate(name: String, lastname: String) {
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text(text = name)
+        textComposable(lastname)  // 저장한 람다 사용
+    }
+}
+```
+
+이렇게 Composable 람다를 재사용할 수 있다.
+
+Scope가 있는 Composable 타입: 특정 Composable 안에서만 사용 가능하도록 범위를 제한할 수도 있다.
+
+```kotlin
+inline fun Box(
+    content: @Composable BoxScope.() -> Unit  // BoxScope 안에서만
+) {
+    Layout(
+        content = { BoxScopeInstance.content() },
+        ...
+    )
+}
+```
+
+`BoxScope.() -> Unit`은 Box 안에서만 호출 가능한 람다를 의미한다.
+이 덕분에 특정 Composable 내부에서만 쓸 수 있는 함수를 만들 수 있다.
+
+왜 타입이 중요한가? 타입이 다르면 컴파일러가 다르게 처리할 수 있다.
+
+`@Composable` 타입 덕분에 컴파일 시점에 잘못된 호출 검증 가능 (일반 함수에서 Composable 호출 시 에러), 
+런타임이 Composable 함수를 특별하게 처리 가능 (재시작, Skip 등),
+타입 시스템으로 제약을 강제할 수 있음.
+
+Composable 함수가 일반 함수와 완전히 다른 타입인 이유다.
 
 ![](./cover.png)
-
-
-
-
-
-
-
