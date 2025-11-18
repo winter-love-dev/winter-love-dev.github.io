@@ -17,7 +17,7 @@ Jetpack Compose Internals 를 읽고 정리하는 글이다.
 
 ---
 
-### Composable 함수의 의미 (The meaning of Composable functions)
+# Composable 함수의 의미 (The meaning of Composable functions)
 
 Composable 함수는 Jetpack Compose 의 가장 기본적인 요소이며 처음부터 올바른 관념으로 받아들이는 게 좋다.
 Composable 함수를 처음부터 제대로 이해하려면 일반 함수와 다른 관점으로 봐야 한다.
@@ -51,7 +51,7 @@ Composable 함수: Node 데이터를 방출해서 컴포지션 하는것이 결�
 
 \* **Compose Runtime:** 실행 중에 UI 트리를 관리하고 최적화하는 시스템.<br/>
 
-### Composable 함수의 속성 (Properties of Composable functions)
+# Composable 함수의 속성 (Properties of Composable functions)
 
 `@Composable` 어노테이션은 단순 마커가 아니라 함수에 특정 제약과 규칙을 부여한다.
 이 제약으로 Compose Runtime 은 코드 실행에 대한 “확실성”을 갖게 되고, 다음과 같은 최적화 기법이 적용된다.
@@ -74,7 +74,7 @@ Composable 함수 최적화는 “이 함수는 부수 효과가 없다”, “�
 \* **IR:** Intermediate Representation, Kotlin 컴파일러가 소스파일을 해석하는 하나의 과정.<br/>
 \* **Composer:** 런타임중 트리의 형태를 빌드하거나 업데이트하는 객체.<br/>
 
-### 호출 컨텍스트 (Calling context)
+# 호출 컨텍스트 (Calling context)
 
 Compose Compiler 는 Composable 함수에 엄격한 제약을 하나 부과하는데,
 Composable 함수는 오로지 다른 Composable 함수에서만 호출할 수 있다는 것이다.
@@ -146,7 +146,7 @@ Compose Runtime 은 트리를 하향 순회하면서 변경 사항을 확인한�
 
 ---
 
-### 멱등성 (Idempotent)
+# 멱등성 (Idempotent)
 
 \* **멱등성:** 같은 입력에 대해 항상 같은 결과를 내는 성질.
 
@@ -170,7 +170,7 @@ Compose Runtime 은 트리를 아래로 순회하면서 **입력값이 바뀐 �
 
 ---
 
-### 통제되지 않은 사이드 이펙트 방지 (Free of uncontrolled side effects)
+# 통제되지 않은 사이드 이펙트 방지 (Free of uncontrolled side effects)
 
 사이드 이펙트 (Side Effect):
 호출되는 함수의 제어를 벗어나서 발생할 수 있는 예상치 못한 모든 동작.
@@ -233,7 +233,7 @@ Composable 함수는 최대한 "멍청하게" 만들어야 한다.
 
 ---
 
-### 재시작 가능 (Restartable)
+# 재시작 가능 (Restartable)
 
 일반적인 코틀린 함수는 콜스택 (call stack) 상으로 단 한 번만 호출된다.
 Composable 함수는 recomposition 으로 여러번 다시 시작될 수 있다.
@@ -247,7 +247,7 @@ stateless 한 함수는 재시작할 필요가 없기 때문에 이런 Composabl
 
 ---
 
-### 빠른 실행 (Fast execution)
+# 빠른 실행 (Fast execution)
 
 Composable 함수들은 직접적으로 UI 를 구축하거나 반환하지 않는다.
 Composable 은 단순히 Tree 구조를 구축 및 업데이트 하기위한 데이터(Node) 를 방출할 뿐이다.
@@ -264,7 +264,7 @@ Composable 은 단순히 Tree 구조를 구축 및 업데이트 하기위한 데
 캐싱의 한 유형. 이전에 계산한 값을 메모리에 저장함으로써 동일한 계산의 반복 수행을 줄임. <br/>
 \* **위치 기억법:** 함수 메모이제이션의 한 형태이다.
 
-### 위치 기억법 (Positional memoization)
+# 위치 기억법 (Positional memoization)
 
 함수 실행 결과를 캐싱해서 같은 입력에 대해 다시 계산하지 않는 기법.
 
@@ -345,7 +345,7 @@ fun ImageWithFiltersApplied(filters: List<Filter>) {
 
 ---
 
-### Suspend 함수와의 유사성 (Similarities with suspend functions)
+# Suspend 함수와의 유사성 (Similarities with suspend functions)
 
 suspend 와 Compose 함수는 비슷한 제약을 가진다.
 
@@ -378,7 +378,7 @@ fun publishTweet(
 
 ---
 
-### Composable 함수의 색깔 (The color of Composable functions)
+# Composable 함수의 색깔 (The color of Composable functions)
 
 서로 다른 종류의 함수는 잘 섞이지 않는다는 이야기다.
 
@@ -414,7 +414,7 @@ Composable 함수는 재시작 가능(Restartable), 생략 가능(Skippable), �
 
 ---
 
-### Composable 함수 타입 (Composable function types)
+# Composable 함수 타입 (Composable function types)
 
 `@Composable` 어노테이션은 함수의 타입 자체를 변경한다.
 
