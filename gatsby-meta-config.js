@@ -1,5 +1,6 @@
 module.exports = {
-  title: `winter-love.dev`,
+  // title: `winter-love.dev`,
+  title: `Winter's archive`,
   description: `Winter's archive`,
   siteUrl: `https://www.winter-love.dev`,
   ogImage: `/og-image.png`, // Path to your in the 'static' folder
