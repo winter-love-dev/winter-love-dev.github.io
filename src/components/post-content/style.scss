@@ -114,3 +114,11 @@ pre[class*="language-"] {
   width: 100%;
   margin-bottom: 20px;
 }
+
+.markdown p {
+  font-size: 16px;
+
+  @include mobile {
+    font-size: 15px;
+  }
+}
