@@ -1,5 +1,6 @@
 @use '../../styles/markdown-style'as *;
 @use 'prismjs/themes/prism-tomorrow'as *;
+@use '../../styles/mixins'as *;
 
 .gatsby-highlight {
   background: #1e1f22;
@@ -100,6 +101,10 @@ code[class*="language-"] {
 code[class*="language-"],
 pre[class*="language-"] {
   font-size: 16px;
+
+  @include mobile {
+    font-size: 12px;
+  }
 }
 
 .post-content {
@@ -108,4 +113,12 @@ pre[class*="language-"] {
   justify-content: center;
   width: 100%;
   margin-bottom: 20px;
+}
+
+.markdown p {
+  font-size: 16px;
+
+  @include mobile {
+    font-size: 15px;
+  }
 }
