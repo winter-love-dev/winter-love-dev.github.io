@@ -33,8 +33,8 @@ Jetpack Compose UI 프레임워크의 내부 동작 원리를 깊이 있게 다�
 해당 챕터와 관련된 글이 게시되면 링크를 첨부하겠음.
 
 1. [Composable 함수들 (Composable functions)](https://winter-love.dev/composeinternals/1-composable-functions/)
-2. Compose 컴파일러 (The Compose compiler)
-3. 컴포즈 런타임 (The Compose runtime)
+2. [Compose 컴파일러 (The Compose compiler)](https://winter-love.dev/composeinternals/2-the-compose-compiler/)
+3. [컴포즈 런타임 (The Compose runtime)](https://winter-love.dev/composeinternals/3-the-compose-runtime/)
 4. Compose UI
 5. 상태 스냅샷 시스템 (State snapshot system)
 6. 이펙트 및 이펙트 핸들러 (Effects and effect handlers)
