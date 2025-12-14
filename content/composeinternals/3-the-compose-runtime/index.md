@@ -19,6 +19,13 @@ Jetpack Compose Internals 를 읽고 정리하는 글이다.
 
 주당 1챕터씩 작성하려 했으나 1주가 미뤄졌다. 회사 일이 바쁘고 주말에 지침 이슈. ~~(게으름 이슈)~~ 연말 휴가때 좀 몰아서 읽어야겠다.
 
+이번 3 장은 Compose Runtime의 핵심 동작 원리를 다룬다.
+- 슬롯 테이블과 변경 목록이 어떻게 composition 상태를 관리하는지
+- Composer가 어떻게 변경사항을 기록하고 Applier가 어떻게 이를 실제 트리에 적용하는지
+- Recomposer가 어떻게 전체 recomposition 프로세스를 조율하는지 살펴본다
+
+컴파일러가 코드를 변환하는 방법을 다뤘던 2장과 달리, 이번 장은 런타임에서 실제로 UI가 어떻게 만들어지고 업데이트되는지 메커니즘을 살펴본다.
+
 [이전 2장 컴포즈 컴파일러](https://winter-love.dev/composeinternals/2-the-compose-compiler/)
 도 만만치 않았지만, 이번 3장은 분량이 2배다.
 예시코드와 그림들이 전보다 많기 때문에 장수가 더 많아진 감도 있다.
