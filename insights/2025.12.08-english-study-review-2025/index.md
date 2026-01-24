@@ -1,7 +1,7 @@
 ---
 insightPostId: english-study-review-2025
 insightPrivate: false
-insightTitle: 영어공부 2달 벼락치기 기록
+insightTitle: 개발자의 영어공부 벼락치기 일지
 insightDate: '2025-12-09 00:10:00'
 insightTags: ['잡담', 'Review']
 insightThumbnail: 'cover.png'
