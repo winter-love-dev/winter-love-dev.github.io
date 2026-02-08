@@ -1,5 +1,5 @@
 ---
-title: Coroutine DEEP DIVE 1부 - 코틀린 코루틴 이해하기
+title: 1부 - 코틀린 코루틴 이해하기 (Coroutine DEEP DIVE)
 date: '2026-02-01 00:10:00'
 author: Winter
 tags:
@@ -9,13 +9,11 @@ private: false
 thumbnail: 'cover.png'
 ---
 
-### Point
+본문에서 자주 사용하는 단축어 정의: 
+> cont: Continuation 객체의 줄임말. 
+> 코드에서는 `cont` 또는 `continuation`으로 표기될 수 있음.
 
-**챕터 브리핑:** 해당 회차의 핵심 개념 요약
-**실무 대입 토론:** 직접 격어본 사례, 혹은 어떻게 응용할건지 논의
-**라이브 코딩 및 검증:** 헷갈리는 부분을 간단한 샘플 코드 작성을 통해 이해하기
-
-**핵심 주제 및 논의 포인트**: 중단(Suspension)의 원리와 컴파일러가 생성하는 상태 머신(Continuation) 구조 분석
+---
 
 # 코틀린 코루틴을 배워야 하는 이유
 
@@ -50,12 +48,12 @@ API 를 불러온 뒤, 중단한 지점에서 다시 시작하여 UI 를 업데�
 
 ```kotlin
 fun showNews() {
-    viewModelScope.launch {
-        val config = async { getConfigFromApi() }
-        val news = async { gerNewsFromApi() }
-        val user = async { gerUserFromApi() }
-        view.showNews(user.await(). news.await())
-    }
+  viewModelScope.launch {
+    val config = async { getConfigFromApi() }
+    val news = async { gerNewsFromApi() }
+    val user = async { gerUserFromApi() }
+    view.showNews(user.await(). news.await())
+  }
 }
 ```
 
@@ -66,6 +64,8 @@ fun showNews() {
 코루틴은 스레드를 블로킹 하지 않고 중단 지점을 만들어서 비동기 로직을 실행한 뒤, 중단 지점에서 로직을 재개할 수 있다.
 이 동작은 어떤 비동기 로직 실행 방법보다 읽기 쉽게 작성할 수 있다.
 중단 함수는 취소가 가능하며, 스레드보다 비용이 적게 든다.
+ 
+추가 장점: 멀티플랫폼에서도 사용할 수 있다.
 
 # 시퀀스 빌더
 
@@ -75,14 +75,14 @@ fun showNews() {
 
 ```kotlin
 val seq = sequence {
-    yeild(1)
-    yeild(2)
-    yeild(3)
+  yeild(1)
+  yeild(2)
+  yeild(3)
 }
 fun main() {
-    for (num in seq) {
-        print(num)
-    } // 123
+  for (num in seq) {
+      print(num)
+  } // 123
 }
 ```
 
@@ -90,18 +90,18 @@ fun main() {
 
 ```kotlin
 val seq = requence {
-    println("Generating first")
-    yeild(1)
-    println("Generating second")
-    yeild(2)
-    println("Generating third")
-    yeild(3)
-    println("Done")
+  println("Generating first")
+  yeild(1)
+  println("Generating second")
+  yeild(2)
+  println("Generating third")
+  yeild(3)
+  println("Done")
 }
 fun main() {
-    for (num in seq) {
-        println("The next number is $num")
-    }
+  for (num in seq) {
+      println("The next number is $num")
+  }
 }
 // Generating first
 // The next number is 1
@@ -150,9 +150,9 @@ main `println("The next number is $num")` <- 다시 중단 후 시퀀스에서 �
 코투린을 중단한다는 건 실행을 중간에 멈추는것을 의미한다. 
 비디오 게임을 하다 멈추는 상황과 비슷하다.
 
-코루틴은 중단 되었을 때 Continuation 객체를 반환한다.
-이 객체는 게임을 저장하는 것과 비슷하다. 
-Continuation 을 이용하면 멈췄던 곳에서 다시 코루틴을 실행할 수 있다.
+코루틴은 중단 되었을 때 cont 객체를 반환한다.
+이 객체는 게임을 저장하는 것과 비슷하다.
+cont 를 이용하면 멈췄던 곳에서 다시 코루틴을 실행할 수 있다.
 다른 스레드에서 시작할 수 있다.
 중단했을 때 코루틴은 어떤 자원도 사용하지 않는다.
 
@@ -165,9 +165,9 @@ Continuation 을 이용하면 멈췄던 곳에서 다시 코루틴을 실행할 
 
 ```kotlin
 suspend fun main() {
-    println("Before")
-    suspendCoroutine<Unit> { }
-    println("After")
+  println("Before")
+  suspendCoroutine<Unit> { }
+  println("After")
 }
 // Before
 ```
@@ -179,18 +179,18 @@ main 함수가 끝나지 않았기 때문.
 
 ```kotlin
 suspend fun main() {
-    println("Before")
-    suspendCoroutine<Unit> { continuation ->
-        continuation.resume()
-    }
-    println("After")
+  println("Before")
+  suspendCoroutine<Unit> { cont ->
+    cont.resume()
+  }
+  println("After")
 }
 // Before
 // After
 ```
 
-Continuation 객체를 사용해서 코루틴을 중단한 후 곧바로 실행할 수 있다.
-continuation 에서 resume 을 초훌했기 때문에 After 를 호출할 수 있게 되었다.
+cont 객체를 사용해서 코루틴을 중단한 후 곧바로 실행할 수 있다.
+cont 에서 resume 을 호출했기 때문에 After 를 호출할 수 있게 되었다.
 
 > 코틀린 1.3 이후부턴 `resumeWith()` 함수만 사용할 수 있다고 한다.
 
@@ -198,16 +198,16 @@ suspendScope 에서 잠깐 동안 정지(sleep)된 뒤 재개되는 다른 스�
 
 ```kotlin
 suspend fun main() {
-    println("Before")
-    suspendCoroutine<Unit> { continuation ->
-        thread {
-            println("Suspended")
-            Thread.sleep(1000)
-            continuation.resume(Unit)
-            println("Resume")
-        }
-    }
-    println("After")
+  println("Before")
+  suspendCoroutine<Unit> { continuation ->
+      thread {
+          println("Suspended")
+          Thread.sleep(1000)
+          continuation.resume(Unit)
+          println("Resume")
+      }
+  }
+  println("After")
 }
 // Before
 // Suspended
@@ -225,30 +225,30 @@ suspend 함수에 기본적으로 Unit 을 인자로 넘길수 있고, 객체로
 ```kotlin
 // Unit 을 인자로 넘기는 경우
 val ret: Unit = 
-    suspendCoroutine<Unit> { cont: Continuation<Unit> ->
-        cont.resume(Unit)
-    }
+  suspendCoroutine<Unit> { cont: Continuation<Unit> ->
+    cont.resume(Unit)
+  }
 ```
 
 ```kotlin
 // 특정 타입을 인자로 넘기는 경우
 suspend fun main() {
-    val ret: Unit = 
-        
-    val i: Int = suspendCoroutine<Int> { cont ->
-        cont.resume(42)
-    }
-    println(i) // 42
-    
-   val str: String = suspendCoroutine<String> { cont ->
-        cont.resume("Some text")
-    }
-    println(str) // Some tex
+  val ret: Unit = 
+      
+  val i: Int = suspendCoroutine<Int> { cont ->
+    cont.resume(42)
+  }
+  println(i) // 42
+  
+  val str: String = suspendCoroutine<String> { cont ->
+    cont.resume("Some text")
+  }
+  println(str) // Some tex
 
-   val b: Boolean = suspendCoroutine<Boolean> { cont ->
-        cont.resume(true)
-    }
-    println(b) // true
+  val b: Boolean = suspendCoroutine<Boolean> { cont ->
+      cont.resume(true)
+  }
+  println(b) // true
 }
 ```
 
@@ -256,14 +256,14 @@ RestAPI 호출에서 응용하는 방법.
 
 ```kotlin
 suspend fun main() {
-    println("Before")
-    val user = suspendCoroutine<User> {
-        requestUser { user ->
-            cont.resume(user)
-        }    
-    }
-    println(user)
-    println("After")
+  println("Before")
+  val user = suspendCoroutine<User> {
+    requestUser { user ->
+      cont.resume(user)
+    }    
+  }
+  println(user)
+  println("After")
 }
 // Before
 // (1초 후)
@@ -284,13 +284,13 @@ suspend fun main() {
 class MyException : Throwable("Just an exception")
 
 suspend fun main() {
-    try {
-        suspendCoroutine<Unit> { cont ->
-            cont.resumeWithException(MyException())
-        }
-    } catch (e: MyExeption) {
-        println("Caught!")
+  try {
+    suspendCoroutine<Unit> { cont ->
+      cont.resumeWithException(MyException())
     }
+  } catch (e: MyExeption) {
+    println("Caught!")
+  }
 }
 // Caught!
 ```
@@ -307,18 +307,18 @@ suspend fun main() {
 var continuatino: Continuation<Unit>? = null
 
 suspend fun suspendAndSetContinuation() {
-    suspendCoroutine<Unit> { cont ->
-        continuation = cont
-    }
+  suspendCoroutine<Unit> { cont ->
+    continuation = cont
+  }
 }
 
 suspend fun main() {
-    println("Before")
+  println("Before")
     
-    suspendAndSetContinuation()
-    continuation?.resume(Unit)
+  suspendAndSetContinuation()
+  continuation?.resume(Unit)
     
-    println(After)
+  println(After)
 }
 // Before
 ```
@@ -329,6 +329,228 @@ suspend fun main() {
 이 섹션의 첫 내용을 다시 상기하며 개념 정리: </br>
 **코루틴, 코루틴 스코프:** 둘 다 코루틴을 지칭한다. </br>
 **중단 함수:** 코루틴을 중단할 수 있는 함수다.
+
+> 중단 함수는 코루틴을 실행 시킬수 있는 함수.
+
+> 코루틴은 일시 중단과 재개를 시킬 수 있다. 
+
+# 코루틴의 실제 구현
+
+- 중단 함수가 상태를 가지는 시점: 함수가 시작할때와 중단 함수가 호출 되었을때.
+  이렇듯, 중단 함수가 상태를 가진다는 점에서 상태 머신 (state machine) 과 비슷하다.
+
+
+- cont 객체는 상태를 나타내는 숫자와 로컬 데이터를 가지고 있다.
+
+
+- 호출된 함수의 cont 는 호출한 함수의 cont 를 감싸면서 체인을 형성한다. 
+  이 체인이 코루틴의 콜 스택 역할을 한다 — 함수가 끝나면 이 체인을 따라 되돌아간다.
+  ```kotlin
+  호출 순서: a() -> b() -> c()
+  
+  // Continuation 체인
+  c.cont -> b.cont -> a.cont // 각각 이전 호출자를 참조
+  
+  // 반환 순서
+  c 완료 → b resume → b 완료 → a resume → a 완료
+  ```
+
+## 컨티뉴에이션 전달 방식
+
+중단 함수는 여러 방식으로 구현할 수 있다.
+코틀린 팀은 **컨티뉴에이션 전달 방식**(continuation-passing style)을 택했다고 한다.
+
+컨티뉴에이션은 함수에서 함수로 파라미터를 통해 전달된다.
+관례상 컨티뉴에이션은 마지막 파라미터로 정렬 한다고 한다.
+
+```kotlin
+suspend fun getUser(): User?
+suspend fun setUser(user: User)
+suspend fun checkAvailability(flight: Flight): Boolean
+
+fun getUser(continuation: Continuatoin<*>): Any?
+fun setUser(
+  user: User, 
+  continuation: Continuation<*>,
+): Any
+fun checkAvailability(
+  flight: Flight,
+  continuation: Continuation<*>,
+): Any
+```
+
+중단 함수 내부를 들여다보면 원래 선언했던 형태와 반환 타입이 Any 또는 Any? 로 바뀌었다.
+그 이유는, 중단 함수를 실행하는 도중에 중단되면 선언된 타입의 값을 반환하지 않을수 있기 때문이라고 한다.
+이때 중단 함수는 `COROUTINE_SUSPENDED`라는 특별한 마커를 반환한다.
+
+지금은 `getUser()` 함수가 `User?` or `COROUTINE_SUSPENDED` 를 반환할 수 있기 때문에,
+이 결과와 가장 가까운 슈퍼 타입인 `Any?` 로 지정된 것이다.
+
+## 아주 간단한 함수
+
+```kotlin
+suspend fun myFunction() {
+    println("Before")
+    delay(1000) // 중단 함수
+    println("After")    
+}
+```
+
+`myFunction` 함수의 시그니처(signature)를 다음과 같이 추론할 수 있다.
+
+```kotlin
+fun myFunction(continuation: Continuation<*>): Any
+```
+
+이번에 알아볼 것은, 이 함수는 상태를 저장하기 위해 자신만의 cont 객체가 필요할것이다.
+이 상태명을 `MyFunctionContinuation` 이라고 가정해보자.
+
+```
+val continuation = MyFunctionContinuation(continuation)
+```
+
+`myFunction` 함수가 실행될 때 파라미터인 continuation 을 자신만의 컨티뉴에이션인 `MyFunctionContinuation` 으로 포장한다.
+
+이미 래핑된 컨티뉴에이션이면 그대로 두고, 아니면 새로 래핑한다.
+만약 코루틴이 재실행되고 있으면 컨티뉴에이션 객체는 이미 래핑되어 있을것이므로 컨티뉴에이션 객체를 그대로 둬야한다.
+
+```kotlin
+val continuation = 
+    continuation as? MyFunctionContinuation 
+    ?: MyFunctionContinuation(continuation)
+```
+
+`myFunction` 함수가 시작되는 지점은 함수의 시작점과 중단 이후 재개 시점 두 곳이다. 
+현재 상태를 저장하려면 `label` 이라는 필드를 사용한다.
+함수가 처음 시작할 때 이 `label` 값은 0으로 설정된다.
+이후 중단되기 전에 다음 상태로 설정되어 코루틴이 재개될 시점을 알 수 있게 도와준다.
+
+```kotlin
+// myFunction 의 세부 구현을 간단하게 표현한 예시
+fun myFunction(continuation: Continuation<Unit>): Any {
+  val continuation = continuation as? MyFunctionContinuation
+      ?: MyFunctionContinuation(continuation)
+      
+  if (continuation.label == 0) {
+      println("Before")
+      continuation.label = 1
+      if (delay(1000, continuation) == COROUTINE_SUSPEND) {
+          return COROUTINE_SUSPEND
+      }
+  }
+  if (continuation.label == 1) {
+      println("After")
+      return Unit
+  }
+  error("Impossible")
+}
+```
+
+위 코드에 중요한 부분이 있다.
+`delay` 에 의해 중단된 경우, `delay` 로부터 `COROUTINE_SUSPEND` 가 반환된다.
+`myFunction` 은 `COROUTINE_SUSPEND`를 반환한다.
+`myFunction`을 호출한 함수부터 시작해 콜 스택에 있는 모든 함수도 똑같다.
+
+즉, 중단이 일어나면 콜 스택에 있는 모든 함수가 `COROUTINE_SUSPEND` 를 반환 받으며,
+결과적으로 아래와 같이 중단된 코루틴의 실행이 종료된다.
+
+```kotlin
+suspend fun main() {
+  println("Before")
+    
+  // 여기서 중단되면 main도 COROUTINE_SUSPENDED 반환
+  myFunction() 
+    
+  // 재개후 실행됨
+  println("After") 
+}
+// Before
+// After
+```
+
+중단된 코루틴을 실행하던 스레드를 실행 가능한 코드가 사용할 수 있게된다.
+
+> 만약 `delay` 호출이 `COROUTINE_SUSPEND`를 반환하지 않고 `Unit`을 반환하면 어떻게 될까?
+> 그냥 중단 없이 다음 코드로 넘어가는 일반적인 함수 호출이 된다.
+
+다음으로 컨티뉴에이션 객체다.
+
+```kotlin
+cont = object : ContinuatoinIm(continuation) {
+  var result: Any? = null
+  var label = 0
+  
+  override fun invokeSuspend(`$result`: Any?): Any? {
+    this.result = `$result`;
+    return myFunction(this);
+  }
+}
+```
+
+## 상태를 가진 함수
+
+함수가 중단된 후 다시 사용할 지역 변수나 파라미터같은 상태를 가지고 있다면,
+함수의 컨티뉴에이션 객체에 상태를 저장해야 한다.
+
+```kotlin
+suspend fun myFunction() {
+  println("Before)
+  var count = 0
+  delay(1000) // 중단 함수
+  counter++
+  println("Counter: $counter)
+  println("After)
+}
+```
+
+counter 는 0 과 1로 표시된 두 상태에서 사용되므로 컨티뉴에이션을 통해 이를 저장해야 한다.
+함수 내에 사용되던 값들은 중단 직전에 저장되고, 이후 함수가 재개될 때 복구된다.
+
+## 값을 받아 재개되는 함수
+
+중단 함수로부터 값을 받아야 하는 경우는 좀 더 복잡하다.
+
+```kotlin
+suspend fun printUser(token: String) {
+  println("Before")
+  val userId = getUserId(token) // 중단 함수
+  println("Got userId: $userId")
+  val userName = getUserName(userId, token) // 중단 함수
+  println(User(userId, userName))
+  println("After")
+}
+```
+
+`getUserId` 와  `getUserName` 이라는 두 가지 중단 함수가 있다.
+token 이라는 파라미터를 받으면 중단 함수는 특정 값을 반환한다.
+
+함수가 재개되었다면 결과는 `Result.Success(value)` 가 되며, 이 값을 얻어 사용할 수 있다.
+함수가 예외로 재개되었다면 결과는 `Result.Failuer(exception)` 이 되며 이 때는 예외를 던진다.
+
+## 콜스택
+
+코루틴을 재개할 때 콜 스택을 사용할수는 없다.
+코루틴을 중단하면 스레드를 반환해 콜스택에 있는 정보가 사라지니까.
+그래서 컨티뉴에이션 객체가 콜 스택의 역할을 대신 한다. 
+
+서두에서 언급했듯  호출된 함수의 cont 는 호출한 함수의 cont 를 감싸면서 체인을 형성한다.
+
+```kotlin
+호출 순서: a() -> b() -> c()
+
+// Continuation 체인
+c.cont -> b.cont -> a.cont // 각각 이전 호출자를 참조
+
+// 반환 순서
+c 완료 → b resume → b 완료 → a resume → a 완료
+```
+
+## 중단 함수의 성능
+
+일반적인 함수 대신 중단 함수를 사용하면 비용은 어떻게 될까?
+코루틴 내부 구현을 보면 비용이 클 거라 생각하겠지만 실제로는 그렇지 않다.
+지역변수를 복사하지 않고 새로운 변수가 메모리 내 특정 값을 가리키게 한다.
+컨티뉴에이션 객체를 생성할 때 비용이 어느정도 들지만, 마찬가지로 큰 문제는 아니다.
 
 
 
