@@ -399,42 +399,6 @@ println(b) // 20
 - runBlocking <- 얘만 최상위 계층 고정
   - 코루틴 스코프 함수 or 코루틴 빌더
 
-
-```
-class SomeUseCase(
-    
-) {
-  // 이 코드가 가능한 이유: supervisorScope 라서
-  suspend fun run() = supervisorScope {
-    // supervisorScope 일 경우
-    // 예외는 발생했지만 다른 코드 실행에 영향을 주지 않는다
-    val a = async {
-      getApi() 
-    }
-    val b = async { getApi() }
-    val c = async { getApi() }
-    
-    // 잡을 사용하는 경우에도 예외를 핸들링 하고싶을 경우
-    // SupervisorScope
-    try {
-      a.await()
-    }
-  }
-}
-suspend fun await(): T {
-    val state = getState()
-
-    if (state is CompletedExceptionally) {
-        throw recoverStackTrace(state.cause) 
-    }
-    
-    if (state is Completed) {
-        return state.result as T
-    }
-    return awaitSuspend() 
-}
-```
-
 ## withContext
 
 스코프의 컨텍스트를 변경할 수 있다.
