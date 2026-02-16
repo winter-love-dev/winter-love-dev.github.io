@@ -1,5 +1,5 @@
 ---
-title: 1부 - 코틀린 코루틴 이해하기 (Coroutine DEEP DIVE)
+title: 코틀린 코루틴 이해하기 (Coroutine DEEP DIVE)
 date: '2026-02-01 00:10:00'
 author: Winter
 tags:
