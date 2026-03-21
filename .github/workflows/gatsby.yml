@@ -33,8 +33,9 @@ jobs:
       - name: Add CNAME file
         run: echo "winter-love.dev" > public/CNAME
 
-      - uses: enriikke/gatsby-gh-pages-action@v2.2.1
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          access-token: ${{ secrets.ACCESS_TOKEN }}
-          deploy-branch: gh-pages
-          skip-publish: false
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
