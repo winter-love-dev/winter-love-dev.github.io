@@ -1,4 +1,93 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[winter-love.dev RSS Feed]]></title><description><![CDATA[Winter's Archive / Blog]]></description><link>https://www.winter-love.dev</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 22 Mar 2026 01:16:10 GMT</lastBuildDate><item><title><![CDATA[가벼운 잡담과 짧은 글을 부담없이 써보려고 인사이트 페이지를 만들었다]]></title><description><![CDATA[나는 5년차 안드로이드 개발자. 이 블로그에서 온갖 잡담부터 간단하게나마 개발 인사이트를 적을 용도로 Insights…]]></description><link>https://www.winter-love.dev/2025.11.09-initial/</link><guid isPermaLink="false">https://www.winter-love.dev/2025.11.09-initial/</guid><pubDate>Sun, 09 Nov 2025 01:10:00 GMT</pubDate><content:encoded>&lt;p&gt;나는 5년차 안드로이드 개발자. 이 블로그에서 온갖 잡담부터 간단하게나마 개발 인사이트를 적을 용도로 Insights 페이지를 만들었다.&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[winter-love.dev RSS Feed]]></title><description><![CDATA[Winter's Archive / Blog]]></description><link>https://www.winter-love.dev</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 22 Mar 2026 01:21:33 GMT</lastBuildDate><item><title><![CDATA[안드로이드 디자인 시스템 모듈 구성 방법과 소스코드 설계 방향성 고민과 각종 잡다한 이야기]]></title><description><![CDATA[어떤 외국인이 설계 해놓은 디자인 시스템을 구매했다. 원화로 5만 4천 원 정도 되었다.  앱모듈을 별도로 구성해서 디자인 시스템 구현 작업을 하고있고
+이것은 android…]]></description><link>https://www.winter-love.dev/2025.11.10-think-about-design-system/</link><guid isPermaLink="false">https://www.winter-love.dev/2025.11.10-think-about-design-system/</guid><pubDate>Mon, 10 Nov 2025 00:10:00 GMT</pubDate><content:encoded>&lt;p&gt;어떤 외국인이 설계 해놓은 디자인 시스템을 구매했다. 원화로 5만 4천 원 정도 되었다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;:sample:design-system-catalog&lt;/code&gt; 앱모듈을 별도로 구성해서 디자인 시스템 구현 작업을 하고있고
+이것은 android 종속성의 공통 구현체란 의미로 &lt;code class=&quot;language-text&quot;&gt;:core-android:design-system&lt;/code&gt; 이라는 모듈로 분류했다.&lt;/p&gt;
+&lt;p&gt;외국인의 설계를 참고해서 내 앱에 파운데이션 토큰들부터 하나 하나 정의했고, 이를 기반한 앱의 기초적인 Theme 을 구성했다.
+(참고로 Theme 을 읽을땐 “테마” 라고 하지 않고 “띄~임”으로 읽어야 한다는 사실)
+이어서 파운데이션 토큰을 기반한 간단한 컴포넌트를 하나씩 구현해보고 있다.
+간단한 컴포넌트 하나도 내 기준으로 약간 부담될 정도로 많은 경우의 수에 대응되게 설계 되어있다.&lt;/p&gt;
+&lt;p&gt;당장 필요하지 않은데 여러 경우의 수를 다 고려하면서 만든다는 행위가 어찌보면 이상할 수 있는데,
+현업에서 다루는 디자인 시스템은 상황별로 필요한 만큼 스펙이 아주 조금씩 업데이트 되고있고 그것을 필요한 사람이 돌아가면서
+조금씩 업데이트, 커스텀 하다보니 누구도 제로부터 완결까지 경험할 수 있는 기회는 흔치 않았다.
+이것만 집중적으로 다루는 팀이 있다면 좋았겠지만 어쩌겠는가 회사마다 각자의 사정, 상황에 맞춰서 운영할 수밖에.
+개인적으로 이런 경험 부족의 갈증을 해소하면서 설계 인사이트를 넓히고 싶었고
+앞으로 나의 여러가지 개인 프로젝트를 일관성 있게 잘 만들고 싶다는 목표의 초석이기도 하다.&lt;/p&gt;
+&lt;p&gt;다시 “약간 부담될 정도로 많은 경우의 수에 대응되게 설계 되어있다” 의 이야기 시점으로 돌아와서.
+제일 간단한 편인 버튼 컴포넌트의 일부 구성을 확인해보면
+Default(정지상태), Active(누름상태), Disabled(비활성 상태) 와 같은 상태별 인터렉션이 정의되어 있고.
+버튼 내부 곳곳에 텍스트와 Icon resource 가 위치할 수 있는 Slot 공간과 Size 가 정의되어 있다.
+몇 가지 스펙은 언급하지 않았지만 지금까지 정의된 버튼의 스펙을 동일하게 공유하고
+상황별로 다르게 쓰이는 다양 타입 색상의 버튼들이 정의되어 있다. (Primary, Secondary ~ + N 개).&lt;/p&gt;
+&lt;p&gt;당연한 얘기지만 디자인이 아무리 구체적으로 잘 설계 되었다 한들 소스코드와 1대1로 매칭되는 것은 쉽지 않은 일인데
+처음엔 나름 1대1로 맞춰추는 상상을 했다. (토큰) → (버튼 스펙) + (구현체) 이렇게 세 번 정도의 계층 공정으로 충분히 완성이요 ~
+라고 상상했으나 역시나 디자인 시스템의 경험 부족 초보다운 생각이었다.&lt;/p&gt;
+&lt;p&gt;현실을 인지하고 하나의 컴포넌트를 완성하기 위해 소스코드 레벨에서
+일련의 제작 공정들과 필요한 요소들을 설계했고, 과정중에 부수적인 결과물도 나왔다.
+예를 들어 버튼 외에 다른 컴포넌트에서도 공통으로 쓸 수 있는 구현체가 &lt;code class=&quot;language-text&quot;&gt;/interaction&lt;/code&gt; 이라는 공통 분류로 빠지기도 했다.
+개인적으로 코드간 얽힘을 싫어해서 공통화는 최대한 신중히 결정하려는 편이라 추후에 이 결정을 철회하게 될지도 모르겠다.&lt;/p&gt;
+&lt;p&gt;어쨋든 버튼 컴포넌트를 완성하기 위한 최종 공정은
+(&lt;code class=&quot;language-text&quot;&gt;토큰&lt;/code&gt;) → (&lt;code class=&quot;language-text&quot;&gt;interaction&lt;/code&gt; - Press / Scale 공통 구현체) → (&lt;code class=&quot;language-text&quot;&gt;Button spec&lt;/code&gt; - Icon / Shape / State / Type 전용 구현체) → (&lt;code class=&quot;language-text&quot;&gt;버튼&lt;/code&gt; 구현체) 와 같이
+계층적으로 설계가 완성 되었는데 적고보니 지극히 당연하고 기초적인 구성 요소들 아니겠는가.
+초보는 오늘도 &lt;a href=&quot;https://news.hada.io/topic?id=21111&quot;&gt;바퀴를 재발명 하면서 (출처)&lt;/a&gt; 깨닫는다.&lt;/p&gt;
+&lt;p&gt;제일 간단한 버튼 하나를 구현한 것 뿐이지만 혼자 제로부터 완결까지 낸 경험이 만족스러웠다.
+디자인과 인터렉션을 스펙에 정의된대로 100% 핸들링 할거라 Material Button 컴포넌트를 사용하지 않았다.
+Button 의 모든 요소들이 필요하지 않을것 같아서 대부분 Modifier 로 완성했다.&lt;/p&gt;
+&lt;p&gt;이 기초적인 디자인 시스템 설계 감각을 계속 키워서
+훨씬 복잡한 컴포넌트들도 잘 만들자고 생각하던 찰나에 새로운 고민이 시작 되었으니 …&lt;/p&gt;
+&lt;p&gt;파운데이션 토큰을 기반으로 구성된 Theme 과 버튼 구현만 해도 작업량은 17개의 파일과 소스코드 2000 라인을 넘으며 양이 상당했다.
+아직 기초 작업밖에 안했는데 이정도면 순식간에 혼자서 N 만 라인이 넘는 소스코드를 관리하게 될 미래가 보였다.
+소스량 자체가 두려운것도 있고, 무엇보다 이 많은 구현체를 어떻게 잘 정돈하고 통제할 수 있을지? 이런 관점에서의 걱정이었다.&lt;/p&gt;
+&lt;p&gt;디자인 시스템에 명시되지 않았지만 구현상 필요하게 된 &lt;code class=&quot;language-text&quot;&gt;/interaction&lt;/code&gt; 이라는 소스코드 레벨의 공통 설계 분류가 추가 되었고,
+앞으로 &lt;code class=&quot;language-text&quot;&gt;/shape&lt;/code&gt; 이나 &lt;code class=&quot;language-text&quot;&gt;/state&lt;/code&gt; 등 소스코드 레벨에서 어떤 새로운 공통 분류가 생겨날지 알 수 없는 상황이다.
+내 성향상 웬만하면 이렇게까지 공통화 하지 않겠지만 미래엔 효율이라는 명목으로
+나조차도 내가 어떤 선택 할지도 확신할 수 없다는거지.&lt;/p&gt;
+&lt;p&gt;디자인 시스템엔 명시되지 않은
+소스코드 레벨의 설계들이 추가됨에 따라 디자인 시스템 모듈이 비대해지고 오염되어,
+최초에 순수하게 디자인 스펙과 설계를 담고있던 &lt;strong&gt;디자인 시스템&lt;/strong&gt; 의 정체성이 흐릿해질것 같았다.&lt;/p&gt;
+&lt;p&gt;디자인 시스템 스펙과 소스코드 레벨의 구현체가 비대하게 섞이게 되면 언젠가
+“그래서 이중에 디자인 시스템 스펙이 뭔데?” 라는 의문이 생길수 있다.
+즉 &lt;strong&gt;디자인 시스템이었던 것&lt;/strong&gt; 이라는 최초의 맥락을 잃고 UI 라는 명목으로 온갖 View 관련 구현체가 뭉치는 구현 집합체가 될 것 같았다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;:design-system&lt;/code&gt; 모듈은 디자인 시스템에 문서에 명시된 &lt;code class=&quot;language-text&quot;&gt;파운데이션 토큰&lt;/code&gt;을 그대로 담고있는
+디자인 시스템의 가장 코어하고 순수한 맥락이라는 정체성을 계속 지키고 싶었다.
+그래서 모듈을 &lt;code class=&quot;language-text&quot;&gt;ui-component&lt;/code&gt; 하나 더 만들어서 &lt;code class=&quot;language-text&quot;&gt;:design-system&lt;/code&gt; 모듈의 순수한 맥락을 지켜보려는 시도를 하는중이다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;:design-system&lt;/code&gt; 은 오직 &lt;code class=&quot;language-text&quot;&gt;ui-component&lt;/code&gt; 가 의존할 수 있게 설정해서, internal 하게 숨겨진 위치에 뒀다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;ui-component&lt;/code&gt; 모듈은 &lt;code class=&quot;language-text&quot;&gt;:design-system&lt;/code&gt; 이라는 맥락을 기반으로 만들어졌고
+제작 과정중 소스코드 레벨에서 필요한 온갖 설계가 채워져도
+맥락을 잃게 된다는 문제로부터 안전해질거라 생각했다.&lt;/p&gt;
+&lt;p&gt;하지만 여전히 지금의 선택에 100% 만족한건 아니다. 괜히 과하게 분리하는건 아닐지? 약간의 의문도 함께 맴돌고 있다.
+지금의 선택이 정답인지는 모르겠지만, 구현 과정에서 더 나은 설계로 조금씩 진화할게 될거라고 믿고 처음부터 욕심 부리지 말아야지.&lt;/p&gt;
+&lt;p&gt;어쨋든 지금의 설계 선택을 기반으로 당장은 디자인 시스템 해피 코딩을 즐길 생각이다.
+한 달 뒤에 이 설계를 보고 “이게 뭐야” 할 수도 있지만.
+이게 다 프로덕과 나의 인사이트 성장의 과정 아니겠는가.&lt;/p&gt;
+&lt;p&gt;이번 경험을 통해서도 그렇고 종종 느끼는 거지만
+처음부터 완벽한 설계란 불가능함에도 늘 그것을 달성하고 싶다는 욕심을 부리게 된다.
+개발자는 여러가지 환상을 꿈꾸며 사는것 같다.
+예를 들어 잘 설계된 코드로 우리의 작업을 “딸깍” 하여 종결하고 싶다는 환상.
+혹은 이번 사례처럼 처음부터 완벽한 설계를 완성하고 싶다는 환상.&lt;/p&gt;
+&lt;p&gt;지금 이 순간의 고민과 선택들이 쌓여서 언젠가는
+“그때 그렇게 고민했던게 도움이 됐구나” 끄덕끄덕 되돌아볼 수 있는 날이 오길.&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 542px; &quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 83.88888888888889%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAARCAYAAADdRIy+AAAACXBIWXMAAAsTAAALEwEAmpwYAAACNElEQVR42oVSa2/SYBTur9ZMRbMFNTNq9IMsBl00fFjURTcTP7lJuGwIbsMpy7IBhVLKpZRSKNfeHt+3gC3FymmevKfnfc7T03MOAz8zCQzPaf7j3WOMN2DNzkKXQ0r+ibR8biPT+WVj7tO7fLfsJPgLThkpKYvX3AdsF3fxlvuEbXYXkeo+3nAfEeH3EC69R6yetgWt/wnOTR4qEPpNNAYiBLWxgMagZd+1B8rqX16q2CI1G06zTOLTmJ/5CppUiEDTNeKbdivoQ30as2b3S4KmRZOnAqanH5puQDcMzDm2CInrBhXVXR93sFyhSYiWAanZwLDf8/21yXgMSWzM+E5LmOuWii+sgsjvJl6e1fHitI5QVsRmgsXzNI/wmYCdiyYOywoZwhiiOsLnQgdbP3g8iF4hdC5h67SGSE7ESa0HJlZqI5RTcP+ogkCUxc2DPG4cFBFIClg7LOD21ytspqp4dSGDk3ooSiqeZSXcjRZx6xtBjMMayQmmBOzlO2DsnpGSdW0CdaxBGWmQ+iO0SCXUH5KYSYbg7q5F+joYT8hqTeyqu4Sna1POdCjeNpqmjcWpz4Zin36b4RrKnEiT6GQp/ASsBT4WOIx3VeYVunfMcomsMsah468IX+UhtlpO6S7OSsEkJyOck/HoexXrSR73EhXciXMIxCtYP65hI17G04yAyKUMumJYIc2cCAreXSsIZXg8PuYQjBUQjLPYiBbwMFHCkyPW3sX9YhfltuoU7SP4B2owDnHt0g6BAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;cover&quot;
+        title=&quot;&quot;
+        src=&quot;/static/c00caa8666a36258c6f29c7f7f45d423/c0388/cover.png&quot;
+        srcset=&quot;/static/c00caa8666a36258c6f29c7f7f45d423/e9ff0/cover.png 180w,
+/static/c00caa8666a36258c6f29c7f7f45d423/f21e7/cover.png 360w,
+/static/c00caa8666a36258c6f29c7f7f45d423/c0388/cover.png 542w&quot;
+        sizes=&quot;(max-width: 542px) 100vw, 542px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[가벼운 잡담과 짧은 글을 부담없이 써보려고 인사이트 페이지를 만들었다]]></title><description><![CDATA[나는 5년차 안드로이드 개발자. 이 블로그에서 온갖 잡담부터 간단하게나마 개발 인사이트를 적을 용도로 Insights…]]></description><link>https://www.winter-love.dev/2025.11.09-initial/</link><guid isPermaLink="false">https://www.winter-love.dev/2025.11.09-initial/</guid><pubDate>Sun, 09 Nov 2025 01:10:00 GMT</pubDate><content:encoded>&lt;p&gt;나는 5년차 안드로이드 개발자. 이 블로그에서 온갖 잡담부터 간단하게나마 개발 인사이트를 적을 용도로 Insights 페이지를 만들었다.&lt;/p&gt;
 &lt;p&gt;아티클 작성은 뭔가 뭔가 헤비하다. 잘못된 정보를 전달하지 않기 위해 여러 공식문서와 자료를 돌아다니면서 사실 파악을 할 필요가 있었다.
 아티클은 글 하나에 들어가는 정성이 적지 않아서 마음의 장벽이 생긴듯 함.&lt;/p&gt;
 &lt;p&gt;성실하게는 아니라도 한두 달에 아티클 하나정돈 발행하기.
@@ -120,6 +209,54 @@ Stripe 에서 분류한 결제 방식이며, 다른 결제 시스템에서도 �
 /static/211df922a56e1cdd35e8f85b60534fc5/37523/cover.png 720w,
 /static/211df922a56e1cdd35e8f85b60534fc5/73b94/cover.png 1004w&quot;
         sizes=&quot;(max-width: 720px) 100vw, 720px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[아침 잠이 덜 깨서 비몽사몽 하지만 뭐라도 적다가 정신 차리는 이야기]]></title><description><![CDATA[한줄 요약: Jetpack Compose Internals 책 읽겠다고 말하는 글이다. 의식의 흐름대로 글을 마구 휘갈겼더니 나는 어느새 Jetpack Compose Internals…]]></description><link>https://www.winter-love.dev/2025.11.12-compose-internals/</link><guid isPermaLink="false">https://www.winter-love.dev/2025.11.12-compose-internals/</guid><pubDate>Wed, 12 Nov 2025 00:10:00 GMT</pubDate><content:encoded>&lt;p&gt;한줄 요약: Jetpack Compose Internals 책 읽겠다고 말하는 글이다.&lt;/p&gt;
+&lt;p&gt;의식의 흐름대로 글을 마구 휘갈겼더니 나는 어느새 Jetpack Compose Internals 완독 목표를 세운 사람이 되어버렸다. “올해 안에”
+하필 요즘같이 바쁜 시기에 이런 생각을 한거니.
+워낙 오래 미뤄왔던 일중 하나를 청산할 기회인데 뭐 좋게좋게 생각하고 이 계획을 확정하기로 했다.&lt;/p&gt;
+&lt;p&gt;Jetpack Compose UI 프레임워크의 내부 동작 원리를 깊이 있게 다루는 기술 서적이다.
+안드로이드 개발 커뮤니티의 유명 개발자 &lt;a href=&quot;https://www.linkedin.com/in/jorgecastillopr/&quot;&gt;Jorge Castillo (Linkedin)&lt;/a&gt; 가 집필했다.
+한국 안드로이드 개발 커뮤니티를 이끌고 있는 멤버인 &lt;a href=&quot;https://www.linkedin.com/in/skydoves/&quot;&gt;Jaewoong Eum (Linkedin)&lt;/a&gt;, &lt;a href=&quot;https://www.linkedin.com/in/kimin-ryu/&quot;&gt;Kimin Ryu (Linkedin)&lt;/a&gt; 님이 읽기 쉽게 한글 번역을 해주셨다.&lt;/p&gt;
+&lt;p&gt;책을 읽고 이해한 내용들을 원문보다 살짝 더 쉽게 설명하는걸 목표로 삼았다.
+얼마나 쉽게 설명할거냐면, 대학생이나 현업 개발자 등 컴포즈를 평소보다 좀 더 깊이 있게 파고들고 싶은 자가 받아들일 수 있을 정도면 적당하지 않을까 싶다.
+미래의 내가 잊었던 내용을 빠르게 복기하기 위한 정보성 기록으로도 유용하게 사용되길 바란다.&lt;/p&gt;
+&lt;p&gt;책의 내용은 총 7장까지 있으니 이 구성에 맞춰서 앞으로 7번 정도의 시리즈 글을 생각하고 있다.
+쓰다보면 구성이 길어지거나 짧아질수도.
+대충 이번주부터 매주 1장씩 읽으면 딱 연말에 완독할 수 있게된다.&lt;/p&gt;
+&lt;p&gt;올해 1분기 쯤 출장으로 이동중인 비행기 내부가 너무 지루해서 이 책을 읽었었다.
+가만히 앉아있기는 지루했지만 비행 소음은 이 책에 집중할 수 있게 도와주는 일종의 화이트 노이즈 역할을 했던 기억이 난다.
+초반 파트를 바짝 읽고 그 뒤로 몇 달 째 방치중인 현 상태를 반성하며, 미뤄온 일을 하루하루 청산해보겠다.&lt;/p&gt;
+&lt;p&gt;앞으로 읽고 다루게 될 챕터 이름만 미리 나열하고 마무리.
+해당 챕터와 관련된 글이 게시되면 링크를 첨부하겠음.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https://winter-love.dev/composeinternals/1-composable-functions/&quot;&gt;Composable 함수들 (Composable functions)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://winter-love.dev/composeinternals/2-the-compose-compiler/&quot;&gt;Compose 컴파일러 (The Compose compiler)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://winter-love.dev/composeinternals/3-the-compose-runtime/&quot;&gt;컴포즈 런타임 (The Compose runtime)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Compose UI&lt;/li&gt;
+&lt;li&gt;상태 스냅샷 시스템 (State snapshot system)&lt;/li&gt;
+&lt;li&gt;이펙트 및 이펙트 핸들러 (Effects and effect handlers)&lt;/li&gt;
+&lt;li&gt;Compose Runtime 고급 사용 사례 (Advanced Compose Runtime use cases)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 640px; &quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 64.44444444444444%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAYAAACpUE5eAAAACXBIWXMAAAsTAAALEwEAmpwYAAACxklEQVR42k1TaWsTURTNLxZEFCnFVrStYhdtFeqC2FZEBa3d0i1ts0ySyUz2ZJLZskwmW1P9Ivj5eO4Lgh8u83jz3nnnnnNupFNNolW+RNjModfU0WtkMHLSaJpnqGWj8PmvYZzALcZU9RtJ9KzM9CxL7gpGaOfglhKIBPzZracJpKNT13goh4GTg1eOwytdqb12LYVWNY42Lw5dA33H5PmsAgysNAKuQ669chKRgZvH0CugzxcGdhY33SquOxWMvDzGfh43QU1Vn/+GPDvwigqwS3C5M/KLEIwegVtVDZGRncbE1/mChoZ5irp+TGYXZJ0iCw0W27XzZ/jZyasae1nVhTzQNI5R0fZh6UeoZQ7R0KNk6Oi49nOI7e9gaf4uVhZmsP5sXq3l+/rFIrbfrOLP2MKkTYZsObRNxSgkqGgnrQsBnzJFZGPsZnG+t41E9BMcCn/2YwvG1S4Z0xidhpRomp2hBKZqV7WsOtDJVB4wEFBrv5JCpFc+x8jW8PXDOt6/eko2K2Q2h5fL83i78USt15Zm8Wj2NnXN4aZlqET0qZsAt8lKjBlQc08AQzo0cjIoJPZgxndR1A7QtTTEo59R0g5hF2JInnxR+v4KiqomLRMjN6uYqeIDARkrl8NmlkLr+L7zCgsP7mB1cQZz92/h47s1bD5/jI3lh9TzHrY2l/F7WKWOJs9PE6Gy29CVSV22rAB71UsMJKx1Uq8n0K7ElatyqU/d/PIFgxtXJS6PXIaauocOW6Y5cj5gjoduYdqy6DCQHDLMYZPCt8sqhxLUgWNg0qmqkjRI3v7lTqZDBVpCToaipVuky0JVJmBqfXqaMQL3rBS6Ne430mocg7qMnDadDFa7FENA1kFNgKcT48no+cULuBQ8+G+UupUYHIbWNk/gmPwaUbiFU65PGN4jWOl91FO7sJLf4OkHZJeAjHDTjOEvGExu+FyBF9kAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;cover&quot;
+        title=&quot;&quot;
+        src=&quot;/static/5314d2a18f59617ee9c2723cac41e942/6af66/cover.png&quot;
+        srcset=&quot;/static/5314d2a18f59617ee9c2723cac41e942/e9ff0/cover.png 180w,
+/static/5314d2a18f59617ee9c2723cac41e942/f21e7/cover.png 360w,
+/static/5314d2a18f59617ee9c2723cac41e942/6af66/cover.png 640w&quot;
+        sizes=&quot;(max-width: 640px) 100vw, 640px&quot;
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
         loading=&quot;lazy&quot;
         decoding=&quot;async&quot;
@@ -254,13 +391,8 @@ Stripe 에서 분류한 결제 방식이며, 다른 결제 시스템에서도 �
         loading=&quot;lazy&quot;
         decoding=&quot;async&quot;
       /&gt;
-    &lt;/span&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[AI를 지휘하는 안드로이드 개발자의 워크플로우]]></title><description><![CDATA[요즘 내가 개발 작업에서 가장 많은 비중을 차지하는 일을 한 키워드로 압축하면 “매니징”이다. 작업 배경 관리 아키텍처 설계 설계를 바탕으로 AI 지휘 및 코드 검증, 일부 손코딩 코드를 직접 치는 시간보다, 설계하고 AI…]]></description><link>https://www.winter-love.dev/2026.03.21-ai-usecase/</link><guid isPermaLink="false">https://www.winter-love.dev/2026.03.21-ai-usecase/</guid><pubDate>Sat, 21 Mar 2026 00:10:00 GMT</pubDate><content:encoded>&lt;p&gt;요즘 내가 개발 작업에서 가장 많은 비중을 차지하는 일을 한 키워드로 압축하면 “매니징”이다.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;작업 배경 관리&lt;/li&gt;
-&lt;li&gt;아키텍처 설계&lt;/li&gt;
-&lt;li&gt;설계를 바탕으로 AI 지휘 및 코드 검증, 일부 손코딩&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;코드를 직접 치는 시간보다, 설계하고 AI를 지휘하고 결과를 검증하는 시간이 훨씬 많아졌다.
+    &lt;/span&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[AI를 지휘하는 안드로이드 개발자의 워크플로우]]></title><description><![CDATA[요즘 내가 개발 작업에서 가장 많은 비중을 차지하는 일을 한 키워드로 압축하면 “매니징”이다. 코드를 직접 작성하는 시간보다, 작업 배경을 관리하고 아키텍처를 설계하고 AI…]]></description><link>https://www.winter-love.dev/2026.03.21-ai-usecase/</link><guid isPermaLink="false">https://www.winter-love.dev/2026.03.21-ai-usecase/</guid><pubDate>Sat, 21 Mar 2026 00:10:00 GMT</pubDate><content:encoded>&lt;p&gt;요즘 내가 개발 작업에서 가장 많은 비중을 차지하는 일을 한 키워드로 압축하면 “매니징”이다.&lt;/p&gt;
+&lt;p&gt;코드를 직접 작성하는 시간보다, 작업 배경을 관리하고 아키텍처를 설계하고 AI를 지휘하고 결과를 검증하는 시간이 훨씬 많아졌다.
 이 워크플로우를 가능하게 하는 구성들과 실전 사례를 소개한다.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;사용중인 AI:&lt;/strong&gt; Claude, Gemini&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;많이 활용하는 AI 설정:&lt;/strong&gt; AGENTS.md, Skills&lt;/p&gt;
@@ -365,7 +497,7 @@ context compact 로 인한 대기 시간도 1분 이상, 길 땐 수 분으로 �
 &lt;p&gt;설정과 맥락이 갖춰지면, 여러 일을 동시에 오케스트레이션 할 수 있다.&lt;/p&gt;
 &lt;p&gt;AI 를 실행하기 위한 터미널 앱으로는 &lt;strong&gt;Warp&lt;/strong&gt; 를 사용하고 있다.
 IDE 에서 에디터를 Split 해서 사용하듯 터미널을 Split 해서 한눈에 볼 수 있게 된다.
-주로 체이닝이 없는 별도의 작업들을 동시에 오케스트레이션 할 수 있다는 점에서 유용하게 사용 중이다.&lt;/p&gt;
+체이닝이 없는 별도의 작업들을 각 세션에서 동시에 처리할 수 있다는 점에서 유용하다.&lt;/p&gt;
 &lt;p&gt;혹은 하나의 큰 일을 할 때, 세션 1을 메인 AI 로 두고 나머지 세션을 세션 1에게 오케스트레이션을 맡기는 방식으로도 활용하고 있다.
 최근엔 teams 라는 오케스트레이션이 아예 피처로 출시 되기도 했는데, 아직 사용하진 않았다.
 요즘은 그냥 체이닝이 없는 여러 일에 대응할 때 세션을 하나씩 분할해서 사용하는 패턴이 더 많았다.&lt;/p&gt;
@@ -396,153 +528,14 @@ IDE 에서 에디터를 Split 해서 사용하듯 터미널을 Split 해서 한�
     &lt;/span&gt;&lt;/p&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;strong&gt;4. 실전 사례 — 팀 매니징 자동화&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;위의 워크플로우가 빛을 발한 사례가 있다.&lt;/p&gt;
-&lt;p&gt;안드로이드 개발을 주로 했던 사람으로서 하기 어려웠던 일을 해내기도 했다. (특정 랭귀지 및 스크립트 핸들링)
-설계와 아이디어는 있었지만 핵심 스크립트 작성에 많은 시간과 노력이 필요했던 일을 AI가 확 쉽게 만들어줬다.&lt;/p&gt;
 &lt;p&gt;최근 안드로이드 팀원 매니징 자동화 시스템을 도입했다.
 원래 2주에 한 번씩, 한 사람씩 돌아가면서 했던 일이고 사람 손을 많이 타는 일이었다.
 사람이 약 6단계를 거치던 프로세스를 1단계로 줄였다. (슬랙, 지라, git 등을 통합한 워크플로우를 제작함)&lt;/p&gt;
+&lt;p&gt;안드로이드 개발자로서 설계와 아이디어는 있었지만, 핵심 스크립트 작성에 많은 시간과 노력이 필요했던 일이었다.
+AI가 위의 워크플로우 제작을 확 쉽게 만들어줬다.&lt;/p&gt;
 &lt;p&gt;이번 일은 사내에서도 꽤 호평을 받았고, 다른 팀에서도 도입을 준비 중이다.&lt;/p&gt;
 &lt;hr&gt;
-&lt;p&gt;설계하고, 구성하고, 지휘한다. 요즘 내가 AI와 일하는 방식이다.&lt;/p&gt;
-&lt;p&gt;대부분 공식 문서와 개인적인 통찰을 바탕으로 만들어진 내용들이라 요즘 공유되는 AI 활용 사례들과 결이 다르게 느껴질 수 있다.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[아침 잠이 덜 깨서 비몽사몽 하지만 뭐라도 적다가 정신 차리는 이야기]]></title><description><![CDATA[한줄 요약: Jetpack Compose Internals 책 읽겠다고 말하는 글이다. 의식의 흐름대로 글을 마구 휘갈겼더니 나는 어느새 Jetpack Compose Internals…]]></description><link>https://www.winter-love.dev/2025.11.12-compose-internals/</link><guid isPermaLink="false">https://www.winter-love.dev/2025.11.12-compose-internals/</guid><pubDate>Wed, 12 Nov 2025 00:10:00 GMT</pubDate><content:encoded>&lt;p&gt;한줄 요약: Jetpack Compose Internals 책 읽겠다고 말하는 글이다.&lt;/p&gt;
-&lt;p&gt;의식의 흐름대로 글을 마구 휘갈겼더니 나는 어느새 Jetpack Compose Internals 완독 목표를 세운 사람이 되어버렸다. “올해 안에”
-하필 요즘같이 바쁜 시기에 이런 생각을 한거니.
-워낙 오래 미뤄왔던 일중 하나를 청산할 기회인데 뭐 좋게좋게 생각하고 이 계획을 확정하기로 했다.&lt;/p&gt;
-&lt;p&gt;Jetpack Compose UI 프레임워크의 내부 동작 원리를 깊이 있게 다루는 기술 서적이다.
-안드로이드 개발 커뮤니티의 유명 개발자 &lt;a href=&quot;https://www.linkedin.com/in/jorgecastillopr/&quot;&gt;Jorge Castillo (Linkedin)&lt;/a&gt; 가 집필했다.
-한국 안드로이드 개발 커뮤니티를 이끌고 있는 멤버인 &lt;a href=&quot;https://www.linkedin.com/in/skydoves/&quot;&gt;Jaewoong Eum (Linkedin)&lt;/a&gt;, &lt;a href=&quot;https://www.linkedin.com/in/kimin-ryu/&quot;&gt;Kimin Ryu (Linkedin)&lt;/a&gt; 님이 읽기 쉽게 한글 번역을 해주셨다.&lt;/p&gt;
-&lt;p&gt;책을 읽고 이해한 내용들을 원문보다 살짝 더 쉽게 설명하는걸 목표로 삼았다.
-얼마나 쉽게 설명할거냐면, 대학생이나 현업 개발자 등 컴포즈를 평소보다 좀 더 깊이 있게 파고들고 싶은 자가 받아들일 수 있을 정도면 적당하지 않을까 싶다.
-미래의 내가 잊었던 내용을 빠르게 복기하기 위한 정보성 기록으로도 유용하게 사용되길 바란다.&lt;/p&gt;
-&lt;p&gt;책의 내용은 총 7장까지 있으니 이 구성에 맞춰서 앞으로 7번 정도의 시리즈 글을 생각하고 있다.
-쓰다보면 구성이 길어지거나 짧아질수도.
-대충 이번주부터 매주 1장씩 읽으면 딱 연말에 완독할 수 있게된다.&lt;/p&gt;
-&lt;p&gt;올해 1분기 쯤 출장으로 이동중인 비행기 내부가 너무 지루해서 이 책을 읽었었다.
-가만히 앉아있기는 지루했지만 비행 소음은 이 책에 집중할 수 있게 도와주는 일종의 화이트 노이즈 역할을 했던 기억이 난다.
-초반 파트를 바짝 읽고 그 뒤로 몇 달 째 방치중인 현 상태를 반성하며, 미뤄온 일을 하루하루 청산해보겠다.&lt;/p&gt;
-&lt;p&gt;앞으로 읽고 다루게 될 챕터 이름만 미리 나열하고 마무리.
-해당 챕터와 관련된 글이 게시되면 링크를 첨부하겠음.&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;a href=&quot;https://winter-love.dev/composeinternals/1-composable-functions/&quot;&gt;Composable 함수들 (Composable functions)&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://winter-love.dev/composeinternals/2-the-compose-compiler/&quot;&gt;Compose 컴파일러 (The Compose compiler)&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://winter-love.dev/composeinternals/3-the-compose-runtime/&quot;&gt;컴포즈 런타임 (The Compose runtime)&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Compose UI&lt;/li&gt;
-&lt;li&gt;상태 스냅샷 시스템 (State snapshot system)&lt;/li&gt;
-&lt;li&gt;이펙트 및 이펙트 핸들러 (Effects and effect handlers)&lt;/li&gt;
-&lt;li&gt;Compose Runtime 고급 사용 사례 (Advanced Compose Runtime use cases)&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;&lt;span
-      class=&quot;gatsby-resp-image-wrapper&quot;
-      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 640px; &quot;
-    &gt;
-      &lt;span
-    class=&quot;gatsby-resp-image-background-image&quot;
-    style=&quot;padding-bottom: 64.44444444444444%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAYAAACpUE5eAAAACXBIWXMAAAsTAAALEwEAmpwYAAACxklEQVR42k1TaWsTURTNLxZEFCnFVrStYhdtFeqC2FZEBa3d0i1ts0ySyUz2ZJLZskwmW1P9Ivj5eO4Lgh8u83jz3nnnnnNupFNNolW+RNjModfU0WtkMHLSaJpnqGWj8PmvYZzALcZU9RtJ9KzM9CxL7gpGaOfglhKIBPzZracJpKNT13goh4GTg1eOwytdqb12LYVWNY42Lw5dA33H5PmsAgysNAKuQ669chKRgZvH0CugzxcGdhY33SquOxWMvDzGfh43QU1Vn/+GPDvwigqwS3C5M/KLEIwegVtVDZGRncbE1/mChoZ5irp+TGYXZJ0iCw0W27XzZ/jZyasae1nVhTzQNI5R0fZh6UeoZQ7R0KNk6Oi49nOI7e9gaf4uVhZmsP5sXq3l+/rFIrbfrOLP2MKkTYZsObRNxSgkqGgnrQsBnzJFZGPsZnG+t41E9BMcCn/2YwvG1S4Z0xidhpRomp2hBKZqV7WsOtDJVB4wEFBrv5JCpFc+x8jW8PXDOt6/eko2K2Q2h5fL83i78USt15Zm8Wj2NnXN4aZlqET0qZsAt8lKjBlQc08AQzo0cjIoJPZgxndR1A7QtTTEo59R0g5hF2JInnxR+v4KiqomLRMjN6uYqeIDARkrl8NmlkLr+L7zCgsP7mB1cQZz92/h47s1bD5/jI3lh9TzHrY2l/F7WKWOJs9PE6Gy29CVSV22rAB71UsMJKx1Uq8n0K7ElatyqU/d/PIFgxtXJS6PXIaauocOW6Y5cj5gjoduYdqy6DCQHDLMYZPCt8sqhxLUgWNg0qmqkjRI3v7lTqZDBVpCToaipVuky0JVJmBqfXqaMQL3rBS6Ne430mocg7qMnDadDFa7FENA1kFNgKcT48no+cULuBQ8+G+UupUYHIbWNk/gmPwaUbiFU65PGN4jWOl91FO7sJLf4OkHZJeAjHDTjOEvGExu+FyBF9kAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
-  &gt;&lt;/span&gt;
-  &lt;img
-        class=&quot;gatsby-resp-image-image&quot;
-        alt=&quot;cover&quot;
-        title=&quot;&quot;
-        src=&quot;/static/5314d2a18f59617ee9c2723cac41e942/6af66/cover.png&quot;
-        srcset=&quot;/static/5314d2a18f59617ee9c2723cac41e942/e9ff0/cover.png 180w,
-/static/5314d2a18f59617ee9c2723cac41e942/f21e7/cover.png 360w,
-/static/5314d2a18f59617ee9c2723cac41e942/6af66/cover.png 640w&quot;
-        sizes=&quot;(max-width: 640px) 100vw, 640px&quot;
-        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
-        loading=&quot;lazy&quot;
-        decoding=&quot;async&quot;
-      /&gt;
-    &lt;/span&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[안드로이드 디자인 시스템 모듈 구성 방법과 소스코드 설계 방향성 고민과 각종 잡다한 이야기]]></title><description><![CDATA[어떤 외국인이 설계 해놓은 디자인 시스템을 구매했다. 원화로 5만 4천 원 정도 되었다.  앱모듈을 별도로 구성해서 디자인 시스템 구현 작업을 하고있고
-이것은 android…]]></description><link>https://www.winter-love.dev/2025.11.10-think-about-design-system/</link><guid isPermaLink="false">https://www.winter-love.dev/2025.11.10-think-about-design-system/</guid><pubDate>Mon, 10 Nov 2025 00:10:00 GMT</pubDate><content:encoded>&lt;p&gt;어떤 외국인이 설계 해놓은 디자인 시스템을 구매했다. 원화로 5만 4천 원 정도 되었다.&lt;/p&gt;
-&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;:sample:design-system-catalog&lt;/code&gt; 앱모듈을 별도로 구성해서 디자인 시스템 구현 작업을 하고있고
-이것은 android 종속성의 공통 구현체란 의미로 &lt;code class=&quot;language-text&quot;&gt;:core-android:design-system&lt;/code&gt; 이라는 모듈로 분류했다.&lt;/p&gt;
-&lt;p&gt;외국인의 설계를 참고해서 내 앱에 파운데이션 토큰들부터 하나 하나 정의했고, 이를 기반한 앱의 기초적인 Theme 을 구성했다.
-(참고로 Theme 을 읽을땐 “테마” 라고 하지 않고 “띄~임”으로 읽어야 한다는 사실)
-이어서 파운데이션 토큰을 기반한 간단한 컴포넌트를 하나씩 구현해보고 있다.
-간단한 컴포넌트 하나도 내 기준으로 약간 부담될 정도로 많은 경우의 수에 대응되게 설계 되어있다.&lt;/p&gt;
-&lt;p&gt;당장 필요하지 않은데 여러 경우의 수를 다 고려하면서 만든다는 행위가 어찌보면 이상할 수 있는데,
-현업에서 다루는 디자인 시스템은 상황별로 필요한 만큼 스펙이 아주 조금씩 업데이트 되고있고 그것을 필요한 사람이 돌아가면서
-조금씩 업데이트, 커스텀 하다보니 누구도 제로부터 완결까지 경험할 수 있는 기회는 흔치 않았다.
-이것만 집중적으로 다루는 팀이 있다면 좋았겠지만 어쩌겠는가 회사마다 각자의 사정, 상황에 맞춰서 운영할 수밖에.
-개인적으로 이런 경험 부족의 갈증을 해소하면서 설계 인사이트를 넓히고 싶었고
-앞으로 나의 여러가지 개인 프로젝트를 일관성 있게 잘 만들고 싶다는 목표의 초석이기도 하다.&lt;/p&gt;
-&lt;p&gt;다시 “약간 부담될 정도로 많은 경우의 수에 대응되게 설계 되어있다” 의 이야기 시점으로 돌아와서.
-제일 간단한 편인 버튼 컴포넌트의 일부 구성을 확인해보면
-Default(정지상태), Active(누름상태), Disabled(비활성 상태) 와 같은 상태별 인터렉션이 정의되어 있고.
-버튼 내부 곳곳에 텍스트와 Icon resource 가 위치할 수 있는 Slot 공간과 Size 가 정의되어 있다.
-몇 가지 스펙은 언급하지 않았지만 지금까지 정의된 버튼의 스펙을 동일하게 공유하고
-상황별로 다르게 쓰이는 다양 타입 색상의 버튼들이 정의되어 있다. (Primary, Secondary ~ + N 개).&lt;/p&gt;
-&lt;p&gt;당연한 얘기지만 디자인이 아무리 구체적으로 잘 설계 되었다 한들 소스코드와 1대1로 매칭되는 것은 쉽지 않은 일인데
-처음엔 나름 1대1로 맞춰추는 상상을 했다. (토큰) → (버튼 스펙) + (구현체) 이렇게 세 번 정도의 계층 공정으로 충분히 완성이요 ~
-라고 상상했으나 역시나 디자인 시스템의 경험 부족 초보다운 생각이었다.&lt;/p&gt;
-&lt;p&gt;현실을 인지하고 하나의 컴포넌트를 완성하기 위해 소스코드 레벨에서
-일련의 제작 공정들과 필요한 요소들을 설계했고, 과정중에 부수적인 결과물도 나왔다.
-예를 들어 버튼 외에 다른 컴포넌트에서도 공통으로 쓸 수 있는 구현체가 &lt;code class=&quot;language-text&quot;&gt;/interaction&lt;/code&gt; 이라는 공통 분류로 빠지기도 했다.
-개인적으로 코드간 얽힘을 싫어해서 공통화는 최대한 신중히 결정하려는 편이라 추후에 이 결정을 철회하게 될지도 모르겠다.&lt;/p&gt;
-&lt;p&gt;어쨋든 버튼 컴포넌트를 완성하기 위한 최종 공정은
-(&lt;code class=&quot;language-text&quot;&gt;토큰&lt;/code&gt;) → (&lt;code class=&quot;language-text&quot;&gt;interaction&lt;/code&gt; - Press / Scale 공통 구현체) → (&lt;code class=&quot;language-text&quot;&gt;Button spec&lt;/code&gt; - Icon / Shape / State / Type 전용 구현체) → (&lt;code class=&quot;language-text&quot;&gt;버튼&lt;/code&gt; 구현체) 와 같이
-계층적으로 설계가 완성 되었는데 적고보니 지극히 당연하고 기초적인 구성 요소들 아니겠는가.
-초보는 오늘도 &lt;a href=&quot;https://news.hada.io/topic?id=21111&quot;&gt;바퀴를 재발명 하면서 (출처)&lt;/a&gt; 깨닫는다.&lt;/p&gt;
-&lt;p&gt;제일 간단한 버튼 하나를 구현한 것 뿐이지만 혼자 제로부터 완결까지 낸 경험이 만족스러웠다.
-디자인과 인터렉션을 스펙에 정의된대로 100% 핸들링 할거라 Material Button 컴포넌트를 사용하지 않았다.
-Button 의 모든 요소들이 필요하지 않을것 같아서 대부분 Modifier 로 완성했다.&lt;/p&gt;
-&lt;p&gt;이 기초적인 디자인 시스템 설계 감각을 계속 키워서
-훨씬 복잡한 컴포넌트들도 잘 만들자고 생각하던 찰나에 새로운 고민이 시작 되었으니 …&lt;/p&gt;
-&lt;p&gt;파운데이션 토큰을 기반으로 구성된 Theme 과 버튼 구현만 해도 작업량은 17개의 파일과 소스코드 2000 라인을 넘으며 양이 상당했다.
-아직 기초 작업밖에 안했는데 이정도면 순식간에 혼자서 N 만 라인이 넘는 소스코드를 관리하게 될 미래가 보였다.
-소스량 자체가 두려운것도 있고, 무엇보다 이 많은 구현체를 어떻게 잘 정돈하고 통제할 수 있을지? 이런 관점에서의 걱정이었다.&lt;/p&gt;
-&lt;p&gt;디자인 시스템에 명시되지 않았지만 구현상 필요하게 된 &lt;code class=&quot;language-text&quot;&gt;/interaction&lt;/code&gt; 이라는 소스코드 레벨의 공통 설계 분류가 추가 되었고,
-앞으로 &lt;code class=&quot;language-text&quot;&gt;/shape&lt;/code&gt; 이나 &lt;code class=&quot;language-text&quot;&gt;/state&lt;/code&gt; 등 소스코드 레벨에서 어떤 새로운 공통 분류가 생겨날지 알 수 없는 상황이다.
-내 성향상 웬만하면 이렇게까지 공통화 하지 않겠지만 미래엔 효율이라는 명목으로
-나조차도 내가 어떤 선택 할지도 확신할 수 없다는거지.&lt;/p&gt;
-&lt;p&gt;디자인 시스템엔 명시되지 않은
-소스코드 레벨의 설계들이 추가됨에 따라 디자인 시스템 모듈이 비대해지고 오염되어,
-최초에 순수하게 디자인 스펙과 설계를 담고있던 &lt;strong&gt;디자인 시스템&lt;/strong&gt; 의 정체성이 흐릿해질것 같았다.&lt;/p&gt;
-&lt;p&gt;디자인 시스템 스펙과 소스코드 레벨의 구현체가 비대하게 섞이게 되면 언젠가
-“그래서 이중에 디자인 시스템 스펙이 뭔데?” 라는 의문이 생길수 있다.
-즉 &lt;strong&gt;디자인 시스템이었던 것&lt;/strong&gt; 이라는 최초의 맥락을 잃고 UI 라는 명목으로 온갖 View 관련 구현체가 뭉치는 구현 집합체가 될 것 같았다.&lt;/p&gt;
-&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;:design-system&lt;/code&gt; 모듈은 디자인 시스템에 문서에 명시된 &lt;code class=&quot;language-text&quot;&gt;파운데이션 토큰&lt;/code&gt;을 그대로 담고있는
-디자인 시스템의 가장 코어하고 순수한 맥락이라는 정체성을 계속 지키고 싶었다.
-그래서 모듈을 &lt;code class=&quot;language-text&quot;&gt;ui-component&lt;/code&gt; 하나 더 만들어서 &lt;code class=&quot;language-text&quot;&gt;:design-system&lt;/code&gt; 모듈의 순수한 맥락을 지켜보려는 시도를 하는중이다.&lt;/p&gt;
-&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;:design-system&lt;/code&gt; 은 오직 &lt;code class=&quot;language-text&quot;&gt;ui-component&lt;/code&gt; 가 의존할 수 있게 설정해서, internal 하게 숨겨진 위치에 뒀다.&lt;/p&gt;
-&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;ui-component&lt;/code&gt; 모듈은 &lt;code class=&quot;language-text&quot;&gt;:design-system&lt;/code&gt; 이라는 맥락을 기반으로 만들어졌고
-제작 과정중 소스코드 레벨에서 필요한 온갖 설계가 채워져도
-맥락을 잃게 된다는 문제로부터 안전해질거라 생각했다.&lt;/p&gt;
-&lt;p&gt;하지만 여전히 지금의 선택에 100% 만족한건 아니다. 괜히 과하게 분리하는건 아닐지? 약간의 의문도 함께 맴돌고 있다.
-지금의 선택이 정답인지는 모르겠지만, 구현 과정에서 더 나은 설계로 조금씩 진화할게 될거라고 믿고 처음부터 욕심 부리지 말아야지.&lt;/p&gt;
-&lt;p&gt;어쨋든 지금의 설계 선택을 기반으로 당장은 디자인 시스템 해피 코딩을 즐길 생각이다.
-한 달 뒤에 이 설계를 보고 “이게 뭐야” 할 수도 있지만.
-이게 다 프로덕과 나의 인사이트 성장의 과정 아니겠는가.&lt;/p&gt;
-&lt;p&gt;이번 경험을 통해서도 그렇고 종종 느끼는 거지만
-처음부터 완벽한 설계란 불가능함에도 늘 그것을 달성하고 싶다는 욕심을 부리게 된다.
-개발자는 여러가지 환상을 꿈꾸며 사는것 같다.
-예를 들어 잘 설계된 코드로 우리의 작업을 “딸깍” 하여 종결하고 싶다는 환상.
-혹은 이번 사례처럼 처음부터 완벽한 설계를 완성하고 싶다는 환상.&lt;/p&gt;
-&lt;p&gt;지금 이 순간의 고민과 선택들이 쌓여서 언젠가는
-“그때 그렇게 고민했던게 도움이 됐구나” 끄덕끄덕 되돌아볼 수 있는 날이 오길.&lt;/p&gt;
-&lt;p&gt;&lt;span
-      class=&quot;gatsby-resp-image-wrapper&quot;
-      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 542px; &quot;
-    &gt;
-      &lt;span
-    class=&quot;gatsby-resp-image-background-image&quot;
-    style=&quot;padding-bottom: 83.88888888888889%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAARCAYAAADdRIy+AAAACXBIWXMAAAsTAAALEwEAmpwYAAACNElEQVR42oVSa2/SYBTur9ZMRbMFNTNq9IMsBl00fFjURTcTP7lJuGwIbsMpy7IBhVLKpZRSKNfeHt+3gC3FymmevKfnfc7T03MOAz8zCQzPaf7j3WOMN2DNzkKXQ0r+ibR8biPT+WVj7tO7fLfsJPgLThkpKYvX3AdsF3fxlvuEbXYXkeo+3nAfEeH3EC69R6yetgWt/wnOTR4qEPpNNAYiBLWxgMagZd+1B8rqX16q2CI1G06zTOLTmJ/5CppUiEDTNeKbdivoQ30as2b3S4KmRZOnAqanH5puQDcMzDm2CInrBhXVXR93sFyhSYiWAanZwLDf8/21yXgMSWzM+E5LmOuWii+sgsjvJl6e1fHitI5QVsRmgsXzNI/wmYCdiyYOywoZwhiiOsLnQgdbP3g8iF4hdC5h67SGSE7ESa0HJlZqI5RTcP+ogkCUxc2DPG4cFBFIClg7LOD21ytspqp4dSGDk3ooSiqeZSXcjRZx6xtBjMMayQmmBOzlO2DsnpGSdW0CdaxBGWmQ+iO0SCXUH5KYSYbg7q5F+joYT8hqTeyqu4Sna1POdCjeNpqmjcWpz4Zin36b4RrKnEiT6GQp/ASsBT4WOIx3VeYVunfMcomsMsah468IX+UhtlpO6S7OSsEkJyOck/HoexXrSR73EhXciXMIxCtYP65hI17G04yAyKUMumJYIc2cCAreXSsIZXg8PuYQjBUQjLPYiBbwMFHCkyPW3sX9YhfltuoU7SP4B2owDnHt0g6BAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
-  &gt;&lt;/span&gt;
-  &lt;img
-        class=&quot;gatsby-resp-image-image&quot;
-        alt=&quot;cover&quot;
-        title=&quot;&quot;
-        src=&quot;/static/c00caa8666a36258c6f29c7f7f45d423/c0388/cover.png&quot;
-        srcset=&quot;/static/c00caa8666a36258c6f29c7f7f45d423/e9ff0/cover.png 180w,
-/static/c00caa8666a36258c6f29c7f7f45d423/f21e7/cover.png 360w,
-/static/c00caa8666a36258c6f29c7f7f45d423/c0388/cover.png 542w&quot;
-        sizes=&quot;(max-width: 542px) 100vw, 542px&quot;
-        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
-        loading=&quot;lazy&quot;
-        decoding=&quot;async&quot;
-      /&gt;
-    &lt;/span&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[플로우 생명주기]]></title><description><![CDATA[플로우 생명주기 함수 플로우의 생명주기별로 코드를 핸들링 하는 방법을 설명하는 장이다. onEach 플로우에 담긴 원소를 하나씩 받을수 있다. onStart onEach 와 다르게 플로우가 시작될 때 1회만 실행 된다. onComplete…]]></description><link>https://www.winter-love.dev/coroutine-deep-dive/7-flow-lifecycle-processing-shared-and-state/</link><guid isPermaLink="false">https://www.winter-love.dev/coroutine-deep-dive/7-flow-lifecycle-processing-shared-and-state/</guid><pubDate>Tue, 17 Mar 2026 00:10:00 GMT</pubDate><content:encoded>&lt;h1 id=&quot;플로우-생명주기-함수&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#%ED%94%8C%EB%A1%9C%EC%9A%B0-%EC%83%9D%EB%AA%85%EC%A3%BC%EA%B8%B0-%ED%95%A8%EC%88%98&quot; aria-label=&quot;플로우 생명주기 함수 permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;플로우 생명주기 함수&lt;/h1&gt;
+&lt;p&gt;설계하고, 구성하고, 지휘한다. 요즘 내가 AI와 일하는 방식이다.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[플로우 생명주기]]></title><description><![CDATA[플로우 생명주기 함수 플로우의 생명주기별로 코드를 핸들링 하는 방법을 설명하는 장이다. onEach 플로우에 담긴 원소를 하나씩 받을수 있다. onStart onEach 와 다르게 플로우가 시작될 때 1회만 실행 된다. onComplete…]]></description><link>https://www.winter-love.dev/coroutine-deep-dive/7-flow-lifecycle-processing-shared-and-state/</link><guid isPermaLink="false">https://www.winter-love.dev/coroutine-deep-dive/7-flow-lifecycle-processing-shared-and-state/</guid><pubDate>Tue, 17 Mar 2026 00:10:00 GMT</pubDate><content:encoded>&lt;h1 id=&quot;플로우-생명주기-함수&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#%ED%94%8C%EB%A1%9C%EC%9A%B0-%EC%83%9D%EB%AA%85%EC%A3%BC%EA%B8%B0-%ED%95%A8%EC%88%98&quot; aria-label=&quot;플로우 생명주기 함수 permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;플로우 생명주기 함수&lt;/h1&gt;
 &lt;p&gt;플로우의 생명주기별로 코드를 핸들링 하는 방법을 설명하는 장이다.&lt;/p&gt;
 &lt;h2 id=&quot;oneach&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#oneach&quot; aria-label=&quot;oneach permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;onEach&lt;/h2&gt;
 &lt;p&gt;플로우에 담긴 원소를 하나씩 받을수 있다.&lt;/p&gt;
