@@ -1,4 +1,36 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[winter-love.dev RSS Feed]]></title><description><![CDATA[Winter's Archive / Blog]]></description><link>https://www.winter-love.dev</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 22 Mar 2026 01:33:27 GMT</lastBuildDate><item><title><![CDATA[안드로이드 디자인 시스템 모듈 구성 방법과 소스코드 설계 방향성 고민과 각종 잡다한 이야기]]></title><description><![CDATA[어떤 외국인이 설계 해놓은 디자인 시스템을 구매했다. 원화로 5만 4천 원 정도 되었다.  앱모듈을 별도로 구성해서 디자인 시스템 구현 작업을 하고있고
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[winter-love.dev RSS Feed]]></title><description><![CDATA[Winter's Archive / Blog]]></description><link>https://www.winter-love.dev</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 22 Mar 2026 01:41:17 GMT</lastBuildDate><item><title><![CDATA[가벼운 잡담과 짧은 글을 부담없이 써보려고 인사이트 페이지를 만들었다]]></title><description><![CDATA[나는 5년차 안드로이드 개발자. 이 블로그에서 온갖 잡담부터 간단하게나마 개발 인사이트를 적을 용도로 Insights…]]></description><link>https://www.winter-love.dev/2025.11.09-initial/</link><guid isPermaLink="false">https://www.winter-love.dev/2025.11.09-initial/</guid><pubDate>Sun, 09 Nov 2025 01:10:00 GMT</pubDate><content:encoded>&lt;p&gt;나는 5년차 안드로이드 개발자. 이 블로그에서 온갖 잡담부터 간단하게나마 개발 인사이트를 적을 용도로 Insights 페이지를 만들었다.&lt;/p&gt;
+&lt;p&gt;아티클 작성은 뭔가 뭔가 헤비하다. 잘못된 정보를 전달하지 않기 위해 여러 공식문서와 자료를 돌아다니면서 사실 파악을 할 필요가 있었다.
+아티클은 글 하나에 들어가는 정성이 적지 않아서 마음의 장벽이 생긴듯 함.&lt;/p&gt;
+&lt;p&gt;성실하게는 아니라도 한두 달에 아티클 하나정돈 발행하기.
+나름 올해의 포부로 시작했으나 (관련 글: &lt;a href=&quot;https://winter-love.dev/life/2024-review/&quot;&gt;2024 회고. 내 동년배 개발자들 다 블로그 운영한다.&lt;/a&gt;)
+스스로 쌓은 마음의 장벽이 너무 높아졌던 탓일까. 벌써 6개월 넘게 방치 해버렸다.&lt;/p&gt;
+&lt;p&gt;뭐 아티클은 내 마음속에서 정한 현재의 정성스러운 컨셉? 을 그대로 두고, 블로그 컨텐츠 작성의 접근성을 아예 낮추기 위해 만든 페이지가 이 인사이트인 것.&lt;/p&gt;
+&lt;p&gt;이곳은 단 1줄 간단히 적어도 되는 공간이다. 그렇게 정했다. 글이 좀 길어질 땐 아티클에서 적으면 되는거고.&lt;/p&gt;
+&lt;p&gt;아티클보다는 좀 더 자주, 짧은 잡담이나 개발 인사이트 글을 남겨보겠다.&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; &quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 52.77777777777778%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAYAAAB/Ca1DAAAACXBIWXMAAAsTAAALEwEAmpwYAAABi0lEQVR42q1Sv0sCYRj+tsZoCxpbgqZaghqKoDEwKhqChhqjof6AiKZoCVokIRBs6AyDQtM8DrvME0wwNVEiNcUI6jD1JA/ux5N3nIdGQ1QvPHwv3/vreV5egn828psiVVWaUA1f/WNDo0GtUsH72+v3DCVJgizLHdAmK6pZ38Emcs1gY3Ea86ODcNltHTHyc2IGs2oVa3NTuDnex+PVCdZnJ1B8ypurIPV6HX6/H8lkEuFwGPF4HLHYHYRaFS8NFeWGpCcriqK/3lMKm8sWZEPneL71Ymd1AS7HoR7TlBFRFMFxHEKhEILBIHw+HwKBgN5QaJL6kFUzWTO38whLk0Og7XvgnFZsrVhwsLtt5EgggiCAoigwDAOWZRGNRhGJREDTNLweN7wXHpRKJVN6pcxjZmwYI309GO/vxUB3Fx7u46YKok1OJBJIpVK67EKhgEwmg3Q6jWw2p6+A53lzj1pRMZ8DS/vhsFlxeeaCKDbMOPmPY26/RdKi2kKLRbv/9Xi1P1k7NQPtDT8B3gYv9fLCJrIAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;cover&quot;
+        title=&quot;&quot;
+        src=&quot;/static/52419a7788f7a40ceefa2baf4aa5624c/37523/cover.png&quot;
+        srcset=&quot;/static/52419a7788f7a40ceefa2baf4aa5624c/e9ff0/cover.png 180w,
+/static/52419a7788f7a40ceefa2baf4aa5624c/f21e7/cover.png 360w,
+/static/52419a7788f7a40ceefa2baf4aa5624c/37523/cover.png 720w,
+/static/52419a7788f7a40ceefa2baf4aa5624c/302a4/cover.png 1080w,
+/static/52419a7788f7a40ceefa2baf4aa5624c/c1b63/cover.png 1200w&quot;
+        sizes=&quot;(max-width: 720px) 100vw, 720px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[안드로이드 디자인 시스템 모듈 구성 방법과 소스코드 설계 방향성 고민과 각종 잡다한 이야기]]></title><description><![CDATA[어떤 외국인이 설계 해놓은 디자인 시스템을 구매했다. 원화로 5만 4천 원 정도 되었다.  앱모듈을 별도로 구성해서 디자인 시스템 구현 작업을 하고있고
 이것은 android…]]></description><link>https://www.winter-love.dev/2025.11.10-think-about-design-system/</link><guid isPermaLink="false">https://www.winter-love.dev/2025.11.10-think-about-design-system/</guid><pubDate>Mon, 10 Nov 2025 00:10:00 GMT</pubDate><content:encoded>&lt;p&gt;어떤 외국인이 설계 해놓은 디자인 시스템을 구매했다. 원화로 5만 4천 원 정도 되었다.&lt;/p&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;:sample:design-system-catalog&lt;/code&gt; 앱모듈을 별도로 구성해서 디자인 시스템 구현 작업을 하고있고
 이것은 android 종속성의 공통 구현체란 의미로 &lt;code class=&quot;language-text&quot;&gt;:core-android:design-system&lt;/code&gt; 이라는 모듈로 분류했다.&lt;/p&gt;
@@ -83,38 +115,6 @@ Button 의 모든 요소들이 필요하지 않을것 같아서 대부분 Modifi
 /static/c00caa8666a36258c6f29c7f7f45d423/f21e7/cover.png 360w,
 /static/c00caa8666a36258c6f29c7f7f45d423/c0388/cover.png 542w&quot;
         sizes=&quot;(max-width: 542px) 100vw, 542px&quot;
-        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
-        loading=&quot;lazy&quot;
-        decoding=&quot;async&quot;
-      /&gt;
-    &lt;/span&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[가벼운 잡담과 짧은 글을 부담없이 써보려고 인사이트 페이지를 만들었다]]></title><description><![CDATA[나는 5년차 안드로이드 개발자. 이 블로그에서 온갖 잡담부터 간단하게나마 개발 인사이트를 적을 용도로 Insights…]]></description><link>https://www.winter-love.dev/2025.11.09-initial/</link><guid isPermaLink="false">https://www.winter-love.dev/2025.11.09-initial/</guid><pubDate>Sun, 09 Nov 2025 01:10:00 GMT</pubDate><content:encoded>&lt;p&gt;나는 5년차 안드로이드 개발자. 이 블로그에서 온갖 잡담부터 간단하게나마 개발 인사이트를 적을 용도로 Insights 페이지를 만들었다.&lt;/p&gt;
-&lt;p&gt;아티클 작성은 뭔가 뭔가 헤비하다. 잘못된 정보를 전달하지 않기 위해 여러 공식문서와 자료를 돌아다니면서 사실 파악을 할 필요가 있었다.
-아티클은 글 하나에 들어가는 정성이 적지 않아서 마음의 장벽이 생긴듯 함.&lt;/p&gt;
-&lt;p&gt;성실하게는 아니라도 한두 달에 아티클 하나정돈 발행하기.
-나름 올해의 포부로 시작했으나 (관련 글: &lt;a href=&quot;https://winter-love.dev/life/2024-review/&quot;&gt;2024 회고. 내 동년배 개발자들 다 블로그 운영한다.&lt;/a&gt;)
-스스로 쌓은 마음의 장벽이 너무 높아졌던 탓일까. 벌써 6개월 넘게 방치 해버렸다.&lt;/p&gt;
-&lt;p&gt;뭐 아티클은 내 마음속에서 정한 현재의 정성스러운 컨셉? 을 그대로 두고, 블로그 컨텐츠 작성의 접근성을 아예 낮추기 위해 만든 페이지가 이 인사이트인 것.&lt;/p&gt;
-&lt;p&gt;이곳은 단 1줄 간단히 적어도 되는 공간이다. 그렇게 정했다. 글이 좀 길어질 땐 아티클에서 적으면 되는거고.&lt;/p&gt;
-&lt;p&gt;아티클보다는 좀 더 자주, 짧은 잡담이나 개발 인사이트 글을 남겨보겠다.&lt;/p&gt;
-&lt;p&gt;&lt;span
-      class=&quot;gatsby-resp-image-wrapper&quot;
-      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; &quot;
-    &gt;
-      &lt;span
-    class=&quot;gatsby-resp-image-background-image&quot;
-    style=&quot;padding-bottom: 52.77777777777778%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAYAAAB/Ca1DAAAACXBIWXMAAAsTAAALEwEAmpwYAAABi0lEQVR42q1Sv0sCYRj+tsZoCxpbgqZaghqKoDEwKhqChhqjof6AiKZoCVokIRBs6AyDQtM8DrvME0wwNVEiNcUI6jD1JA/ux5N3nIdGQ1QvPHwv3/vreV5egn828psiVVWaUA1f/WNDo0GtUsH72+v3DCVJgizLHdAmK6pZ38Emcs1gY3Ea86ODcNltHTHyc2IGs2oVa3NTuDnex+PVCdZnJ1B8ypurIPV6HX6/H8lkEuFwGPF4HLHYHYRaFS8NFeWGpCcriqK/3lMKm8sWZEPneL71Ymd1AS7HoR7TlBFRFMFxHEKhEILBIHw+HwKBgN5QaJL6kFUzWTO38whLk0Og7XvgnFZsrVhwsLtt5EgggiCAoigwDAOWZRGNRhGJREDTNLweN7wXHpRKJVN6pcxjZmwYI309GO/vxUB3Fx7u46YKok1OJBJIpVK67EKhgEwmg3Q6jWw2p6+A53lzj1pRMZ8DS/vhsFlxeeaCKDbMOPmPY26/RdKi2kKLRbv/9Xi1P1k7NQPtDT8B3gYv9fLCJrIAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
-  &gt;&lt;/span&gt;
-  &lt;img
-        class=&quot;gatsby-resp-image-image&quot;
-        alt=&quot;cover&quot;
-        title=&quot;&quot;
-        src=&quot;/static/52419a7788f7a40ceefa2baf4aa5624c/37523/cover.png&quot;
-        srcset=&quot;/static/52419a7788f7a40ceefa2baf4aa5624c/e9ff0/cover.png 180w,
-/static/52419a7788f7a40ceefa2baf4aa5624c/f21e7/cover.png 360w,
-/static/52419a7788f7a40ceefa2baf4aa5624c/37523/cover.png 720w,
-/static/52419a7788f7a40ceefa2baf4aa5624c/302a4/cover.png 1080w,
-/static/52419a7788f7a40ceefa2baf4aa5624c/c1b63/cover.png 1200w&quot;
-        sizes=&quot;(max-width: 720px) 100vw, 720px&quot;
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
         loading=&quot;lazy&quot;
         decoding=&quot;async&quot;
@@ -391,14 +391,16 @@ Stripe 에서 분류한 결제 방식이며, 다른 결제 시스템에서도 �
         loading=&quot;lazy&quot;
         decoding=&quot;async&quot;
       /&gt;
-    &lt;/span&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[AI를 지휘하는 안드로이드 개발자의 워크플로우]]></title><description><![CDATA[요즘 내가 개발 작업에서 가장 많은 비중을 차지하는 일을 한 키워드로 압축하면 “매니징”이다. 코드를 직접 작성하는 시간보다, 작업 배경을 관리하고 아키텍처를 설계하고 AI…]]></description><link>https://www.winter-love.dev/2026.03.21-ai-usecase/</link><guid isPermaLink="false">https://www.winter-love.dev/2026.03.21-ai-usecase/</guid><pubDate>Sat, 21 Mar 2026 00:10:00 GMT</pubDate><content:encoded>&lt;p&gt;요즘 내가 개발 작업에서 가장 많은 비중을 차지하는 일을 한 키워드로 압축하면 “매니징”이다.&lt;/p&gt;
-&lt;p&gt;코드를 직접 작성하는 시간보다, 작업 배경을 관리하고 아키텍처를 설계하고 AI를 지휘하고 결과를 검증하는 시간이 훨씬 많아졌다.
+    &lt;/span&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[AI를 지휘하는 안드로이드 개발자의 워크플로우]]></title><description><![CDATA[요즘 내가 개발 작업에서 가장 많은 비중을 차지하는 일을 한 키워드로 압축하면 “매니징”이다. AI가 코드를 잘 작성해주는 시대가 되면서, 직접 코드를 작성하는 것보다 AI…]]></description><link>https://www.winter-love.dev/2026.03.21-ai-usecase/</link><guid isPermaLink="false">https://www.winter-love.dev/2026.03.21-ai-usecase/</guid><pubDate>Sat, 21 Mar 2026 00:10:00 GMT</pubDate><content:encoded>&lt;p&gt;요즘 내가 개발 작업에서 가장 많은 비중을 차지하는 일을 한 키워드로 압축하면 “매니징”이다.&lt;/p&gt;
+&lt;p&gt;AI가 코드를 잘 작성해주는 시대가 되면서, 직접 코드를 작성하는 것보다 AI를 잘 활용하는 쪽이 좀 더 효율적이라고 생각했다.
+자연스럽게 작업 배경을 관리하고 아키텍처를 설계하고 AI를 지휘하고 결과를 검증하는 시간이 훨씬 많아졌다.
 이 워크플로우를 가능하게 하는 구성들과 실전 사례를 소개한다.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;사용중인 AI:&lt;/strong&gt; Claude, Gemini&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;많이 활용하는 AI 설정:&lt;/strong&gt; AGENTS.md, Skills&lt;/p&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;strong&gt;1. AI 설정 구조화&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;AI를 지휘하려면 AI가 맥락을 알아야 한다. 그래서 스킬 구성에 나름대로 구조화를 적용해봤다.&lt;/p&gt;
+&lt;p&gt;AI에게 매번 같은 맥락을 설명하거나, 결과물을 낼 때마다 결과물의 품질이 달라지는 게 불편했다.
+AI를 지휘하려면 AI가 맥락을 알아야 한다. 그래서 스킬 구성에 나름대로 구조화를 적용해봤다.&lt;/p&gt;
 &lt;p&gt;AGENTS.md -&gt; &lt;strong&gt;Utility&lt;/strong&gt; Skills -&gt; &lt;strong&gt;Domain&lt;/strong&gt; Skills&lt;/p&gt;
 &lt;p&gt;&lt;span
       class=&quot;gatsby-resp-image-wrapper&quot;
@@ -461,9 +463,11 @@ Stripe 에서 분류한 결제 방식이며, 다른 결제 시스템에서도 �
 &lt;hr&gt;
 &lt;p&gt;&lt;strong&gt;2. 컨텍스트 로컬 캐싱&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;스킬이 AI의 역량을 구성하는 방법이라면, 이건 작업 기억을 관리하는 방법이다.&lt;/p&gt;
+&lt;p&gt;규모가 있는 작업을 할 때, 세션이 바뀔 때마다 배경 지식을 다시 전달해야 하는 게 큰 비효율이었다.
+MCP로 외부 정보를 불러오는 것도 매번 토큰을 소모하고 대기 시간이 생긴다.&lt;/p&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;context-management&lt;/code&gt; 라는 디렉토리를 gitignore 해두고,
 이 안에서 온갖 작업 맥락을 문서화해두고 있다.
-일종의 컨텍스트 로컬 캐싱 방법인데 MCP 호출로 인한 토큰 낭비와 프롬프트 실행 대기 시간을 줄여준다.&lt;/p&gt;
+일종의 컨텍스트 로컬 캐싱 방법으로, 위의 문제를 해결해준다.&lt;/p&gt;
 &lt;p&gt;&lt;span
       class=&quot;gatsby-resp-image-wrapper&quot;
       style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 604px; &quot;
@@ -494,7 +498,8 @@ context compact 로 인한 대기 시간도 1분 이상, 길 땐 수 분으로 �
 배경 지식이 너무 많고, 세부적인 TODO Task 관리가 필요한 내용은 별도 문서로 분리해서 관리한다.&lt;/p&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;strong&gt;3. 작업 병렬성 — 터미널 분할 활용&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;설정과 맥락이 갖춰지면, 여러 일을 동시에 오케스트레이션 할 수 있다.&lt;/p&gt;
+&lt;p&gt;AI에게 일을 시키고 결과를 기다리는 동안 아무것도 안 하고 있는 게 아까웠다.
+설정과 맥락이 갖춰져 있으면, 여러 일을 동시에 오케스트레이션 할 수 있다.&lt;/p&gt;
 &lt;p&gt;AI 를 실행하기 위한 터미널 앱으로는 &lt;strong&gt;Warp&lt;/strong&gt; 를 사용하고 있다.
 IDE 에서 에디터를 Split 해서 사용하듯 터미널을 Split 해서 한눈에 볼 수 있게 된다.
 체이닝이 없는 별도의 작업들을 각 세션에서 동시에 처리할 수 있다는 점에서 유용하다.&lt;/p&gt;
@@ -530,9 +535,9 @@ IDE 에서 에디터를 Split 해서 사용하듯 터미널을 Split 해서 한�
 &lt;p&gt;&lt;strong&gt;4. 실전 사례 — 팀 매니징 자동화&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;최근 안드로이드 팀원 매니징 자동화 시스템을 도입했다.
 원래 2주에 한 번씩, 한 사람씩 돌아가면서 했던 일이고 사람 손을 많이 타는 일이었다.
+반복적이고 실수하기 쉬운 프로세스라 항상 자동화하고 싶었지만, 숙련도가 없다보니 항상 많은 시간 투자를 각오해야 했다.
 사람이 약 6단계를 거치던 프로세스를 1단계로 줄였다. (슬랙, 지라, git 등을 통합한 워크플로우를 제작함)&lt;/p&gt;
-&lt;p&gt;안드로이드 개발자로서 설계와 아이디어는 있었지만, 핵심 스크립트 작성에 많은 시간과 노력이 필요했던 일이었다.
-AI가 위의 워크플로우 제작을 확 쉽게 만들어줬다.&lt;/p&gt;
+&lt;p&gt;안드로이드 개발자로서 설계와 아이디어는 있었지만, AI가 워크플로우 제작을 확 쉽게 만들어줬다.&lt;/p&gt;
 &lt;p&gt;이번 일은 사내에서도 꽤 호평을 받았고, 다른 팀에서도 도입을 준비 중이다.&lt;/p&gt;
 &lt;hr&gt;
 &lt;p&gt;AI를 구성하고, 할 일을 설계하고, 지휘한다. 요즘 내가 AI와 일하는 방식이다.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[플로우 생명주기]]></title><description><![CDATA[플로우 생명주기 함수 플로우의 생명주기별로 코드를 핸들링 하는 방법을 설명하는 장이다. onEach 플로우에 담긴 원소를 하나씩 받을수 있다. onStart onEach 와 다르게 플로우가 시작될 때 1회만 실행 된다. onComplete…]]></description><link>https://www.winter-love.dev/coroutine-deep-dive/7-flow-lifecycle-processing-shared-and-state/</link><guid isPermaLink="false">https://www.winter-love.dev/coroutine-deep-dive/7-flow-lifecycle-processing-shared-and-state/</guid><pubDate>Tue, 17 Mar 2026 00:10:00 GMT</pubDate><content:encoded>&lt;h1 id=&quot;플로우-생명주기-함수&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#%ED%94%8C%EB%A1%9C%EC%9A%B0-%EC%83%9D%EB%AA%85%EC%A3%BC%EA%B8%B0-%ED%95%A8%EC%88%98&quot; aria-label=&quot;플로우 생명주기 함수 permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;플로우 생명주기 함수&lt;/h1&gt;
