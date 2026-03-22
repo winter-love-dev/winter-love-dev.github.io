@@ -238,21 +238,7 @@ AtomicInteger, AtomicReference 등 원자성 연산을 활용한 사례를 설�
 동시 요청을 처리하는 수를 제한할 때 활용할 수 있다.
 처리율 제한 장치를 구현할 때 도움이 된다.
 
-# 코틀린 코루틴 테스트하기
 
-## 시간 의존성 테스트하기
-## TestCoroutineScheduler 와 StandardTestDispatcher
-## runTest
-## 백그라운드 스코프
-## 취소와 컨텍스트 전달 테스트하기
-## UnconfinedTestDispatcher
-## 목(mock) 사용하기
-## 디스패처를 바꾸는 함수 테스트하기
-## 함수 실행 중에 일어나는 일 테스트하기
-## 새로운 코루틴을 시작하는 함수 테스트하기
-## 메인 디스패처 교체하기
-## 코루틴을 시작하는 안드로이드 함수 테스트하기
-## 룰이 있는 테스트 디스패처 설정하기
 
 
 ![](cover.png)
