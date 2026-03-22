@@ -1,93 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[winter-love.dev RSS Feed]]></title><description><![CDATA[Winter's Archive / Blog]]></description><link>https://www.winter-love.dev</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 22 Mar 2026 06:22:32 GMT</lastBuildDate><item><title><![CDATA[안드로이드 디자인 시스템 모듈 구성 방법과 소스코드 설계 방향성 고민과 각종 잡다한 이야기]]></title><description><![CDATA[어떤 외국인이 설계 해놓은 디자인 시스템을 구매했다. 원화로 5만 4천 원 정도 되었다.  앱모듈을 별도로 구성해서 디자인 시스템 구현 작업을 하고있고
-이것은 android…]]></description><link>https://www.winter-love.dev/2025.11.10-think-about-design-system/</link><guid isPermaLink="false">https://www.winter-love.dev/2025.11.10-think-about-design-system/</guid><pubDate>Mon, 10 Nov 2025 00:10:00 GMT</pubDate><content:encoded>&lt;p&gt;어떤 외국인이 설계 해놓은 디자인 시스템을 구매했다. 원화로 5만 4천 원 정도 되었다.&lt;/p&gt;
-&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;:sample:design-system-catalog&lt;/code&gt; 앱모듈을 별도로 구성해서 디자인 시스템 구현 작업을 하고있고
-이것은 android 종속성의 공통 구현체란 의미로 &lt;code class=&quot;language-text&quot;&gt;:core-android:design-system&lt;/code&gt; 이라는 모듈로 분류했다.&lt;/p&gt;
-&lt;p&gt;외국인의 설계를 참고해서 내 앱에 파운데이션 토큰들부터 하나 하나 정의했고, 이를 기반한 앱의 기초적인 Theme 을 구성했다.
-(참고로 Theme 을 읽을땐 “테마” 라고 하지 않고 “띄~임”으로 읽어야 한다는 사실)
-이어서 파운데이션 토큰을 기반한 간단한 컴포넌트를 하나씩 구현해보고 있다.
-간단한 컴포넌트 하나도 내 기준으로 약간 부담될 정도로 많은 경우의 수에 대응되게 설계 되어있다.&lt;/p&gt;
-&lt;p&gt;당장 필요하지 않은데 여러 경우의 수를 다 고려하면서 만든다는 행위가 어찌보면 이상할 수 있는데,
-현업에서 다루는 디자인 시스템은 상황별로 필요한 만큼 스펙이 아주 조금씩 업데이트 되고있고 그것을 필요한 사람이 돌아가면서
-조금씩 업데이트, 커스텀 하다보니 누구도 제로부터 완결까지 경험할 수 있는 기회는 흔치 않았다.
-이것만 집중적으로 다루는 팀이 있다면 좋았겠지만 어쩌겠는가 회사마다 각자의 사정, 상황에 맞춰서 운영할 수밖에.
-개인적으로 이런 경험 부족의 갈증을 해소하면서 설계 인사이트를 넓히고 싶었고
-앞으로 나의 여러가지 개인 프로젝트를 일관성 있게 잘 만들고 싶다는 목표의 초석이기도 하다.&lt;/p&gt;
-&lt;p&gt;다시 “약간 부담될 정도로 많은 경우의 수에 대응되게 설계 되어있다” 의 이야기 시점으로 돌아와서.
-제일 간단한 편인 버튼 컴포넌트의 일부 구성을 확인해보면
-Default(정지상태), Active(누름상태), Disabled(비활성 상태) 와 같은 상태별 인터렉션이 정의되어 있고.
-버튼 내부 곳곳에 텍스트와 Icon resource 가 위치할 수 있는 Slot 공간과 Size 가 정의되어 있다.
-몇 가지 스펙은 언급하지 않았지만 지금까지 정의된 버튼의 스펙을 동일하게 공유하고
-상황별로 다르게 쓰이는 다양 타입 색상의 버튼들이 정의되어 있다. (Primary, Secondary ~ + N 개).&lt;/p&gt;
-&lt;p&gt;당연한 얘기지만 디자인이 아무리 구체적으로 잘 설계 되었다 한들 소스코드와 1대1로 매칭되는 것은 쉽지 않은 일인데
-처음엔 나름 1대1로 맞춰추는 상상을 했다. (토큰) → (버튼 스펙) + (구현체) 이렇게 세 번 정도의 계층 공정으로 충분히 완성이요 ~
-라고 상상했으나 역시나 디자인 시스템의 경험 부족 초보다운 생각이었다.&lt;/p&gt;
-&lt;p&gt;현실을 인지하고 하나의 컴포넌트를 완성하기 위해 소스코드 레벨에서
-일련의 제작 공정들과 필요한 요소들을 설계했고, 과정중에 부수적인 결과물도 나왔다.
-예를 들어 버튼 외에 다른 컴포넌트에서도 공통으로 쓸 수 있는 구현체가 &lt;code class=&quot;language-text&quot;&gt;/interaction&lt;/code&gt; 이라는 공통 분류로 빠지기도 했다.
-개인적으로 코드간 얽힘을 싫어해서 공통화는 최대한 신중히 결정하려는 편이라 추후에 이 결정을 철회하게 될지도 모르겠다.&lt;/p&gt;
-&lt;p&gt;어쨋든 버튼 컴포넌트를 완성하기 위한 최종 공정은
-(&lt;code class=&quot;language-text&quot;&gt;토큰&lt;/code&gt;) → (&lt;code class=&quot;language-text&quot;&gt;interaction&lt;/code&gt; - Press / Scale 공통 구현체) → (&lt;code class=&quot;language-text&quot;&gt;Button spec&lt;/code&gt; - Icon / Shape / State / Type 전용 구현체) → (&lt;code class=&quot;language-text&quot;&gt;버튼&lt;/code&gt; 구현체) 와 같이
-계층적으로 설계가 완성 되었는데 적고보니 지극히 당연하고 기초적인 구성 요소들 아니겠는가.
-초보는 오늘도 &lt;a href=&quot;https://news.hada.io/topic?id=21111&quot;&gt;바퀴를 재발명 하면서 (출처)&lt;/a&gt; 깨닫는다.&lt;/p&gt;
-&lt;p&gt;제일 간단한 버튼 하나를 구현한 것 뿐이지만 혼자 제로부터 완결까지 낸 경험이 만족스러웠다.
-디자인과 인터렉션을 스펙에 정의된대로 100% 핸들링 할거라 Material Button 컴포넌트를 사용하지 않았다.
-Button 의 모든 요소들이 필요하지 않을것 같아서 대부분 Modifier 로 완성했다.&lt;/p&gt;
-&lt;p&gt;이 기초적인 디자인 시스템 설계 감각을 계속 키워서
-훨씬 복잡한 컴포넌트들도 잘 만들자고 생각하던 찰나에 새로운 고민이 시작 되었으니 …&lt;/p&gt;
-&lt;p&gt;파운데이션 토큰을 기반으로 구성된 Theme 과 버튼 구현만 해도 작업량은 17개의 파일과 소스코드 2000 라인을 넘으며 양이 상당했다.
-아직 기초 작업밖에 안했는데 이정도면 순식간에 혼자서 N 만 라인이 넘는 소스코드를 관리하게 될 미래가 보였다.
-소스량 자체가 두려운것도 있고, 무엇보다 이 많은 구현체를 어떻게 잘 정돈하고 통제할 수 있을지? 이런 관점에서의 걱정이었다.&lt;/p&gt;
-&lt;p&gt;디자인 시스템에 명시되지 않았지만 구현상 필요하게 된 &lt;code class=&quot;language-text&quot;&gt;/interaction&lt;/code&gt; 이라는 소스코드 레벨의 공통 설계 분류가 추가 되었고,
-앞으로 &lt;code class=&quot;language-text&quot;&gt;/shape&lt;/code&gt; 이나 &lt;code class=&quot;language-text&quot;&gt;/state&lt;/code&gt; 등 소스코드 레벨에서 어떤 새로운 공통 분류가 생겨날지 알 수 없는 상황이다.
-내 성향상 웬만하면 이렇게까지 공통화 하지 않겠지만 미래엔 효율이라는 명목으로
-나조차도 내가 어떤 선택 할지도 확신할 수 없다는거지.&lt;/p&gt;
-&lt;p&gt;디자인 시스템엔 명시되지 않은
-소스코드 레벨의 설계들이 추가됨에 따라 디자인 시스템 모듈이 비대해지고 오염되어,
-최초에 순수하게 디자인 스펙과 설계를 담고있던 &lt;strong&gt;디자인 시스템&lt;/strong&gt; 의 정체성이 흐릿해질것 같았다.&lt;/p&gt;
-&lt;p&gt;디자인 시스템 스펙과 소스코드 레벨의 구현체가 비대하게 섞이게 되면 언젠가
-“그래서 이중에 디자인 시스템 스펙이 뭔데?” 라는 의문이 생길수 있다.
-즉 &lt;strong&gt;디자인 시스템이었던 것&lt;/strong&gt; 이라는 최초의 맥락을 잃고 UI 라는 명목으로 온갖 View 관련 구현체가 뭉치는 구현 집합체가 될 것 같았다.&lt;/p&gt;
-&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;:design-system&lt;/code&gt; 모듈은 디자인 시스템에 문서에 명시된 &lt;code class=&quot;language-text&quot;&gt;파운데이션 토큰&lt;/code&gt;을 그대로 담고있는
-디자인 시스템의 가장 코어하고 순수한 맥락이라는 정체성을 계속 지키고 싶었다.
-그래서 모듈을 &lt;code class=&quot;language-text&quot;&gt;ui-component&lt;/code&gt; 하나 더 만들어서 &lt;code class=&quot;language-text&quot;&gt;:design-system&lt;/code&gt; 모듈의 순수한 맥락을 지켜보려는 시도를 하는중이다.&lt;/p&gt;
-&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;:design-system&lt;/code&gt; 은 오직 &lt;code class=&quot;language-text&quot;&gt;ui-component&lt;/code&gt; 가 의존할 수 있게 설정해서, internal 하게 숨겨진 위치에 뒀다.&lt;/p&gt;
-&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;ui-component&lt;/code&gt; 모듈은 &lt;code class=&quot;language-text&quot;&gt;:design-system&lt;/code&gt; 이라는 맥락을 기반으로 만들어졌고
-제작 과정중 소스코드 레벨에서 필요한 온갖 설계가 채워져도
-맥락을 잃게 된다는 문제로부터 안전해질거라 생각했다.&lt;/p&gt;
-&lt;p&gt;하지만 여전히 지금의 선택에 100% 만족한건 아니다. 괜히 과하게 분리하는건 아닐지? 약간의 의문도 함께 맴돌고 있다.
-지금의 선택이 정답인지는 모르겠지만, 구현 과정에서 더 나은 설계로 조금씩 진화할게 될거라고 믿고 처음부터 욕심 부리지 말아야지.&lt;/p&gt;
-&lt;p&gt;어쨋든 지금의 설계 선택을 기반으로 당장은 디자인 시스템 해피 코딩을 즐길 생각이다.
-한 달 뒤에 이 설계를 보고 “이게 뭐야” 할 수도 있지만.
-이게 다 프로덕과 나의 인사이트 성장의 과정 아니겠는가.&lt;/p&gt;
-&lt;p&gt;이번 경험을 통해서도 그렇고 종종 느끼는 거지만
-처음부터 완벽한 설계란 불가능함에도 늘 그것을 달성하고 싶다는 욕심을 부리게 된다.
-개발자는 여러가지 환상을 꿈꾸며 사는것 같다.
-예를 들어 잘 설계된 코드로 우리의 작업을 “딸깍” 하여 종결하고 싶다는 환상.
-혹은 이번 사례처럼 처음부터 완벽한 설계를 완성하고 싶다는 환상.&lt;/p&gt;
-&lt;p&gt;지금 이 순간의 고민과 선택들이 쌓여서 언젠가는
-“그때 그렇게 고민했던게 도움이 됐구나” 끄덕끄덕 되돌아볼 수 있는 날이 오길.&lt;/p&gt;
-&lt;p&gt;&lt;span
-      class=&quot;gatsby-resp-image-wrapper&quot;
-      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 542px; &quot;
-    &gt;
-      &lt;span
-    class=&quot;gatsby-resp-image-background-image&quot;
-    style=&quot;padding-bottom: 83.88888888888889%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAARCAYAAADdRIy+AAAACXBIWXMAAAsTAAALEwEAmpwYAAACNElEQVR42oVSa2/SYBTur9ZMRbMFNTNq9IMsBl00fFjURTcTP7lJuGwIbsMpy7IBhVLKpZRSKNfeHt+3gC3FymmevKfnfc7T03MOAz8zCQzPaf7j3WOMN2DNzkKXQ0r+ibR8biPT+WVj7tO7fLfsJPgLThkpKYvX3AdsF3fxlvuEbXYXkeo+3nAfEeH3EC69R6yetgWt/wnOTR4qEPpNNAYiBLWxgMagZd+1B8rqX16q2CI1G06zTOLTmJ/5CppUiEDTNeKbdivoQ30as2b3S4KmRZOnAqanH5puQDcMzDm2CInrBhXVXR93sFyhSYiWAanZwLDf8/21yXgMSWzM+E5LmOuWii+sgsjvJl6e1fHitI5QVsRmgsXzNI/wmYCdiyYOywoZwhiiOsLnQgdbP3g8iF4hdC5h67SGSE7ESa0HJlZqI5RTcP+ogkCUxc2DPG4cFBFIClg7LOD21ytspqp4dSGDk3ooSiqeZSXcjRZx6xtBjMMayQmmBOzlO2DsnpGSdW0CdaxBGWmQ+iO0SCXUH5KYSYbg7q5F+joYT8hqTeyqu4Sna1POdCjeNpqmjcWpz4Zin36b4RrKnEiT6GQp/ASsBT4WOIx3VeYVunfMcomsMsah468IX+UhtlpO6S7OSsEkJyOck/HoexXrSR73EhXciXMIxCtYP65hI17G04yAyKUMumJYIc2cCAreXSsIZXg8PuYQjBUQjLPYiBbwMFHCkyPW3sX9YhfltuoU7SP4B2owDnHt0g6BAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
-  &gt;&lt;/span&gt;
-  &lt;img
-        class=&quot;gatsby-resp-image-image&quot;
-        alt=&quot;cover&quot;
-        title=&quot;&quot;
-        src=&quot;/static/c00caa8666a36258c6f29c7f7f45d423/c0388/cover.png&quot;
-        srcset=&quot;/static/c00caa8666a36258c6f29c7f7f45d423/e9ff0/cover.png 180w,
-/static/c00caa8666a36258c6f29c7f7f45d423/f21e7/cover.png 360w,
-/static/c00caa8666a36258c6f29c7f7f45d423/c0388/cover.png 542w&quot;
-        sizes=&quot;(max-width: 542px) 100vw, 542px&quot;
-        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
-        loading=&quot;lazy&quot;
-        decoding=&quot;async&quot;
-      /&gt;
-    &lt;/span&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[구글페이가 안 되는 나라에서 구글페이 구현작업 하는 안드로이드 개발자의 잡다한 인사이트]]></title><description><![CDATA[…]]></description><link>https://www.winter-love.dev/2025.11.11-working-on-google-pay-in-korea/</link><guid isPermaLink="false">https://www.winter-love.dev/2025.11.11-working-on-google-pay-in-korea/</guid><pubDate>Tue, 11 Nov 2025 00:10:00 GMT</pubDate><content:encoded>&lt;p&gt;시련이 찾아왔다. 한국은 구글페이를 지원하지 않는데 구글페이 구현 작업을 해야된다니.
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[winter-love.dev RSS Feed]]></title><description><![CDATA[Winter's Archive / Blog]]></description><link>https://www.winter-love.dev</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 22 Mar 2026 20:26:24 GMT</lastBuildDate><item><title><![CDATA[구글페이가 안 되는 나라에서 구글페이 구현작업 하는 안드로이드 개발자의 잡다한 인사이트]]></title><description><![CDATA[…]]></description><link>https://www.winter-love.dev/2025.11.11-working-on-google-pay-in-korea/</link><guid isPermaLink="false">https://www.winter-love.dev/2025.11.11-working-on-google-pay-in-korea/</guid><pubDate>Tue, 11 Nov 2025 00:10:00 GMT</pubDate><content:encoded>&lt;p&gt;시련이 찾아왔다. 한국은 구글페이를 지원하지 않는데 구글페이 구현 작업을 해야된다니.
 한국에서 외국 서비스를 개발하다 겪게되는 시나리오 중 하나가 아닐까 싶다.&lt;/p&gt;
 &lt;p&gt;나와 비슷한 처지의 누군가가 있다면 조금이라도 참고가 될 수 있길.&lt;/p&gt;
 &lt;p&gt;외국 결제 중개 서비스 Stripe 를 사용하고 있다.
@@ -181,6 +92,127 @@ Stripe 에서 분류한 결제 방식이며, 다른 결제 시스템에서도 �
         loading=&quot;lazy&quot;
         decoding=&quot;async&quot;
       /&gt;
+    &lt;/span&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[안드로이드 디자인 시스템 모듈 구성 방법과 소스코드 설계 방향성 고민과 각종 잡다한 이야기]]></title><description><![CDATA[어떤 외국인이 설계 해놓은 디자인 시스템을 구매했다. 원화로 5만 4천 원 정도 되었다.  앱모듈을 별도로 구성해서 디자인 시스템 구현 작업을 하고있고
+이것은 android…]]></description><link>https://www.winter-love.dev/2025.11.10-think-about-design-system/</link><guid isPermaLink="false">https://www.winter-love.dev/2025.11.10-think-about-design-system/</guid><pubDate>Mon, 10 Nov 2025 00:10:00 GMT</pubDate><content:encoded>&lt;p&gt;어떤 외국인이 설계 해놓은 디자인 시스템을 구매했다. 원화로 5만 4천 원 정도 되었다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;:sample:design-system-catalog&lt;/code&gt; 앱모듈을 별도로 구성해서 디자인 시스템 구현 작업을 하고있고
+이것은 android 종속성의 공통 구현체란 의미로 &lt;code class=&quot;language-text&quot;&gt;:core-android:design-system&lt;/code&gt; 이라는 모듈로 분류했다.&lt;/p&gt;
+&lt;p&gt;외국인의 설계를 참고해서 내 앱에 파운데이션 토큰들부터 하나 하나 정의했고, 이를 기반한 앱의 기초적인 Theme 을 구성했다.
+(참고로 Theme 을 읽을땐 “테마” 라고 하지 않고 “띄~임”으로 읽어야 한다는 사실)
+이어서 파운데이션 토큰을 기반한 간단한 컴포넌트를 하나씩 구현해보고 있다.
+간단한 컴포넌트 하나도 내 기준으로 약간 부담될 정도로 많은 경우의 수에 대응되게 설계 되어있다.&lt;/p&gt;
+&lt;p&gt;당장 필요하지 않은데 여러 경우의 수를 다 고려하면서 만든다는 행위가 어찌보면 이상할 수 있는데,
+현업에서 다루는 디자인 시스템은 상황별로 필요한 만큼 스펙이 아주 조금씩 업데이트 되고있고 그것을 필요한 사람이 돌아가면서
+조금씩 업데이트, 커스텀 하다보니 누구도 제로부터 완결까지 경험할 수 있는 기회는 흔치 않았다.
+이것만 집중적으로 다루는 팀이 있다면 좋았겠지만 어쩌겠는가 회사마다 각자의 사정, 상황에 맞춰서 운영할 수밖에.
+개인적으로 이런 경험 부족의 갈증을 해소하면서 설계 인사이트를 넓히고 싶었고
+앞으로 나의 여러가지 개인 프로젝트를 일관성 있게 잘 만들고 싶다는 목표의 초석이기도 하다.&lt;/p&gt;
+&lt;p&gt;다시 “약간 부담될 정도로 많은 경우의 수에 대응되게 설계 되어있다” 의 이야기 시점으로 돌아와서.
+제일 간단한 편인 버튼 컴포넌트의 일부 구성을 확인해보면
+Default(정지상태), Active(누름상태), Disabled(비활성 상태) 와 같은 상태별 인터렉션이 정의되어 있고.
+버튼 내부 곳곳에 텍스트와 Icon resource 가 위치할 수 있는 Slot 공간과 Size 가 정의되어 있다.
+몇 가지 스펙은 언급하지 않았지만 지금까지 정의된 버튼의 스펙을 동일하게 공유하고
+상황별로 다르게 쓰이는 다양 타입 색상의 버튼들이 정의되어 있다. (Primary, Secondary ~ + N 개).&lt;/p&gt;
+&lt;p&gt;당연한 얘기지만 디자인이 아무리 구체적으로 잘 설계 되었다 한들 소스코드와 1대1로 매칭되는 것은 쉽지 않은 일인데
+처음엔 나름 1대1로 맞춰추는 상상을 했다. (토큰) → (버튼 스펙) + (구현체) 이렇게 세 번 정도의 계층 공정으로 충분히 완성이요 ~
+라고 상상했으나 역시나 디자인 시스템의 경험 부족 초보다운 생각이었다.&lt;/p&gt;
+&lt;p&gt;현실을 인지하고 하나의 컴포넌트를 완성하기 위해 소스코드 레벨에서
+일련의 제작 공정들과 필요한 요소들을 설계했고, 과정중에 부수적인 결과물도 나왔다.
+예를 들어 버튼 외에 다른 컴포넌트에서도 공통으로 쓸 수 있는 구현체가 &lt;code class=&quot;language-text&quot;&gt;/interaction&lt;/code&gt; 이라는 공통 분류로 빠지기도 했다.
+개인적으로 코드간 얽힘을 싫어해서 공통화는 최대한 신중히 결정하려는 편이라 추후에 이 결정을 철회하게 될지도 모르겠다.&lt;/p&gt;
+&lt;p&gt;어쨋든 버튼 컴포넌트를 완성하기 위한 최종 공정은
+(&lt;code class=&quot;language-text&quot;&gt;토큰&lt;/code&gt;) → (&lt;code class=&quot;language-text&quot;&gt;interaction&lt;/code&gt; - Press / Scale 공통 구현체) → (&lt;code class=&quot;language-text&quot;&gt;Button spec&lt;/code&gt; - Icon / Shape / State / Type 전용 구현체) → (&lt;code class=&quot;language-text&quot;&gt;버튼&lt;/code&gt; 구현체) 와 같이
+계층적으로 설계가 완성 되었는데 적고보니 지극히 당연하고 기초적인 구성 요소들 아니겠는가.
+초보는 오늘도 &lt;a href=&quot;https://news.hada.io/topic?id=21111&quot;&gt;바퀴를 재발명 하면서 (출처)&lt;/a&gt; 깨닫는다.&lt;/p&gt;
+&lt;p&gt;제일 간단한 버튼 하나를 구현한 것 뿐이지만 혼자 제로부터 완결까지 낸 경험이 만족스러웠다.
+디자인과 인터렉션을 스펙에 정의된대로 100% 핸들링 할거라 Material Button 컴포넌트를 사용하지 않았다.
+Button 의 모든 요소들이 필요하지 않을것 같아서 대부분 Modifier 로 완성했다.&lt;/p&gt;
+&lt;p&gt;이 기초적인 디자인 시스템 설계 감각을 계속 키워서
+훨씬 복잡한 컴포넌트들도 잘 만들자고 생각하던 찰나에 새로운 고민이 시작 되었으니 …&lt;/p&gt;
+&lt;p&gt;파운데이션 토큰을 기반으로 구성된 Theme 과 버튼 구현만 해도 작업량은 17개의 파일과 소스코드 2000 라인을 넘으며 양이 상당했다.
+아직 기초 작업밖에 안했는데 이정도면 순식간에 혼자서 N 만 라인이 넘는 소스코드를 관리하게 될 미래가 보였다.
+소스량 자체가 두려운것도 있고, 무엇보다 이 많은 구현체를 어떻게 잘 정돈하고 통제할 수 있을지? 이런 관점에서의 걱정이었다.&lt;/p&gt;
+&lt;p&gt;디자인 시스템에 명시되지 않았지만 구현상 필요하게 된 &lt;code class=&quot;language-text&quot;&gt;/interaction&lt;/code&gt; 이라는 소스코드 레벨의 공통 설계 분류가 추가 되었고,
+앞으로 &lt;code class=&quot;language-text&quot;&gt;/shape&lt;/code&gt; 이나 &lt;code class=&quot;language-text&quot;&gt;/state&lt;/code&gt; 등 소스코드 레벨에서 어떤 새로운 공통 분류가 생겨날지 알 수 없는 상황이다.
+내 성향상 웬만하면 이렇게까지 공통화 하지 않겠지만 미래엔 효율이라는 명목으로
+나조차도 내가 어떤 선택 할지도 확신할 수 없다는거지.&lt;/p&gt;
+&lt;p&gt;디자인 시스템엔 명시되지 않은
+소스코드 레벨의 설계들이 추가됨에 따라 디자인 시스템 모듈이 비대해지고 오염되어,
+최초에 순수하게 디자인 스펙과 설계를 담고있던 &lt;strong&gt;디자인 시스템&lt;/strong&gt; 의 정체성이 흐릿해질것 같았다.&lt;/p&gt;
+&lt;p&gt;디자인 시스템 스펙과 소스코드 레벨의 구현체가 비대하게 섞이게 되면 언젠가
+“그래서 이중에 디자인 시스템 스펙이 뭔데?” 라는 의문이 생길수 있다.
+즉 &lt;strong&gt;디자인 시스템이었던 것&lt;/strong&gt; 이라는 최초의 맥락을 잃고 UI 라는 명목으로 온갖 View 관련 구현체가 뭉치는 구현 집합체가 될 것 같았다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;:design-system&lt;/code&gt; 모듈은 디자인 시스템에 문서에 명시된 &lt;code class=&quot;language-text&quot;&gt;파운데이션 토큰&lt;/code&gt;을 그대로 담고있는
+디자인 시스템의 가장 코어하고 순수한 맥락이라는 정체성을 계속 지키고 싶었다.
+그래서 모듈을 &lt;code class=&quot;language-text&quot;&gt;ui-component&lt;/code&gt; 하나 더 만들어서 &lt;code class=&quot;language-text&quot;&gt;:design-system&lt;/code&gt; 모듈의 순수한 맥락을 지켜보려는 시도를 하는중이다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;:design-system&lt;/code&gt; 은 오직 &lt;code class=&quot;language-text&quot;&gt;ui-component&lt;/code&gt; 가 의존할 수 있게 설정해서, internal 하게 숨겨진 위치에 뒀다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;ui-component&lt;/code&gt; 모듈은 &lt;code class=&quot;language-text&quot;&gt;:design-system&lt;/code&gt; 이라는 맥락을 기반으로 만들어졌고
+제작 과정중 소스코드 레벨에서 필요한 온갖 설계가 채워져도
+맥락을 잃게 된다는 문제로부터 안전해질거라 생각했다.&lt;/p&gt;
+&lt;p&gt;하지만 여전히 지금의 선택에 100% 만족한건 아니다. 괜히 과하게 분리하는건 아닐지? 약간의 의문도 함께 맴돌고 있다.
+지금의 선택이 정답인지는 모르겠지만, 구현 과정에서 더 나은 설계로 조금씩 진화할게 될거라고 믿고 처음부터 욕심 부리지 말아야지.&lt;/p&gt;
+&lt;p&gt;어쨋든 지금의 설계 선택을 기반으로 당장은 디자인 시스템 해피 코딩을 즐길 생각이다.
+한 달 뒤에 이 설계를 보고 “이게 뭐야” 할 수도 있지만.
+이게 다 프로덕과 나의 인사이트 성장의 과정 아니겠는가.&lt;/p&gt;
+&lt;p&gt;이번 경험을 통해서도 그렇고 종종 느끼는 거지만
+처음부터 완벽한 설계란 불가능함에도 늘 그것을 달성하고 싶다는 욕심을 부리게 된다.
+개발자는 여러가지 환상을 꿈꾸며 사는것 같다.
+예를 들어 잘 설계된 코드로 우리의 작업을 “딸깍” 하여 종결하고 싶다는 환상.
+혹은 이번 사례처럼 처음부터 완벽한 설계를 완성하고 싶다는 환상.&lt;/p&gt;
+&lt;p&gt;지금 이 순간의 고민과 선택들이 쌓여서 언젠가는
+“그때 그렇게 고민했던게 도움이 됐구나” 끄덕끄덕 되돌아볼 수 있는 날이 오길.&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 542px; &quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 83.88888888888889%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAARCAYAAADdRIy+AAAACXBIWXMAAAsTAAALEwEAmpwYAAACNElEQVR42oVSa2/SYBTur9ZMRbMFNTNq9IMsBl00fFjURTcTP7lJuGwIbsMpy7IBhVLKpZRSKNfeHt+3gC3FymmevKfnfc7T03MOAz8zCQzPaf7j3WOMN2DNzkKXQ0r+ibR8biPT+WVj7tO7fLfsJPgLThkpKYvX3AdsF3fxlvuEbXYXkeo+3nAfEeH3EC69R6yetgWt/wnOTR4qEPpNNAYiBLWxgMagZd+1B8rqX16q2CI1G06zTOLTmJ/5CppUiEDTNeKbdivoQ30as2b3S4KmRZOnAqanH5puQDcMzDm2CInrBhXVXR93sFyhSYiWAanZwLDf8/21yXgMSWzM+E5LmOuWii+sgsjvJl6e1fHitI5QVsRmgsXzNI/wmYCdiyYOywoZwhiiOsLnQgdbP3g8iF4hdC5h67SGSE7ESa0HJlZqI5RTcP+ogkCUxc2DPG4cFBFIClg7LOD21ytspqp4dSGDk3ooSiqeZSXcjRZx6xtBjMMayQmmBOzlO2DsnpGSdW0CdaxBGWmQ+iO0SCXUH5KYSYbg7q5F+joYT8hqTeyqu4Sna1POdCjeNpqmjcWpz4Zin36b4RrKnEiT6GQp/ASsBT4WOIx3VeYVunfMcomsMsah468IX+UhtlpO6S7OSsEkJyOck/HoexXrSR73EhXciXMIxCtYP65hI17G04yAyKUMumJYIc2cCAreXSsIZXg8PuYQjBUQjLPYiBbwMFHCkyPW3sX9YhfltuoU7SP4B2owDnHt0g6BAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;cover&quot;
+        title=&quot;&quot;
+        src=&quot;/static/c00caa8666a36258c6f29c7f7f45d423/c0388/cover.png&quot;
+        srcset=&quot;/static/c00caa8666a36258c6f29c7f7f45d423/e9ff0/cover.png 180w,
+/static/c00caa8666a36258c6f29c7f7f45d423/f21e7/cover.png 360w,
+/static/c00caa8666a36258c6f29c7f7f45d423/c0388/cover.png 542w&quot;
+        sizes=&quot;(max-width: 542px) 100vw, 542px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[가벼운 잡담과 짧은 글을 부담없이 써보려고 인사이트 페이지를 만들었다]]></title><description><![CDATA[나는 5년차 안드로이드 개발자. 이 블로그에서 온갖 잡담부터 간단하게나마 개발 인사이트를 적을 용도로 Insights…]]></description><link>https://www.winter-love.dev/2025.11.09-initial/</link><guid isPermaLink="false">https://www.winter-love.dev/2025.11.09-initial/</guid><pubDate>Sun, 09 Nov 2025 01:10:00 GMT</pubDate><content:encoded>&lt;p&gt;나는 5년차 안드로이드 개발자. 이 블로그에서 온갖 잡담부터 간단하게나마 개발 인사이트를 적을 용도로 Insights 페이지를 만들었다.&lt;/p&gt;
+&lt;p&gt;아티클 작성은 뭔가 뭔가 헤비하다. 잘못된 정보를 전달하지 않기 위해 여러 공식문서와 자료를 돌아다니면서 사실 파악을 할 필요가 있었다.
+아티클은 글 하나에 들어가는 정성이 적지 않아서 마음의 장벽이 생긴듯 함.&lt;/p&gt;
+&lt;p&gt;성실하게는 아니라도 한두 달에 아티클 하나정돈 발행하기.
+나름 올해의 포부로 시작했으나 (관련 글: &lt;a href=&quot;https://winter-love.dev/life/2024-review/&quot;&gt;2024 회고. 내 동년배 개발자들 다 블로그 운영한다.&lt;/a&gt;)
+스스로 쌓은 마음의 장벽이 너무 높아졌던 탓일까. 벌써 6개월 넘게 방치 해버렸다.&lt;/p&gt;
+&lt;p&gt;뭐 아티클은 내 마음속에서 정한 현재의 정성스러운 컨셉? 을 그대로 두고, 블로그 컨텐츠 작성의 접근성을 아예 낮추기 위해 만든 페이지가 이 인사이트인 것.&lt;/p&gt;
+&lt;p&gt;이곳은 단 1줄 간단히 적어도 되는 공간이다. 그렇게 정했다. 글이 좀 길어질 땐 아티클에서 적으면 되는거고.&lt;/p&gt;
+&lt;p&gt;아티클보다는 좀 더 자주, 짧은 잡담이나 개발 인사이트 글을 남겨보겠다.&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; &quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 52.77777777777778%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAYAAAB/Ca1DAAAACXBIWXMAAAsTAAALEwEAmpwYAAABi0lEQVR42q1Sv0sCYRj+tsZoCxpbgqZaghqKoDEwKhqChhqjof6AiKZoCVokIRBs6AyDQtM8DrvME0wwNVEiNcUI6jD1JA/ux5N3nIdGQ1QvPHwv3/vreV5egn828psiVVWaUA1f/WNDo0GtUsH72+v3DCVJgizLHdAmK6pZ38Emcs1gY3Ea86ODcNltHTHyc2IGs2oVa3NTuDnex+PVCdZnJ1B8ypurIPV6HX6/H8lkEuFwGPF4HLHYHYRaFS8NFeWGpCcriqK/3lMKm8sWZEPneL71Ymd1AS7HoR7TlBFRFMFxHEKhEILBIHw+HwKBgN5QaJL6kFUzWTO38whLk0Og7XvgnFZsrVhwsLtt5EgggiCAoigwDAOWZRGNRhGJREDTNLweN7wXHpRKJVN6pcxjZmwYI309GO/vxUB3Fx7u46YKok1OJBJIpVK67EKhgEwmg3Q6jWw2p6+A53lzj1pRMZ8DS/vhsFlxeeaCKDbMOPmPY26/RdKi2kKLRbv/9Xi1P1k7NQPtDT8B3gYv9fLCJrIAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;cover&quot;
+        title=&quot;&quot;
+        src=&quot;/static/52419a7788f7a40ceefa2baf4aa5624c/37523/cover.png&quot;
+        srcset=&quot;/static/52419a7788f7a40ceefa2baf4aa5624c/e9ff0/cover.png 180w,
+/static/52419a7788f7a40ceefa2baf4aa5624c/f21e7/cover.png 360w,
+/static/52419a7788f7a40ceefa2baf4aa5624c/37523/cover.png 720w,
+/static/52419a7788f7a40ceefa2baf4aa5624c/302a4/cover.png 1080w,
+/static/52419a7788f7a40ceefa2baf4aa5624c/c1b63/cover.png 1200w&quot;
+        sizes=&quot;(max-width: 720px) 100vw, 720px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
     &lt;/span&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[아침 잠이 덜 깨서 비몽사몽 하지만 뭐라도 적다가 정신 차리는 이야기]]></title><description><![CDATA[한줄 요약: Jetpack Compose Internals 책 읽겠다고 말하는 글이다. 의식의 흐름대로 글을 마구 휘갈겼더니 나는 어느새 Jetpack Compose Internals…]]></description><link>https://www.winter-love.dev/2025.11.12-compose-internals/</link><guid isPermaLink="false">https://www.winter-love.dev/2025.11.12-compose-internals/</guid><pubDate>Wed, 12 Nov 2025 00:10:00 GMT</pubDate><content:encoded>&lt;p&gt;한줄 요약: Jetpack Compose Internals 책 읽겠다고 말하는 글이다.&lt;/p&gt;
 &lt;p&gt;의식의 흐름대로 글을 마구 휘갈겼더니 나는 어느새 Jetpack Compose Internals 완독 목표를 세운 사람이 되어버렸다. “올해 안에”
 하필 요즘같이 바쁜 시기에 이런 생각을 한거니.
@@ -225,136 +257,6 @@ Stripe 에서 분류한 결제 방식이며, 다른 결제 시스템에서도 �
 /static/5314d2a18f59617ee9c2723cac41e942/f21e7/cover.png 360w,
 /static/5314d2a18f59617ee9c2723cac41e942/6af66/cover.png 640w&quot;
         sizes=&quot;(max-width: 640px) 100vw, 640px&quot;
-        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
-        loading=&quot;lazy&quot;
-        decoding=&quot;async&quot;
-      /&gt;
-    &lt;/span&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[개발자의 영어공부 벼락치기 일지]]></title><description><![CDATA[난 외국 IT 서비스 팀에서 일하고 있다.
-외국인 팀원들을 포함한 PO, Designer, Developer…]]></description><link>https://www.winter-love.dev/2025.12.08-english-study-review-2025/</link><guid isPermaLink="false">https://www.winter-love.dev/2025.12.08-english-study-review-2025/</guid><pubDate>Tue, 09 Dec 2025 00:10:00 GMT</pubDate><content:encoded>&lt;p&gt;난 외국 IT 서비스 팀에서 일하고 있다.
-외국인 팀원들을 포함한 PO, Designer, Developer 등 다양한 사람들과 소통해야 한다.
-날이 갈수록 사내 영어 사용의 중요성이 높아지고 있는 상황이라
-영어 공부를 피할수 없는 운명이란 말이다.&lt;/p&gt;
-&lt;p&gt;난 영어를 못한다.
-일상 영어 대화도 잘 하지 못하는데 비즈니스 영어를 해야되는 상황이라니.
-최근에 부랴부랴 영어공부 앱을 사용하기 시작했고 오프라인 영어 클래스도 참여했다.
-그렇게 시간이 지난지도 약 2달.
-영어공부 벼락치기 하는중인 사람의 영어공부 후기 글이다.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;듀오링고&lt;/strong&gt;. 두 달 정도 꾸준히 사용, MAX family 요금제.&lt;/p&gt;
-&lt;p&gt;퀴즈 풀이 + 약간의 스피킹을 반복 해야되는 학습 구성이다. 단순히 정답 맞추기 급급할 때가 있다.
-릴리와 프리토킹 세션이 있는데 (GPT Based) 4마디밖에 못한다. 너무 짧음.&lt;/p&gt;
-&lt;p&gt;너무 단순한 학습 구성들이라 앱 학습 효과에 대해 신뢰하진 못하고 있다.
-듀오링고에 준비된 학습 코스를 모두 완료하면 대학 입학 시험을 볼 수 있을 정도의 레벨은 된다고 하니까 일단은 꾸준히 해보려고 한다.&lt;/p&gt;
-&lt;p&gt;아무리 단순하더라도 이런 과정에서 익히고 배우는게 있긴 하니까.
-당장 내 일상에 적용하기가 어려울 뿐.
-그리고 릴리와 프리토킹 세션후 피드백을 받긴 하는데
-개선하는건 스스로의 몫이고, 의지가 없다면 당연하게도 교정되지 않는다.
-개선을 직접 도와주는 학습 코스도 경험 했다보니 릴리에 대해선 이점도 아쉬었다.&lt;/p&gt;
-&lt;p&gt;후기가 거의 별로라는 뉘앙스로 전개되긴 했지만,
-그래도 듀오링고는 내 일상에서 영어와 단절되지 않게 해주는 유일한 끈? 같은 존재이다.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;말해보카&lt;/strong&gt;. 7일 무료체험&lt;/p&gt;
-&lt;p&gt;캐릭터들이 너무 귀엽다. 다양한 아바타 꾸미기 요소들이 많아서 이 아저씨는 항마력이 버티질 못했다. 🤢
-정답 맞추기 위주의 학습 구조는 듀오링고와 비슷한 느낌.&lt;/p&gt;
-&lt;p&gt;듀오링고보다 다양한 영어 어휘를 다루기 때문에 학습 인사이트를 약간 더 넓힐수 있다.
-다른 주제를 학습해서 그런지 듀오링고와는 다른 재미가 있었다.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;스픽&lt;/strong&gt;. 7일 무료체험&lt;/p&gt;
-&lt;p&gt;일단 체험부터 해보고 계속할지 판단할 생각이었다. (결론: 굳이 선택하지 않음)&lt;/p&gt;
-&lt;p&gt;영상속 강사님의 티칭후 나의 학습 타이밍이 주어진다. 학습 인터렉션이 자연스럽게 이어지는 UX 구성이 좋았다.
-잘 설계된 UX 의 힘으로 머리에 영어 지식을 쏙쏙 넣어주는 느낌.
-단순히 시킨 문장을 읽고 스피킹 하는데 그치지 않고 틀린 발음을 인식해서 피드백을 해주는 부분이 좋았다.&lt;/p&gt;
-&lt;p&gt;하지만 앞서 듀오링고랑 말해보카를 하고와서 그런지 앱 학습은 굳이 더 늘릴 필요 없다고 판단했음.
-스픽으로만 앱 학습을 할거라면 나쁘지 않은 선택일듯?
-가격도 직장인이라면 크게 부담되지 않을 정도이다.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;포도 스피킹&lt;/strong&gt;. 유료 가입&lt;/p&gt;
-&lt;p&gt;외국인 선생님과 1대1 원격 수업을 하는 앱. (15 ~ 25분, Voice only)
-학습 교재를 실시간 Screen share 한다. 공유중인 교재를 화이트보드 삼아 손글씨를 슥슥 적으면서 수업을 진행한다.
-비즈니스 영어학습 클래스를 선택할수도 있지만 일단 나한테 필요한 초보적인 학습 위주로 하는중.&lt;/p&gt;
-&lt;p&gt;선생님이 실시간으로 내 스피킹을 듣고 발음이나 문법 &amp;#x26; 문장 구성에 대해 교정을 해주신다.
-선생님들이 다 친절하고 텐션도 좋아서 즐겁다. 1대1 실시간 학습인만큼 스피킹, 리스닝, 리딩 학습 비중이 모두 높다.
-학습 임팩트가 앱 학습 대비 훨씬 높다. 배운 내용이 머리에 좀 더 오래 머문다.
-릴리한테 스피킹하는 어휘가 좀 더 나아짐을 느낀다.&lt;/p&gt;
-&lt;p&gt;약속한 시간에 사람과 바짝 하는대신 듀오링고같은 앱처럼 학습 반복성은 떨어짐.
-혼자 교재랑 녹화된 인강을 보면서 학습 할수도 있지만,
-선생님과 약속한 시간 외 혼자 학습할땐 그냥 듀오링고를 하는게 더 낫다고 생각함.&lt;/p&gt;
-&lt;p&gt;첫 수업은 500원으로 참여할 수 있다.
-첫 수업이 끝나면 내 레벨 측정 결과를 PDF 로 보내준다. (부끄부끄)&lt;/p&gt;
-&lt;p&gt;&lt;span
-      class=&quot;gatsby-resp-image-wrapper&quot;
-      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; &quot;
-    &gt;
-      &lt;span
-    class=&quot;gatsby-resp-image-background-image&quot;
-    style=&quot;padding-bottom: 91.66666666666667%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAASCAYAAABb0P4QAAAACXBIWXMAAAsTAAALEwEAmpwYAAADBklEQVR42lVUXU8aQRT13zdNmjZt+ta++cJbH2pCK1UbPgUU+VKERZRvFlSQj2V3Z4fTOXe71G5yM8Mw98y5556ZA5hvt9txQOCuAO2iZbWRyWRwdnaGVCqFeDyOw8NDXFxcIJfLIRaLYTAcAWoD7TsIs8Pv4DWgVp75EWD2+Ih2u41Go4Fut4tWq4VqtYrBYIBer4dKpYLFy4th4JvtSvIjDAEcjUbo3N1Bm8WuSWByrVbDzc2NgN3e3sp4fX0tMZvNEBggpYC5b2HYT0FvlcnXIeB4PMadAVRmB1kwiSwIyuDvq6srlMtl3N/fY2L2O44D5SksB98xX/TMPECggxBwPp/jxZSgtcbT05OU+fDwIMz7/b7Mn5+f5cAgCCRc1w3nizGsURaucqVsASQ76sWPbBKJhDQknU5LU05OTnB+fv4fa9u24WzWsLsdtEc/zAGmQdoAEnW9XmO1WgmDzWYjbLm2XC6xWCxkZEynU9GPe8lus3ZQqWWxtI3+Sv/TsF6vI5lMCmXLsnB6eirsGLRPoVBANpsV2/Aggm1dx9gCqPXjsCa/sTMNCrTCAXXjJp7s+76Uwo7SNgTn2Ol0ZC0C8zwPvqnGc1x4UwvqcQjfaKojDaOkqOMEolU4Mvgfgw6gJATculvQ0fl2DPXBsbAVhgQZDodSNjUkOBvAG8FSOb+8vJSSOdLYlIZdVr7Cmw/v8fbTR5mzWgGkVRgsh02gVSaTidiGEvA3g+wJaNvTvYVK5Sqy+aKA7QFZDgXnBjIkm2KxiHw+v2cZzVkJfeuyZPP9LHxGovRV5spcxb1tIuOyORFDsqFuZMaR0nCdGjJ4fXPJOEqlZPi4BH9vSrPZFPEjtmQSvSycM2hwMqeVaGzXCxkeV74gXn8nDeL9FttQNzKg0NSSTHj9uEYNOZI11zhSW98w5M0o5NI4OvpmLPeqKUwgS5bPe8tu8iGIxtePBee8Mb7yxSrlzi+07Mz/tiEgE6khXxM2gCWXSqX9KxMdwKeNVfASmHz0ZnU0xw0Qn6/NH0ZwLE7ftf+MAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
-  &gt;&lt;/span&gt;
-  &lt;img
-        class=&quot;gatsby-resp-image-image&quot;
-        alt=&quot;1&quot;
-        title=&quot;&quot;
-        src=&quot;/static/2d386baac67320ae34db720ddbbfea15/37523/1.png&quot;
-        srcset=&quot;/static/2d386baac67320ae34db720ddbbfea15/e9ff0/1.png 180w,
-/static/2d386baac67320ae34db720ddbbfea15/f21e7/1.png 360w,
-/static/2d386baac67320ae34db720ddbbfea15/37523/1.png 720w,
-/static/2d386baac67320ae34db720ddbbfea15/e51a6/1.png 783w&quot;
-        sizes=&quot;(max-width: 720px) 100vw, 720px&quot;
-        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
-        loading=&quot;lazy&quot;
-        decoding=&quot;async&quot;
-      /&gt;
-    &lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;미치의 미친 영어 코칭&lt;/strong&gt;. &lt;a href=&quot;https://www.mitchinenglishcoach.com/&quot;&gt;mitchinenglishcoach.com&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;span
-      class=&quot;gatsby-resp-image-wrapper&quot;
-      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 172px; &quot;
-    &gt;
-      &lt;span
-    class=&quot;gatsby-resp-image-background-image&quot;
-    style=&quot;padding-bottom: 45.348837209302324%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAYAAAAywQxIAAAACXBIWXMAAAsTAAALEwEAmpwYAAACP0lEQVR42kWSy1IaQRSGeZQ8Qt7BB8km62xSUbkYjOUlKqiV7GJUQGOCqKACIyA3uSmIiIxEbjMMIKipVCWLrL80k1SyOH1O/6f6769Ot8FsMvHGamV1bZX3Hz/gcDnZcjpxOjbYcrnYFPXa6houkT9tbeLc2BDhwLG+rveG2szUFGajkdcWC4bxsTGiwWOOWje8qMRIVcr8+vETWf5KMp4mHj0lf14kkzpDbankz4rEoilqtw1KxTLNhsLV5SUWATZhNmOYnLSSiSR4Lrl5UnTz8sBNv6FSKl3jcfvY3fHh2w/g8waQAhHSqRyBo5De8x9Kuqa1NeZmZzCNj2OwTkxwcXaOIxjkWdjD8oGXgdZFVdvkMufUag3qwxBElbIs6JLcyFWxr5NKZlGVNh1NGM78NRxiynKF74MHMsE4Qa+kH2zUm3zZ3ueicEnAHyJ9miUaSSIFTzgJJzhNZNn1HBI9SXLX6zE7Pa3PUTesXJWpPt7xKhNkRHLxWQrRrrXw7vnJ5wpifjkO9/3sug+Q/GESsRSBw2Ni4oJcJk9bUXVC85DQbDJyK8ukBwojeS9Ps262QxHu+wPqWptGR6P/7ZHSTZWYoFTuenT7fZRuh6aI7sM93W73P+HY6Ch7Hg990XDHY7zb2UEuVWj0OlTaLS6UOldqk2utRa3fodCqUReXVDWFQvOWssihSFg30195uAyHufB2jpX5RVbm5llesmNfXGRJxLLNJrJNr20LC6zY7H90oQ1ru9AsRtO/b/Mb7RYrgLhn9tgAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
-  &gt;&lt;/span&gt;
-  &lt;img
-        class=&quot;gatsby-resp-image-image&quot;
-        alt=&quot;0&quot;
-        title=&quot;&quot;
-        src=&quot;/static/910b19f2738103661bcfaaf8b123e862/44eb2/0.png&quot;
-        srcset=&quot;/static/910b19f2738103661bcfaaf8b123e862/44eb2/0.png 172w&quot;
-        sizes=&quot;(max-width: 172px) 100vw, 172px&quot;
-        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
-        loading=&quot;lazy&quot;
-        decoding=&quot;async&quot;
-      /&gt;
-    &lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;친구의 외국인 지인인 Mitch 선생님이 운영하는 오프라인 영어 클래스.
-직접 자기 얘기를 하고 리스닝도 해야되는 곳이다.
-클래스 한 세션당 직장인과 대학생 8 ~ 10 명 정도 모인다. (양재역)&lt;/p&gt;
-&lt;p&gt;미치 선생님이 대화 토픽을 제시하고, 해당 토픽에 대해 사람들과 계속 대화를 나눠야 한다.
-대부분 자기 일상이나 경험에 대해 이야기를 주고 받다보니 재미있다. 시간이 금방 흐른다.
-주변 동료들한테 추천하고 싶을정도.&lt;/p&gt;
-&lt;p&gt;클래스 레벨 자체는 초보 수준에 맞춰진듯 하다.
-내가 참여하기엔 딱 좋고,
-함께 참여한 영어 잘하는 친구는 자기 레벨엔 맞지 않다고.&lt;/p&gt;
-&lt;p&gt;나의 지난 2달간의 학습 흐름을 대략 정리해보면 &lt;br/&gt;
-듀오링고로 입을 떼기 시작하고 &lt;br/&gt;
-포도 스피킹으로 사람과 말수를 늘리고 &lt;br/&gt;
-미친 영어 클래스에서 사람들과 직접 대화까지 했다.&lt;/p&gt;
-&lt;p&gt;처음엔 어떤 학습 수단이 제일 나은지 비교하고 싶었던건데 이제는 하나만 할 수 없게 되었다.
-앱 학습부터 오프라인까지 초보인 나에겐 거의 거를 타선이 없었다.
-듀오링고 하나만으론 역시 부족하고 다양한 노력이 필요한 나의 현실을 알 수 있었다. 🥲
-영어는 할 수 있을때 미리 열심히 해두자… 나중에 와서 일과 병행 하려니 역시 쉽지 않다.&lt;/p&gt;
-&lt;p&gt;&lt;span
-      class=&quot;gatsby-resp-image-wrapper&quot;
-      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; &quot;
-    &gt;
-      &lt;span
-    class=&quot;gatsby-resp-image-background-image&quot;
-    style=&quot;padding-bottom: 23.333333333333332%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAFCAYAAABFA8wzAAAACXBIWXMAAAsTAAALEwEAmpwYAAABdklEQVR42h2QTU/TAACG+1P4AR7lyMkDF84QTxyMCYkhhAMQ8UBUwDFQN8i2bOyz0q6j67pudGu3dazLunQDo9FptsREbsbfoOGx8fDmzZP38CSvYNvn6GYISxPpXjSx8zpWsox+7KKHb+jn2/hKCy/YPMli2vGY2AO6GYNW7BIrUqQRy9GuRjCLbxGyX5YIfZ2jMtzB+dDAkcrIh12yyzWUxzkSGz5jxaSbqjLtf+Tbzz/c/frLxPEx34lY4UuqrV2OBwu89x4haJ+foI7nqY/COLJB76KCcuCjbr6kt7tCemfEoGDQiZeZeZ9ojO8Zfr9n1r+lFs5ghkoo9jpb+gP2Gg8R8u4qSXcRzd6nJ3W4zmlYp3WSaw6Jp220gya9dJn2WYmh1OT37Mf/uHmD6lGGyuscunhEffKM+u0mgm+M8LQhA9XFEWt0YipOXAk+CjqtBixjR4s0ozJXJyL6m2wgSaPtp9AOzym9iiO/SCA9T1HYjvMPxzQpZggQhRMAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
-  &gt;&lt;/span&gt;
-  &lt;img
-        class=&quot;gatsby-resp-image-image&quot;
-        alt=&quot;cover&quot;
-        title=&quot;&quot;
-        src=&quot;/static/dc933fad5c606a8165b7ba9a37d4806b/37523/cover.png&quot;
-        srcset=&quot;/static/dc933fad5c606a8165b7ba9a37d4806b/e9ff0/cover.png 180w,
-/static/dc933fad5c606a8165b7ba9a37d4806b/f21e7/cover.png 360w,
-/static/dc933fad5c606a8165b7ba9a37d4806b/37523/cover.png 720w&quot;
-        sizes=&quot;(max-width: 720px) 100vw, 720px&quot;
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
         loading=&quot;lazy&quot;
         decoding=&quot;async&quot;
@@ -509,33 +411,131 @@ IDE 에서 에디터를 Split 해서 사용하듯 터미널을 Split 해서 한�
 &lt;p&gt;안드로이드 개발자로서 설계와 아이디어는 있었지만, AI가 워크플로우 제작을 확 쉽게 만들어줬다.&lt;/p&gt;
 &lt;p&gt;이번 일은 사내에서도 꽤 호평을 받았고, 다른 팀에서도 도입을 준비 중이다.&lt;/p&gt;
 &lt;hr&gt;
-&lt;p&gt;AI를 구성하고, 할 일을 설계하고, 지휘한다. 요즘 내가 AI와 일하는 방식이다.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[가벼운 잡담과 짧은 글을 부담없이 써보려고 인사이트 페이지를 만들었다]]></title><description><![CDATA[나는 5년차 안드로이드 개발자. 이 블로그에서 온갖 잡담부터 간단하게나마 개발 인사이트를 적을 용도로 Insights…]]></description><link>https://www.winter-love.dev/2025.11.09-initial/</link><guid isPermaLink="false">https://www.winter-love.dev/2025.11.09-initial/</guid><pubDate>Sun, 09 Nov 2025 01:10:00 GMT</pubDate><content:encoded>&lt;p&gt;나는 5년차 안드로이드 개발자. 이 블로그에서 온갖 잡담부터 간단하게나마 개발 인사이트를 적을 용도로 Insights 페이지를 만들었다.&lt;/p&gt;
-&lt;p&gt;아티클 작성은 뭔가 뭔가 헤비하다. 잘못된 정보를 전달하지 않기 위해 여러 공식문서와 자료를 돌아다니면서 사실 파악을 할 필요가 있었다.
-아티클은 글 하나에 들어가는 정성이 적지 않아서 마음의 장벽이 생긴듯 함.&lt;/p&gt;
-&lt;p&gt;성실하게는 아니라도 한두 달에 아티클 하나정돈 발행하기.
-나름 올해의 포부로 시작했으나 (관련 글: &lt;a href=&quot;https://winter-love.dev/life/2024-review/&quot;&gt;2024 회고. 내 동년배 개발자들 다 블로그 운영한다.&lt;/a&gt;)
-스스로 쌓은 마음의 장벽이 너무 높아졌던 탓일까. 벌써 6개월 넘게 방치 해버렸다.&lt;/p&gt;
-&lt;p&gt;뭐 아티클은 내 마음속에서 정한 현재의 정성스러운 컨셉? 을 그대로 두고, 블로그 컨텐츠 작성의 접근성을 아예 낮추기 위해 만든 페이지가 이 인사이트인 것.&lt;/p&gt;
-&lt;p&gt;이곳은 단 1줄 간단히 적어도 되는 공간이다. 그렇게 정했다. 글이 좀 길어질 땐 아티클에서 적으면 되는거고.&lt;/p&gt;
-&lt;p&gt;아티클보다는 좀 더 자주, 짧은 잡담이나 개발 인사이트 글을 남겨보겠다.&lt;/p&gt;
+&lt;p&gt;AI를 구성하고, 할 일을 설계하고, 지휘한다. 요즘 내가 AI와 일하는 방식이다.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[개발자의 영어공부 벼락치기 일지]]></title><description><![CDATA[난 외국 IT 서비스 팀에서 일하고 있다.
+외국인 팀원들을 포함한 PO, Designer, Developer…]]></description><link>https://www.winter-love.dev/2025.12.08-english-study-review-2025/</link><guid isPermaLink="false">https://www.winter-love.dev/2025.12.08-english-study-review-2025/</guid><pubDate>Tue, 09 Dec 2025 00:10:00 GMT</pubDate><content:encoded>&lt;p&gt;난 외국 IT 서비스 팀에서 일하고 있다.
+외국인 팀원들을 포함한 PO, Designer, Developer 등 다양한 사람들과 소통해야 한다.
+날이 갈수록 사내 영어 사용의 중요성이 높아지고 있는 상황이라
+영어 공부를 피할수 없는 운명이란 말이다.&lt;/p&gt;
+&lt;p&gt;난 영어를 못한다.
+일상 영어 대화도 잘 하지 못하는데 비즈니스 영어를 해야되는 상황이라니.
+최근에 부랴부랴 영어공부 앱을 사용하기 시작했고 오프라인 영어 클래스도 참여했다.
+그렇게 시간이 지난지도 약 2달.
+영어공부 벼락치기 하는중인 사람의 영어공부 후기 글이다.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;듀오링고&lt;/strong&gt;. 두 달 정도 꾸준히 사용, MAX family 요금제.&lt;/p&gt;
+&lt;p&gt;퀴즈 풀이 + 약간의 스피킹을 반복 해야되는 학습 구성이다. 단순히 정답 맞추기 급급할 때가 있다.
+릴리와 프리토킹 세션이 있는데 (GPT Based) 4마디밖에 못한다. 너무 짧음.&lt;/p&gt;
+&lt;p&gt;너무 단순한 학습 구성들이라 앱 학습 효과에 대해 신뢰하진 못하고 있다.
+듀오링고에 준비된 학습 코스를 모두 완료하면 대학 입학 시험을 볼 수 있을 정도의 레벨은 된다고 하니까 일단은 꾸준히 해보려고 한다.&lt;/p&gt;
+&lt;p&gt;아무리 단순하더라도 이런 과정에서 익히고 배우는게 있긴 하니까.
+당장 내 일상에 적용하기가 어려울 뿐.
+그리고 릴리와 프리토킹 세션후 피드백을 받긴 하는데
+개선하는건 스스로의 몫이고, 의지가 없다면 당연하게도 교정되지 않는다.
+개선을 직접 도와주는 학습 코스도 경험 했다보니 릴리에 대해선 이점도 아쉬었다.&lt;/p&gt;
+&lt;p&gt;후기가 거의 별로라는 뉘앙스로 전개되긴 했지만,
+그래도 듀오링고는 내 일상에서 영어와 단절되지 않게 해주는 유일한 끈? 같은 존재이다.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;말해보카&lt;/strong&gt;. 7일 무료체험&lt;/p&gt;
+&lt;p&gt;캐릭터들이 너무 귀엽다. 다양한 아바타 꾸미기 요소들이 많아서 이 아저씨는 항마력이 버티질 못했다. 🤢
+정답 맞추기 위주의 학습 구조는 듀오링고와 비슷한 느낌.&lt;/p&gt;
+&lt;p&gt;듀오링고보다 다양한 영어 어휘를 다루기 때문에 학습 인사이트를 약간 더 넓힐수 있다.
+다른 주제를 학습해서 그런지 듀오링고와는 다른 재미가 있었다.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;스픽&lt;/strong&gt;. 7일 무료체험&lt;/p&gt;
+&lt;p&gt;일단 체험부터 해보고 계속할지 판단할 생각이었다. (결론: 굳이 선택하지 않음)&lt;/p&gt;
+&lt;p&gt;영상속 강사님의 티칭후 나의 학습 타이밍이 주어진다. 학습 인터렉션이 자연스럽게 이어지는 UX 구성이 좋았다.
+잘 설계된 UX 의 힘으로 머리에 영어 지식을 쏙쏙 넣어주는 느낌.
+단순히 시킨 문장을 읽고 스피킹 하는데 그치지 않고 틀린 발음을 인식해서 피드백을 해주는 부분이 좋았다.&lt;/p&gt;
+&lt;p&gt;하지만 앞서 듀오링고랑 말해보카를 하고와서 그런지 앱 학습은 굳이 더 늘릴 필요 없다고 판단했음.
+스픽으로만 앱 학습을 할거라면 나쁘지 않은 선택일듯?
+가격도 직장인이라면 크게 부담되지 않을 정도이다.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;포도 스피킹&lt;/strong&gt;. 유료 가입&lt;/p&gt;
+&lt;p&gt;외국인 선생님과 1대1 원격 수업을 하는 앱. (15 ~ 25분, Voice only)
+학습 교재를 실시간 Screen share 한다. 공유중인 교재를 화이트보드 삼아 손글씨를 슥슥 적으면서 수업을 진행한다.
+비즈니스 영어학습 클래스를 선택할수도 있지만 일단 나한테 필요한 초보적인 학습 위주로 하는중.&lt;/p&gt;
+&lt;p&gt;선생님이 실시간으로 내 스피킹을 듣고 발음이나 문법 &amp;#x26; 문장 구성에 대해 교정을 해주신다.
+선생님들이 다 친절하고 텐션도 좋아서 즐겁다. 1대1 실시간 학습인만큼 스피킹, 리스닝, 리딩 학습 비중이 모두 높다.
+학습 임팩트가 앱 학습 대비 훨씬 높다. 배운 내용이 머리에 좀 더 오래 머문다.
+릴리한테 스피킹하는 어휘가 좀 더 나아짐을 느낀다.&lt;/p&gt;
+&lt;p&gt;약속한 시간에 사람과 바짝 하는대신 듀오링고같은 앱처럼 학습 반복성은 떨어짐.
+혼자 교재랑 녹화된 인강을 보면서 학습 할수도 있지만,
+선생님과 약속한 시간 외 혼자 학습할땐 그냥 듀오링고를 하는게 더 낫다고 생각함.&lt;/p&gt;
+&lt;p&gt;첫 수업은 500원으로 참여할 수 있다.
+첫 수업이 끝나면 내 레벨 측정 결과를 PDF 로 보내준다. (부끄부끄)&lt;/p&gt;
 &lt;p&gt;&lt;span
       class=&quot;gatsby-resp-image-wrapper&quot;
       style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; &quot;
     &gt;
       &lt;span
     class=&quot;gatsby-resp-image-background-image&quot;
-    style=&quot;padding-bottom: 52.77777777777778%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAYAAAB/Ca1DAAAACXBIWXMAAAsTAAALEwEAmpwYAAABi0lEQVR42q1Sv0sCYRj+tsZoCxpbgqZaghqKoDEwKhqChhqjof6AiKZoCVokIRBs6AyDQtM8DrvME0wwNVEiNcUI6jD1JA/ux5N3nIdGQ1QvPHwv3/vreV5egn828psiVVWaUA1f/WNDo0GtUsH72+v3DCVJgizLHdAmK6pZ38Emcs1gY3Ea86ODcNltHTHyc2IGs2oVa3NTuDnex+PVCdZnJ1B8ypurIPV6HX6/H8lkEuFwGPF4HLHYHYRaFS8NFeWGpCcriqK/3lMKm8sWZEPneL71Ymd1AS7HoR7TlBFRFMFxHEKhEILBIHw+HwKBgN5QaJL6kFUzWTO38whLk0Og7XvgnFZsrVhwsLtt5EgggiCAoigwDAOWZRGNRhGJREDTNLweN7wXHpRKJVN6pcxjZmwYI309GO/vxUB3Fx7u46YKok1OJBJIpVK67EKhgEwmg3Q6jWw2p6+A53lzj1pRMZ8DS/vhsFlxeeaCKDbMOPmPY26/RdKi2kKLRbv/9Xi1P1k7NQPtDT8B3gYv9fLCJrIAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+    style=&quot;padding-bottom: 91.66666666666667%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAASCAYAAABb0P4QAAAACXBIWXMAAAsTAAALEwEAmpwYAAADBklEQVR42lVUXU8aQRT13zdNmjZt+ta++cJbH2pCK1UbPgUU+VKERZRvFlSQj2V3Z4fTOXe71G5yM8Mw98y5556ZA5hvt9txQOCuAO2iZbWRyWRwdnaGVCqFeDyOw8NDXFxcIJfLIRaLYTAcAWoD7TsIs8Pv4DWgVp75EWD2+Ih2u41Go4Fut4tWq4VqtYrBYIBer4dKpYLFy4th4JvtSvIjDAEcjUbo3N1Bm8WuSWByrVbDzc2NgN3e3sp4fX0tMZvNEBggpYC5b2HYT0FvlcnXIeB4PMadAVRmB1kwiSwIyuDvq6srlMtl3N/fY2L2O44D5SksB98xX/TMPECggxBwPp/jxZSgtcbT05OU+fDwIMz7/b7Mn5+f5cAgCCRc1w3nizGsURaucqVsASQ76sWPbBKJhDQknU5LU05OTnB+fv4fa9u24WzWsLsdtEc/zAGmQdoAEnW9XmO1WgmDzWYjbLm2XC6xWCxkZEynU9GPe8lus3ZQqWWxtI3+Sv/TsF6vI5lMCmXLsnB6eirsGLRPoVBANpsV2/Aggm1dx9gCqPXjsCa/sTMNCrTCAXXjJp7s+76Uwo7SNgTn2Ol0ZC0C8zwPvqnGc1x4UwvqcQjfaKojDaOkqOMEolU4Mvgfgw6gJATculvQ0fl2DPXBsbAVhgQZDodSNjUkOBvAG8FSOb+8vJSSOdLYlIZdVr7Cmw/v8fbTR5mzWgGkVRgsh02gVSaTidiGEvA3g+wJaNvTvYVK5Sqy+aKA7QFZDgXnBjIkm2KxiHw+v2cZzVkJfeuyZPP9LHxGovRV5spcxb1tIuOyORFDsqFuZMaR0nCdGjJ4fXPJOEqlZPi4BH9vSrPZFPEjtmQSvSycM2hwMqeVaGzXCxkeV74gXn8nDeL9FttQNzKg0NSSTHj9uEYNOZI11zhSW98w5M0o5NI4OvpmLPeqKUwgS5bPe8tu8iGIxtePBee8Mb7yxSrlzi+07Mz/tiEgE6khXxM2gCWXSqX9KxMdwKeNVfASmHz0ZnU0xw0Qn6/NH0ZwLE7ftf+MAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;1&quot;
+        title=&quot;&quot;
+        src=&quot;/static/2d386baac67320ae34db720ddbbfea15/37523/1.png&quot;
+        srcset=&quot;/static/2d386baac67320ae34db720ddbbfea15/e9ff0/1.png 180w,
+/static/2d386baac67320ae34db720ddbbfea15/f21e7/1.png 360w,
+/static/2d386baac67320ae34db720ddbbfea15/37523/1.png 720w,
+/static/2d386baac67320ae34db720ddbbfea15/e51a6/1.png 783w&quot;
+        sizes=&quot;(max-width: 720px) 100vw, 720px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;미치의 미친 영어 코칭&lt;/strong&gt;. &lt;a href=&quot;https://www.mitchinenglishcoach.com/&quot;&gt;mitchinenglishcoach.com&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 172px; &quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 45.348837209302324%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAYAAAAywQxIAAAACXBIWXMAAAsTAAALEwEAmpwYAAACP0lEQVR42kWSy1IaQRSGeZQ8Qt7BB8km62xSUbkYjOUlKqiV7GJUQGOCqKACIyA3uSmIiIxEbjMMIKipVCWLrL80k1SyOH1O/6f6769Ot8FsMvHGamV1bZX3Hz/gcDnZcjpxOjbYcrnYFPXa6houkT9tbeLc2BDhwLG+rveG2szUFGajkdcWC4bxsTGiwWOOWje8qMRIVcr8+vETWf5KMp4mHj0lf14kkzpDbankz4rEoilqtw1KxTLNhsLV5SUWATZhNmOYnLSSiSR4Lrl5UnTz8sBNv6FSKl3jcfvY3fHh2w/g8waQAhHSqRyBo5De8x9Kuqa1NeZmZzCNj2OwTkxwcXaOIxjkWdjD8oGXgdZFVdvkMufUag3qwxBElbIs6JLcyFWxr5NKZlGVNh1NGM78NRxiynKF74MHMsE4Qa+kH2zUm3zZ3ueicEnAHyJ9miUaSSIFTzgJJzhNZNn1HBI9SXLX6zE7Pa3PUTesXJWpPt7xKhNkRHLxWQrRrrXw7vnJ5wpifjkO9/3sug+Q/GESsRSBw2Ni4oJcJk9bUXVC85DQbDJyK8ukBwojeS9Ps262QxHu+wPqWptGR6P/7ZHSTZWYoFTuenT7fZRuh6aI7sM93W73P+HY6Ch7Hg990XDHY7zb2UEuVWj0OlTaLS6UOldqk2utRa3fodCqUReXVDWFQvOWssihSFg30195uAyHufB2jpX5RVbm5llesmNfXGRJxLLNJrJNr20LC6zY7H90oQ1ru9AsRtO/b/Mb7RYrgLhn9tgAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;0&quot;
+        title=&quot;&quot;
+        src=&quot;/static/910b19f2738103661bcfaaf8b123e862/44eb2/0.png&quot;
+        srcset=&quot;/static/910b19f2738103661bcfaaf8b123e862/44eb2/0.png 172w&quot;
+        sizes=&quot;(max-width: 172px) 100vw, 172px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;친구의 외국인 지인인 Mitch 선생님이 운영하는 오프라인 영어 클래스.
+직접 자기 얘기를 하고 리스닝도 해야되는 곳이다.
+클래스 한 세션당 직장인과 대학생 8 ~ 10 명 정도 모인다. (양재역)&lt;/p&gt;
+&lt;p&gt;미치 선생님이 대화 토픽을 제시하고, 해당 토픽에 대해 사람들과 계속 대화를 나눠야 한다.
+대부분 자기 일상이나 경험에 대해 이야기를 주고 받다보니 재미있다. 시간이 금방 흐른다.
+주변 동료들한테 추천하고 싶을정도.&lt;/p&gt;
+&lt;p&gt;클래스 레벨 자체는 초보 수준에 맞춰진듯 하다.
+내가 참여하기엔 딱 좋고,
+함께 참여한 영어 잘하는 친구는 자기 레벨엔 맞지 않다고.&lt;/p&gt;
+&lt;p&gt;나의 지난 2달간의 학습 흐름을 대략 정리해보면 &lt;br/&gt;
+듀오링고로 입을 떼기 시작하고 &lt;br/&gt;
+포도 스피킹으로 사람과 말수를 늘리고 &lt;br/&gt;
+미친 영어 클래스에서 사람들과 직접 대화까지 했다.&lt;/p&gt;
+&lt;p&gt;처음엔 어떤 학습 수단이 제일 나은지 비교하고 싶었던건데 이제는 하나만 할 수 없게 되었다.
+앱 학습부터 오프라인까지 초보인 나에겐 거의 거를 타선이 없었다.
+듀오링고 하나만으론 역시 부족하고 다양한 노력이 필요한 나의 현실을 알 수 있었다. 🥲
+영어는 할 수 있을때 미리 열심히 해두자… 나중에 와서 일과 병행 하려니 역시 쉽지 않다.&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; &quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 23.333333333333332%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAFCAYAAABFA8wzAAAACXBIWXMAAAsTAAALEwEAmpwYAAABdklEQVR42h2QTU/TAACG+1P4AR7lyMkDF84QTxyMCYkhhAMQ8UBUwDFQN8i2bOyz0q6j67pudGu3dazLunQDo9FptsREbsbfoOGx8fDmzZP38CSvYNvn6GYISxPpXjSx8zpWsox+7KKHb+jn2/hKCy/YPMli2vGY2AO6GYNW7BIrUqQRy9GuRjCLbxGyX5YIfZ2jMtzB+dDAkcrIh12yyzWUxzkSGz5jxaSbqjLtf+Tbzz/c/frLxPEx34lY4UuqrV2OBwu89x4haJ+foI7nqY/COLJB76KCcuCjbr6kt7tCemfEoGDQiZeZeZ9ojO8Zfr9n1r+lFs5ghkoo9jpb+gP2Gg8R8u4qSXcRzd6nJ3W4zmlYp3WSaw6Jp220gya9dJn2WYmh1OT37Mf/uHmD6lGGyuscunhEffKM+u0mgm+M8LQhA9XFEWt0YipOXAk+CjqtBixjR4s0ozJXJyL6m2wgSaPtp9AOzym9iiO/SCA9T1HYjvMPxzQpZggQhRMAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
   &gt;&lt;/span&gt;
   &lt;img
         class=&quot;gatsby-resp-image-image&quot;
         alt=&quot;cover&quot;
         title=&quot;&quot;
-        src=&quot;/static/52419a7788f7a40ceefa2baf4aa5624c/37523/cover.png&quot;
-        srcset=&quot;/static/52419a7788f7a40ceefa2baf4aa5624c/e9ff0/cover.png 180w,
-/static/52419a7788f7a40ceefa2baf4aa5624c/f21e7/cover.png 360w,
-/static/52419a7788f7a40ceefa2baf4aa5624c/37523/cover.png 720w,
-/static/52419a7788f7a40ceefa2baf4aa5624c/302a4/cover.png 1080w,
-/static/52419a7788f7a40ceefa2baf4aa5624c/c1b63/cover.png 1200w&quot;
+        src=&quot;/static/dc933fad5c606a8165b7ba9a37d4806b/37523/cover.png&quot;
+        srcset=&quot;/static/dc933fad5c606a8165b7ba9a37d4806b/e9ff0/cover.png 180w,
+/static/dc933fad5c606a8165b7ba9a37d4806b/f21e7/cover.png 360w,
+/static/dc933fad5c606a8165b7ba9a37d4806b/37523/cover.png 720w&quot;
         sizes=&quot;(max-width: 720px) 100vw, 720px&quot;
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
         loading=&quot;lazy&quot;
@@ -601,7 +601,7 @@ launchIn 이라는 확장 함수로 코루틴 스코프를 전달해서 collect 
     &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;onEach&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; view&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;showNews&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;it&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
     &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; view&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;handleError&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;it&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
     &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;launchIn&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;viewModelScope&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[코루틴 디스패처, 스코프, 공유 이슈, 테스트]]></title><description><![CDATA[플로우란 무엇인가? 플로우는 비동기적으로 계산해야 할 값의 스트림을 나타낸다. Flow 인터페이스 자체는 떠다니는 원소들을 모으는 역할을 하며 플로우 끝에 도달할 때까지 각 값을 처리하는걸 의미한다. Flow…]]></description><link>https://www.winter-love.dev/coroutine-deep-dive/6-flow/</link><guid isPermaLink="false">https://www.winter-love.dev/coroutine-deep-dive/6-flow/</guid><pubDate>Mon, 09 Mar 2026 00:10:00 GMT</pubDate><content:encoded>&lt;h1 id=&quot;플로우란-무엇인가&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#%ED%94%8C%EB%A1%9C%EC%9A%B0%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80&quot; aria-label=&quot;플로우란 무엇인가 permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;플로우란 무엇인가?&lt;/h1&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[플로우란 무엇인가]]></title><description><![CDATA[플로우란 무엇인가? 플로우는 비동기적으로 계산해야 할 값의 스트림을 나타낸다. Flow 인터페이스 자체는 떠다니는 원소들을 모으는 역할을 하며 플로우 끝에 도달할 때까지 각 값을 처리하는걸 의미한다. Flow…]]></description><link>https://www.winter-love.dev/coroutine-deep-dive/6-flow/</link><guid isPermaLink="false">https://www.winter-love.dev/coroutine-deep-dive/6-flow/</guid><pubDate>Mon, 09 Mar 2026 00:10:00 GMT</pubDate><content:encoded>&lt;h1 id=&quot;플로우란-무엇인가&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#%ED%94%8C%EB%A1%9C%EC%9A%B0%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80&quot; aria-label=&quot;플로우란 무엇인가 permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;플로우란 무엇인가?&lt;/h1&gt;
 &lt;p&gt;플로우는 비동기적으로 계산해야 할 값의 스트림을 나타낸다.&lt;/p&gt;
 &lt;p&gt;Flow 인터페이스 자체는 떠다니는 원소들을 모으는 역할을 하며&lt;/p&gt;
 &lt;p&gt;플로우 끝에 도달할 때까지 각 값을 처리하는걸 의미한다.&lt;/p&gt;
@@ -705,14 +705,6 @@ collect 내부적으로 &lt;code class=&quot;language-text&quot;&gt;action()&lt;
 &lt;p&gt;빌더는 &lt;code class=&quot;language-text&quot;&gt;flow&lt;/code&gt; 함수를 먼저 호출하고, &lt;code class=&quot;language-text&quot;&gt;flow&lt;/code&gt; 람다식 내부에서 &lt;code class=&quot;language-text&quot;&gt;emit&lt;/code&gt; 함수를 사용해 다음 값을 방출한다.&lt;/p&gt;
 &lt;p&gt;flow 빌더는 네트워크 api 에서 페이지별로 요청되어야 하는 사용자 스트림을 만드는 목적으로 사용한다.&lt;/p&gt;
 &lt;p&gt;책 예제에선 flow 로 페이징을 구현하는 예제를 보여주고 있다.&lt;/p&gt;
-&lt;h2 id=&quot;플로우-빌더-이해하기&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#%ED%94%8C%EB%A1%9C%EC%9A%B0-%EB%B9%8C%EB%8D%94-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0&quot; aria-label=&quot;플로우 빌더 이해하기 permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;플로우 빌더 이해하기&lt;/h2&gt;
-&lt;p&gt;플로우 빌더는 플로우를 만드는 가장 기본적인 방법이다.&lt;/p&gt;
-&lt;p&gt;다른 모든 방법 또한 빌더를 기초로 하고있다.&lt;/p&gt;
-&lt;p&gt;플로우가 어떻게 작동하는지 알아보자 (287~288p)&lt;/p&gt;
-&lt;h2 id=&quot;채널-플로우&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#%EC%B1%84%EB%84%90-%ED%94%8C%EB%A1%9C%EC%9A%B0&quot; aria-label=&quot;채널 플로우 permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;채널 플로우&lt;/h2&gt;
-&lt;p&gt;(책으로 보자. 289~291p)&lt;/p&gt;
-&lt;h2 id=&quot;콜백-플로우&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#%EC%BD%9C%EB%B0%B1-%ED%94%8C%EB%A1%9C%EC%9A%B0&quot; aria-label=&quot;콜백 플로우 permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;콜백 플로우&lt;/h2&gt;
-&lt;p&gt;(책으로 보자. 292~293p)&lt;/p&gt;
 &lt;p&gt;&lt;span
       class=&quot;gatsby-resp-image-wrapper&quot;
       style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; &quot;
@@ -1055,20 +1047,6 @@ List, Set 과 같은 컬렉션이나 Channel 이 핫 데이터 소스에 해당�
 공유 상태로 인해 생기는 문제를 해결할 수는 없지만
 동시 요청을 처리하는 수를 제한할 때 활용할 수 있다.
 처리율 제한 장치를 구현할 때 도움이 된다.&lt;/p&gt;
-&lt;h1 id=&quot;코틀린-코루틴-테스트하기&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#%EC%BD%94%ED%8B%80%EB%A6%B0-%EC%BD%94%EB%A3%A8%ED%8B%B4-%ED%85%8C%EC%8A%A4%ED%8A%B8%ED%95%98%EA%B8%B0&quot; aria-label=&quot;코틀린 코루틴 테스트하기 permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;코틀린 코루틴 테스트하기&lt;/h1&gt;
-&lt;h2 id=&quot;시간-의존성-테스트하기&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#%EC%8B%9C%EA%B0%84-%EC%9D%98%EC%A1%B4%EC%84%B1-%ED%85%8C%EC%8A%A4%ED%8A%B8%ED%95%98%EA%B8%B0&quot; aria-label=&quot;시간 의존성 테스트하기 permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;시간 의존성 테스트하기&lt;/h2&gt;
-&lt;h2 id=&quot;testcoroutinescheduler-와-standardtestdispatcher&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#testcoroutinescheduler-%EC%99%80-standardtestdispatcher&quot; aria-label=&quot;testcoroutinescheduler 와 standardtestdispatcher permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;TestCoroutineScheduler 와 StandardTestDispatcher&lt;/h2&gt;
-&lt;h2 id=&quot;runtest&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#runtest&quot; aria-label=&quot;runtest permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;runTest&lt;/h2&gt;
-&lt;h2 id=&quot;백그라운드-스코프&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#%EB%B0%B1%EA%B7%B8%EB%9D%BC%EC%9A%B4%EB%93%9C-%EC%8A%A4%EC%BD%94%ED%94%84&quot; aria-label=&quot;백그라운드 스코프 permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;백그라운드 스코프&lt;/h2&gt;
-&lt;h2 id=&quot;취소와-컨텍스트-전달-테스트하기&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#%EC%B7%A8%EC%86%8C%EC%99%80-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8-%EC%A0%84%EB%8B%AC-%ED%85%8C%EC%8A%A4%ED%8A%B8%ED%95%98%EA%B8%B0&quot; aria-label=&quot;취소와 컨텍스트 전달 테스트하기 permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;취소와 컨텍스트 전달 테스트하기&lt;/h2&gt;
-&lt;h2 id=&quot;unconfinedtestdispatcher&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#unconfinedtestdispatcher&quot; aria-label=&quot;unconfinedtestdispatcher permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;UnconfinedTestDispatcher&lt;/h2&gt;
-&lt;h2 id=&quot;목mock-사용하기&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#%EB%AA%A9mock-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0&quot; aria-label=&quot;목mock 사용하기 permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;목(mock) 사용하기&lt;/h2&gt;
-&lt;h2 id=&quot;디스패처를-바꾸는-함수-테스트하기&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#%EB%94%94%EC%8A%A4%ED%8C%A8%EC%B2%98%EB%A5%BC-%EB%B0%94%EA%BE%B8%EB%8A%94-%ED%95%A8%EC%88%98-%ED%85%8C%EC%8A%A4%ED%8A%B8%ED%95%98%EA%B8%B0&quot; aria-label=&quot;디스패처를 바꾸는 함수 테스트하기 permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;디스패처를 바꾸는 함수 테스트하기&lt;/h2&gt;
-&lt;h2 id=&quot;함수-실행-중에-일어나는-일-테스트하기&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#%ED%95%A8%EC%88%98-%EC%8B%A4%ED%96%89-%EC%A4%91%EC%97%90-%EC%9D%BC%EC%96%B4%EB%82%98%EB%8A%94-%EC%9D%BC-%ED%85%8C%EC%8A%A4%ED%8A%B8%ED%95%98%EA%B8%B0&quot; aria-label=&quot;함수 실행 중에 일어나는 일 테스트하기 permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;함수 실행 중에 일어나는 일 테스트하기&lt;/h2&gt;
-&lt;h2 id=&quot;새로운-코루틴을-시작하는-함수-테스트하기&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#%EC%83%88%EB%A1%9C%EC%9A%B4-%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%9D%84-%EC%8B%9C%EC%9E%91%ED%95%98%EB%8A%94-%ED%95%A8%EC%88%98-%ED%85%8C%EC%8A%A4%ED%8A%B8%ED%95%98%EA%B8%B0&quot; aria-label=&quot;새로운 코루틴을 시작하는 함수 테스트하기 permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;새로운 코루틴을 시작하는 함수 테스트하기&lt;/h2&gt;
-&lt;h2 id=&quot;메인-디스패처-교체하기&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#%EB%A9%94%EC%9D%B8-%EB%94%94%EC%8A%A4%ED%8C%A8%EC%B2%98-%EA%B5%90%EC%B2%B4%ED%95%98%EA%B8%B0&quot; aria-label=&quot;메인 디스패처 교체하기 permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;메인 디스패처 교체하기&lt;/h2&gt;
-&lt;h2 id=&quot;코루틴을-시작하는-안드로이드-함수-테스트하기&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%9D%84-%EC%8B%9C%EC%9E%91%ED%95%98%EB%8A%94-%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-%ED%95%A8%EC%88%98-%ED%85%8C%EC%8A%A4%ED%8A%B8%ED%95%98%EA%B8%B0&quot; aria-label=&quot;코루틴을 시작하는 안드로이드 함수 테스트하기 permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;코루틴을 시작하는 안드로이드 함수 테스트하기&lt;/h2&gt;
-&lt;h2 id=&quot;룰이-있는-테스트-디스패처-설정하기&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#%EB%A3%B0%EC%9D%B4-%EC%9E%88%EB%8A%94-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EB%94%94%EC%8A%A4%ED%8C%A8%EC%B2%98-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0&quot; aria-label=&quot;룰이 있는 테스트 디스패처 설정하기 permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;룰이 있는 테스트 디스패처 설정하기&lt;/h2&gt;
 &lt;p&gt;&lt;span
       class=&quot;gatsby-resp-image-wrapper&quot;
       style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; &quot;
