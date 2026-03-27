@@ -5,7 +5,7 @@ function PageFooter({ author, githubUrl }) {
   return (
     <footer className="page-footer-wrapper">
       <p className="page-footer">
-        © Winter archive 2025
+        © Winter archive 2026
       </p>
     </footer>
   );
